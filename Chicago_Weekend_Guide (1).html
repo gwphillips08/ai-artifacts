@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chicago Weekend · April 17–19, 2026 · Phillips Family</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0d1f3c;
+    --deep-navy: #071429;
+    --steel: #2c4a6e;
+    --gold: #c8972a;
+    --gold-light: #e6b84a;
+    --cream: #f5f0e8;
+    --warm-white: #faf8f4;
+    --red: #b33a2e;
+    --mist: #8fa8c8;
+    --text: #1a1a2e;
+    --gray: #666;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--deep-navy);
+    color: var(--cream);
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    background: var(--deep-navy);
+  }
+
+  .skyline-svg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70%;
+    opacity: 0.18;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(200,151,42,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,151,42,0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(200,151,42,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    padding: 0 60px 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    animation: fadeUp 1.2s ease both;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(64px, 10vw, 130px);
+    font-weight: 900;
+    line-height: 0.88;
+    color: var(--warm-white);
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+  }
+
+  .hero-title span {
+    color: var(--gold);
+    display: block;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+  }
+
+  .hero-meta-item {
+    border-left: 2px solid var(--gold);
+    padding-left: 16px;
+  }
+
+  .hero-meta-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--mist);
+    margin-bottom: 4px;
+  }
+
+  .hero-meta-value {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--warm-white);
+  }
+
+  .weather-banner {
+    background: linear-gradient(135deg, var(--steel) 0%, var(--navy) 100%);
+    border-top: 3px solid var(--gold);
+    border-bottom: 1px solid rgba(200,151,42,0.3);
+    padding: 20px 60px;
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .weather-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .weather-days {
+    display: flex;
+    gap: 32px;
+    flex: 1;
+  }
+
+  .weather-day {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .weather-day-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mist);
+  }
+
+  .weather-temp {
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--warm-white);
+  }
+
+  .weather-temp.cold { color: #7ec8e3; }
+  .weather-temp.warm { color: var(--gold-light); }
+
+  .weather-note {
+    font-size: 12px;
+    color: var(--red);
+    font-weight: 500;
+    background: rgba(179,58,46,0.15);
+    padding: 6px 14px;
+    border: 1px solid rgba(179,58,46,0.4);
+    border-radius: 2px;
+    margin-left: auto;
+  }
+
+  .timestamp {
+    padding: 10px 60px;
+    background: rgba(0,0,0,0.3);
+    font-size: 11px;
+    color: var(--mist);
+    letter-spacing: 0.05em;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(200,151,42,0.15);
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 60px;
+  }
+
+  /* ── SECTION HEADERS ── */
+  .section {
+    padding: 80px 0 60px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  .section-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 72px;
+    font-weight: 900;
+    color: rgba(200,151,42,0.15);
+    line-height: 1;
+    min-width: 80px;
+  }
+
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 28px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--warm-white);
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 8px;
+    flex: 1;
+  }
+
+  /* ── INFO CARDS ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2px;
+    background: rgba(200,151,42,0.15);
+    border: 1px solid rgba(200,151,42,0.2);
+  }
+
+  .info-card {
+    background: rgba(13,31,60,0.9);
+    padding: 20px 24px;
+    transition: background 0.2s;
+  }
+
+  .info-card:hover {
+    background: rgba(44,74,110,0.6);
+  }
+
+  .info-card-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+
+  .info-card-value {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--warm-white);
+    line-height: 1.5;
+  }
+
+  .info-card-value a {
+    color: var(--mist);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(143,168,200,0.4);
+  }
+
+  .info-card-value a:hover { color: var(--gold); border-color: var(--gold); }
+
+  .info-card.confirmed .info-card-label::after {
+    content: ' ✓';
+    color: #5dbb8a;
+  }
+
+  /* ── DAY SCHEDULE ── */
+  .day-header {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    margin-bottom: 4px;
+    padding: 32px 0 16px;
+    border-top: 1px solid rgba(200,151,42,0.2);
+  }
+
+  .day-date {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .day-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--warm-white);
+  }
+
+  .day-subtitle {
+    font-size: 13px;
+    color: var(--mist);
+    margin-bottom: 24px;
+    padding-left: 2px;
+  }
+
+  .schedule {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .schedule-item {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    background: rgba(13,31,60,0.6);
+    border-left: 3px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .schedule-item:hover {
+    background: rgba(44,74,110,0.5);
+  }
+
+  .schedule-item.confirmed {
+    border-left-color: var(--gold);
+    background: rgba(200,151,42,0.06);
+  }
+
+  .schedule-item.confirmed:hover {
+    background: rgba(200,151,42,0.1);
+  }
+
+  .schedule-time {
+    padding: 16px 16px 16px 20px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--gold);
+    border-right: 1px solid rgba(200,151,42,0.15);
+    display: flex;
+    align-items: flex-start;
+    padding-top: 18px;
+  }
+
+  .schedule-item:not(.confirmed) .schedule-time {
+    color: var(--mist);
+  }
+
+  .schedule-body {
+    padding: 16px 20px;
+  }
+
+  .schedule-event {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--warm-white);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .confirmed-badge {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+    color: #5dbb8a;
+    background: rgba(93,187,138,0.12);
+    border: 1px solid rgba(93,187,138,0.3);
+    padding: 2px 8px;
+    text-transform: uppercase;
+  }
+
+  .schedule-detail {
+    font-size: 13px;
+    color: var(--mist);
+    line-height: 1.5;
+  }
+
+  .schedule-alert {
+    font-size: 12px;
+    color: var(--gold-light);
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .schedule-alert::before {
+    content: '⚑';
+  }
+
+  /* ── TICKETS GRID ── */
+  .tickets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 2px;
+    background: rgba(200,151,42,0.1);
+  }
+
+  .ticket-card {
+    background: var(--deep-navy);
+    padding: 24px;
+    border-top: 3px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ticket-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 80px; height: 80px;
+    background: radial-gradient(circle at top right, rgba(200,151,42,0.08), transparent 70%);
+  }
+
+  .ticket-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--warm-white);
+    margin-bottom: 8px;
+  }
+
+  .ticket-when {
+    font-size: 13px;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+
+  .ticket-detail {
+    font-size: 13px;
+    color: var(--mist);
+    line-height: 1.5;
+  }
+
+  .ticket-ref {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: rgba(200,151,42,0.5);
+    margin-top: 10px;
+    text-transform: uppercase;
+  }
+
+  /* ── TWO COL ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+
+  /* ── TRANSPORT ── */
+  .transport-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    background: rgba(200,151,42,0.1);
+    margin-bottom: 40px;
+  }
+
+  .transport-card {
+    background: var(--deep-navy);
+    padding: 20px;
+    text-align: center;
+  }
+
+  .transport-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 900;
+    margin-bottom: 8px;
+    line-height: 1;
+  }
+
+  .transport-card:nth-child(1) .transport-num { color: #5dbb8a; }
+  .transport-card:nth-child(2) .transport-num { color: var(--mist); }
+  .transport-card:nth-child(3) .transport-num { color: var(--gold); }
+  .transport-card:nth-child(4) .transport-num { color: var(--red); }
+
+  .transport-mode {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--warm-white);
+    margin-bottom: 6px;
+  }
+
+  .transport-desc {
+    font-size: 12px;
+    color: var(--mist);
+    line-height: 1.4;
+  }
+
+  /* ── L-TRAIN TABLE ── */
+  .l-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+  }
+
+  .l-table th {
+    background: var(--steel);
+    padding: 12px 16px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-align: left;
+    border-bottom: 2px solid var(--gold);
+  }
+
+  .l-table td {
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--cream);
+    border-bottom: 1px solid rgba(200,151,42,0.1);
+    vertical-align: top;
+    line-height: 1.4;
+  }
+
+  .l-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+  .l-table tr.highlight td { background: rgba(93,187,138,0.08); color: #5dbb8a; }
+  .l-table tr.highlight td:first-child { font-weight: 700; }
+
+  .line-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  .orange { background: #f97316; }
+  .blue { background: #3b82f6; }
+
+  /* ── ALERT BOX ── */
+  .alert-box {
+    background: rgba(179,58,46,0.1);
+    border: 1px solid rgba(179,58,46,0.4);
+    border-left: 4px solid var(--red);
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    color: #e8a09a;
+    line-height: 1.5;
+  }
+
+  .alert-box strong { color: var(--warm-white); }
+
+  /* ── TIP BOX ── */
+  .tip-box {
+    background: rgba(200,151,42,0.08);
+    border: 1px solid rgba(200,151,42,0.25);
+    border-left: 4px solid var(--gold);
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    color: var(--cream);
+    line-height: 1.6;
+  }
+
+  .tip-box strong { color: var(--gold); }
+
+  /* ── PREP LIST ── */
+  .prep-group {
+    margin-bottom: 32px;
+  }
+
+  .prep-group-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .prep-group-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(200,151,42,0.2);
+  }
+
+  .prep-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .prep-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--cream);
+    line-height: 1.4;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.02);
+    border-left: 2px solid rgba(200,151,42,0.2);
+  }
+
+  .prep-list li::before {
+    content: '□';
+    color: var(--gold);
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: -1px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--deep-navy);
+    border-top: 3px solid var(--gold);
+    padding: 60px;
+    margin-top: 80px;
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px;
+  }
+
+  .footer-col-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(200,151,42,0.2);
+  }
+
+  .footer-item {
+    font-size: 13px;
+    color: var(--mist);
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+
+  .footer-item strong { color: var(--warm-white); }
+  .footer-item a { color: var(--mist); text-decoration: none; border-bottom: 1px solid rgba(143,168,200,0.3); }
+  .footer-item a:hover { color: var(--gold); }
+
+  .footer-bottom {
+    max-width: 1200px;
+    margin: 40px auto 0;
+    padding-top: 20px;
+    border-top: 1px solid rgba(200,151,42,0.15);
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: rgba(143,168,200,0.5);
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(7,20,41,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(200,151,42,0.2);
+    padding: 0 60px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  .nav-brand {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding: 16px 0;
+    margin-right: 40px;
+    white-space: nowrap;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+  }
+
+  .nav-link {
+    padding: 16px 18px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--mist);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+
+  .nav-link:hover {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-in {
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 60px 0;
+    opacity: 0.3;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .container, nav, .weather-banner, .timestamp, footer { padding-left: 24px; padding-right: 24px; }
+    .hero-content { padding: 0 24px 60px; }
+    .two-col { grid-template-columns: 1fr; }
+    .transport-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-inner { grid-template-columns: 1fr; }
+    .hero-meta { flex-wrap: wrap; gap: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">Chicago '26</div>
+  <div class="nav-links">
+    <a href="#flights" class="nav-link">Flights & Hotel</a>
+    <a href="#tickets" class="nav-link">Tickets</a>
+    <a href="#friday" class="nav-link">Friday</a>
+    <a href="#saturday" class="nav-link">Saturday</a>
+    <a href="#sunday" class="nav-link">Sunday</a>
+    <a href="#transport" class="nav-link">Transport</a>
+    <a href="#prep" class="nav-link">Prep List</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+
+  <!-- Chicago Skyline SVG -->
+  <svg class="skyline-svg" viewBox="0 0 1440 400" preserveAspectRatio="xMidYMax meet" fill="var(--mist)" xmlns="http://www.w3.org/2000/svg">
+    <!-- Willis Tower -->
+    <rect x="180" y="20" width="36" height="380"/>
+    <rect x="186" y="10" width="24" height="20"/>
+    <rect x="192" y="0" width="12" height="15"/>
+    <rect x="168" y="80" width="60" height="10"/>
+    <rect x="168" y="140" width="60" height="10"/>
+    <rect x="168" y="200" width="60" height="10"/>
+    <!-- John Hancock -->
+    <polygon points="320,60 340,60 350,400 310,400" fill="var(--mist)"/>
+    <line x1="312" y1="80" x2="348" y2="370" stroke="var(--deep-navy)" stroke-width="3"/>
+    <line x1="348" y1="80" x2="312" y2="370" stroke="var(--deep-navy)" stroke-width="3"/>
+    <rect x="336" y="20" width="4" height="45"/>
+    <!-- Tribune Tower -->
+    <rect x="440" y="100" width="44" height="300"/>
+    <rect x="436" y="80" width="52" height="25"/>
+    <rect x="444" y="55" width="36" height="30"/>
+    <rect x="452" y="35" width="20" height="25"/>
+    <!-- Wrigley Building -->
+    <rect x="530" y="120" width="36" height="280"/>
+    <rect x="526" y="90" width="44" height="35"/>
+    <rect x="534" y="70" width="28" height="25"/>
+    <rect x="540" y="50" width="16" height="25"/>
+    <circle cx="548" cy="45" r="8"/>
+    <!-- Marina City towers -->
+    <rect x="650" y="130" width="28" height="270"/>
+    <ellipse cx="664" cy="130" rx="14" ry="8"/>
+    <rect x="690" y="130" width="28" height="270"/>
+    <ellipse cx="704" cy="130" rx="14" ry="8"/>
+    <!-- 333 W Wacker -->
+    <path d="M780,80 Q830,80 850,120 L850,400 L780,400 Z"/>
+    <!-- Merchandise Mart -->
+    <rect x="900" y="150" width="80" height="250"/>
+    <rect x="896" y="130" width="88" height="25"/>
+    <rect x="904" y="110" width="72" height="25"/>
+    <!-- random buildings -->
+    <rect x="1020" y="180" width="30" height="220"/>
+    <rect x="1060" y="160" width="40" height="240"/>
+    <rect x="1110" y="200" width="25" height="200"/>
+    <rect x="1145" y="170" width="35" height="230"/>
+    <rect x="1190" y="220" width="28" height="180"/>
+    <rect x="1228" y="190" width="22" height="210"/>
+    <rect x="1260" y="210" width="30" height="190"/>
+    <rect x="80" y="200" width="40" height="200"/>
+    <rect x="130" y="230" width="28" height="170"/>
+    <!-- Water -->
+    <path d="M0,390 Q360,370 720,385 Q1080,400 1440,375 L1440,400 L0,400 Z" fill="rgba(44,74,110,0.6)"/>
+  </svg>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Phillips Family Weekend</div>
+    <h1 class="hero-title">
+      CHICAGO
+      <span>APR 17–19</span>
+    </h1>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Travelers</div>
+        <div class="hero-meta-value">Garrett, Tiffany & Pearl</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Hotel</div>
+        <div class="hero-meta-value">Courtyard River North</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Flight</div>
+        <div class="hero-meta-value">Southwest · Conf B6LAM8</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Year</div>
+        <div class="hero-meta-value">2026</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WEATHER -->
+<div class="weather-banner">
+  <div class="weather-label">Forecast</div>
+  <div class="weather-days">
+    <div class="weather-day">
+      <div>
+        <div class="weather-day-name">Friday · Apr 17</div>
+        <div class="weather-temp warm">72°F <span style="font-size:14px;color:var(--mist)">/ 47°F</span></div>
+        <div style="font-size:11px;color:#e8a09a">45% rain chance</div>
+      </div>
+    </div>
+    <div class="weather-day">
+      <div>
+        <div class="weather-day-name">Saturday · Apr 18</div>
+        <div class="weather-temp cold">49°F <span style="font-size:14px;color:var(--mist)">/ 40°F</span></div>
+        <div style="font-size:11px;color:var(--mist)">20% rain chance</div>
+      </div>
+    </div>
+    <div class="weather-day">
+      <div>
+        <div class="weather-day-name">Sunday · Apr 19</div>
+        <div class="weather-temp cold">47°F <span style="font-size:14px;color:var(--mist)">/ 38°F</span></div>
+        <div style="font-size:11px;color:#e8a09a">35% rain chance</div>
+      </div>
+    </div>
+  </div>
+  <div class="weather-note">⚠ Warm coat + rain layer · Sat & Sun all three days</div>
+</div>
+<div class="timestamp">
+  <span>Itinerary Last Updated: <strong style="color:var(--warm-white)">Thursday, April 16, 2026 at 10:30 PM CDT</strong></span>
+  <span>Shared with: Garrett · Pearl · Tiffany</span>
+</div>
+
+<!-- FLIGHTS & HOTEL -->
+<section class="section" id="flights">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">01</div>
+      <div class="section-title">Flights & Hotel</div>
+    </div>
+    <div class="card-grid">
+      <div class="info-card confirmed">
+        <div class="info-card-label">Outbound Flight</div>
+        <div class="info-card-value">WN482 · DEN 8:25 AM → MDW 11:50 AM<br>Friday, April 17 · Conf: <strong>B6LAM8</strong><br><a href="https://www.southwest.com/air/manage-reservation/view" target="_blank">Manage reservation →</a></div>
+      </div>
+      <div class="info-card confirmed">
+        <div class="info-card-label">Return Flight</div>
+        <div class="info-card-value">Southwest · MDW 6:25 PM → DEN<br>Sunday, April 19 · Conf: <strong>B6LAM8</strong><br>Leave hotel by 4:00 PM · Orange Line ~30 min</div>
+      </div>
+      <div class="info-card confirmed">
+        <div class="info-card-label">Hotel</div>
+        <div class="info-card-value">Courtyard by Marriott River North<br>30 E Hubbard St · Conf: <strong>976569210</strong><br>Check-in 3 PM · (312) 329-2500</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Midway → Hotel</div>
+        <div class="info-card-value">Orange Line → Washington/Wabash<br>~30 min · $2.50 · Trains every 10 min<br>Then 10 min walk north on Wabash</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Passengers</div>
+        <div class="info-card-value">Garrett Phillips · Basic<br>Pearl Phillips · Basic<br>Tiffany Phillips · Basic</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">All Tickets PDF</div>
+        <div class="info-card-value">Skydeck + Robie House<br><a href="https://drive.google.com/file/d/1MBWzqiIL-o7vY0NpI7LqlnYS9opYMh4t/view?usp=sharing" target="_blank">Google Drive — Tickets PDF →</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+
+<!-- TICKETS -->
+<section class="section" id="tickets">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">02</div>
+      <div class="section-title">Confirmed Tickets & Reservations</div>
+    </div>
+    <div class="tickets-grid">
+      <div class="ticket-card">
+        <div class="ticket-title">Willis Tower Skydeck</div>
+        <div class="ticket-when">Friday, April 17 · 7:00 PM</div>
+        <div class="ticket-detail">Expedited Entry · 3 tickets on phone (individual files)<br>Entrance: Jackson Blvd, south side — escalator DOWN<br>Sunset at 7:33 PM · 3-in-1: Museum + Ledge + Deck</div>
+        <div class="ticket-ref">Res. #152603080876 · ARRIVE BY 6:45 PM</div>
+      </div>
+      <div class="ticket-card">
+        <div class="ticket-title">Lou Malnati's Pizzeria</div>
+        <div class="ticket-when">Friday, April 17 · 8:30 PM</div>
+        <div class="ticket-detail">Deep dish · 1120 N State St, River North<br>Reservation confirmed for 3</div>
+        <div class="ticket-ref">~10 min walk/Uber from Willis Tower</div>
+      </div>
+      <div class="ticket-card">
+        <div class="ticket-title">Art Deco Skyscrapers: The Riverfront</div>
+        <div class="ticket-when">Saturday, April 18 · 10:45 AM</div>
+        <div class="ticket-detail">CAC Walking Tour · 111 E Wacker Dr<br>Garrett & Pearl · ~1.5 hrs · Tickets: Apple Wallet</div>
+        <div class="ticket-ref">Booking 1WRQHKR8 · Arrive a few min early</div>
+      </div>
+      <div class="ticket-card">
+        <div class="ticket-title">Robie House — Exterior Audio Tour</div>
+        <div class="ticket-when">Saturday, April 18 · ~1:00 PM (self-guided)</div>
+        <div class="ticket-detail">5757 S Woodlawn Ave, Hyde Park<br>Garrett & Pearl · Tickets on phone (individual files)</div>
+        <div class="ticket-ref">Order #14322931 · Tickets #11245548–49</div>
+      </div>
+      <div class="ticket-card">
+        <div class="ticket-title">Robie House: A Modern Home</div>
+        <div class="ticket-when">Saturday, April 18 · 2:00 PM</div>
+        <div class="ticket-detail">Interior guided tour · Garrett & Pearl<br>Check in at museum shop 15 min early · Not refundable</div>
+        <div class="ticket-ref">Order #14322931 · Tickets #11245550–51</div>
+      </div>
+      <div class="ticket-card">
+        <div class="ticket-title">Gibsons Steakhouse</div>
+        <div class="ticket-when">Saturday, April 18 · 7:30 PM</div>
+        <div class="ticket-detail">1028 N Rush St · Reservation for 3<br>Garrett, Pearl & Tiffany · Leave Hyde Park by 6:30 PM</div>
+        <div class="ticket-ref">Confirmed</div>
+      </div>
+      <div class="ticket-card">
+        <div class="ticket-title">CAC Architecture Boat Tour</div>
+        <div class="ticket-when">Sunday, April 19 · 10:00 AM</div>
+        <div class="ticket-detail">Chicago Architecture Center · 111 E Wacker Dr<br>Arrive 9:30 AM · ~1.5 hrs along the Chicago River<br>Tickets: Ticketmaster / Apple Wallet</div>
+        <div class="ticket-ref">Dress warmly — river wind at 47°F</div>
+      </div>
+      <div class="ticket-card" style="border-top-color: var(--mist);">
+        <div class="ticket-title" style="color:var(--mist)">Tiffany — America's Beauty Show</div>
+        <div class="ticket-when" style="color:var(--mist)">Saturday, April 18 · All Day</div>
+        <div class="ticket-detail">Donald E. Stephens Convention Center<br>5555 N. River Rd, Rosemont<br>Blue Line → Rosemont (~36 min) → Pace Bus 811</div>
+        <div class="ticket-ref">Uber to Gibsons by 6:45 PM</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+
+<!-- FRIDAY -->
+<section class="section" id="friday">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">03</div>
+      <div class="section-title">Friday, April 17 — Arrival Day</div>
+    </div>
+    <div class="day-subtitle">WN482 DEN→MDW · Willis Tower Skydeck · Lou Malnati's</div>
+    <div class="schedule">
+      <div class="schedule-item">
+        <div class="schedule-time">8:25 AM</div>
+        <div class="schedule-body">
+          <div class="schedule-event">Depart Denver (DEN) — WN482</div>
+          <div class="schedule-detail">Southwest · Boeing 737-700 · Conf B6LAM8 · 2hr 25min flight</div>
+        </div>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-time">11:50 AM</div>
+        <div class="schedule-body">
+          <div class="schedule-event">Arrive Chicago Midway (MDW)</div>
+          <div class="schedule-detail">Orange Line → Washington/Wabash (~30 min, $2.50) → hotel · Trains every 10 min</div>
+        </div>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-time">~1:00 PM</div>
+        <div class="schedule-body">
+          <div class="schedule-event">Check In / Lunch</div>
+          <div class="schedule-detail">Courtyard River North · Bags held if before 3 PM · Doma or Beatrix (519 N Clark) nearby</div>
+        </div>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-time">~2:30 PM</div>
+        <div class="schedule-body">
+          <div class="schedule-event">Tribune Tower — Stones of History</div>
+          <div class="schedule-detail">435 N Michigan Ave · Free · 20–30 min · 140+ labeled stones embedded in facade — fragments from Parthenon, Taj Mahal, Great Wall, Berlin Wall, White House, Westminster Abbey. Lobby note: building is now private condos — exterior only.</div>
+        </div>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-time">~3:00 PM</div>
+        <div class="schedule-body">
+          <div class="schedule-event">Magnificent Mile Self-Guided Walk (~2 hrs)</div>
+          <div class="schedule-detail">Michigan Ave from river → Drake Hotel · ~1.5 miles · Free<br>
+          🌉 DuSable Bridge — four sculptural bridgehouses depicting Chicago's founding · best photo of Wrigley + Tribune Tower<br>
+          🏛 Wrigley Building (400 N Michigan) — Beaux-Arts clock tower, six shades of white terra cotta<br>
+          🏨 InterContinental (505 N Michigan) — 1929 Medinah Athletic Club, step inside for the lobby<br>
+          💧 Water Tower (806 N Michigan) — survived the 1871 Great Chicago Fire<br>
+          🏙 875 N Michigan (Hancock) — look up at the massive X-braces<br>
+          🏨 The Drake Hotel (140 E Walton) — 1920 landmark, every US president has stayed here</div>
+        </div>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-time">~5:00 PM</div>
+        <div class="schedule-body">
+          <div class="schedule-event">Navy Pier — Centennial Wheel 🎡</div>
+          <div class="schedule-detail">600 E Grand Ave · ~15 min walk east from Michigan Ave · Free to enter pier · Wheel ~$18–25/person at navypier.org · 196 ft, 42 gondolas, 360° views · Open until 9 PM Fridays</div>
+        </div>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-time">~6:00 PM</div>
+        <div class="schedule-body">
+          <div class="schedule-event">Head to Willis Tower</div>
+          <div class="schedule-detail">Uber from Navy Pier ~15 min (~$12) · Must arrive by 6:45 PM · 233 S Wacker Dr</div>
+        </div>
+      </div>
+      <div class="schedule-item confirmed">
+        <div class="schedule-time">7:00 PM</div>
+        <div class="schedule-body">
+          <div class="schedule-event">Willis Tower Skydeck <span class="confirmed-badge">Confirmed</span></div>
+          <div class="schedule-detail">233 S Wacker Dr · Entrance: Jackson Blvd south side, escalator DOWN · Res. #152603080876 · 3-in-1: Chicago Museum + The Ledge + Observation Deck · Sunset 7:33 PM</div>
+          <div class="schedule-alert">ARRIVE BY 6:45 PM — late admissions not accommodated. Each person presents their own ticket file.</div>
+        </div>
+      </div>
+      <div class="schedule-item confirmed">
+        <div class="schedule-time">8:30 PM</div>
+        <div class="schedule-body">
+          <div class="schedule-event">Dinner — Lou Malnati's Pizzeria <span class="confirmed-badge">Confirmed</span></div>
+          <div class="schedule-detail">1120 N State St, River North · Deep dish · Reservation for 3 · ~10 min walk/Uber from Willis Tower</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+
+<!-- SATURDAY -->
+<section class="section" id="saturday">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">04</div>
+      <div class="section-title">Saturday, April 18 — Architecture Day</div>
+    </div>
+    <div class="day-subtitle">Garrett & Pearl: Art Deco Tour + Robie House · Tiffany: America's Beauty Show, Rosemont · All together: Gibsons 7:30 PM</div>
+    <div class="schedule">
+      <div class="schedule-item">
+        <div class="schedule-time">Morning</div>
+        <div class="schedule-body">
+          <div class="schedule-event">Breakfast — Garrett & Pearl</div>
+          <div class="schedule-detail">Beatrix (519 N Clark St) or Doma — both steps from hotel</div>
+        </div>
+      </div>
+      <div class="schedule-item confirmed">
+        <div class="schedule-time">10:45 AM</div>
+        <div class="schedule-body">
+          <div class="schedule-event">Art Deco Skyscrapers: The Riverfront — CAC <span class="confirmed-badge">Confirmed</span></div>
+          <div class="schedule-detail">111 E Wacker Dr · Booking 1WRQHKR8 · Tickets: Apple Wallet · Garrett & Pearl · ~1.5 hrs · Tour ends ~12:15 PM</div>
+        </div>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-time">~12:15 PM</div>
+        <div class="schedule-body">
+          <div class="schedule-event">Lunch — Riverwalk (Garrett & Pearl)</div>
+          <div class="schedule-detail">River Roast (315 N LaSalle) or The Kitchen (180 N Upper Wacker) — both walkable from CAC</div>
+        </div>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-time">~1:00 PM</div>
+        <div class="schedule-body">
+          <div class="schedule-event">Rideshare to Robie House — Hyde Park</div>
+          <div class="schedule-detail">5757 S Woodlawn Ave · ~30 min south · ~$25–30 · Uber recommended</div>
+        </div>
+      </div>
+      <div class="schedule-item confirmed">
+        <div class="schedule-time">~1:00 PM</div>
+        <div class="schedule-body">
+          <div class="schedule-event">Robie House — Exterior Audio Tour <span class="confirmed-badge">Confirmed</span></div>
+          <div class="schedule-detail">Self-guided · Tickets #11245548–49 on phone · Garrett & Pearl · Explore before 2 PM interior tour</div>
+        </div>
+      </div>
+      <div class="schedule-item confirmed">
+        <div class="schedule-time">2:00 PM</div>
+        <div class="schedule-body">
+          <div class="schedule-event">Robie House: A Modern Home — Interior Tour <span class="confirmed-badge">Confirmed</span></div>
+          <div class="schedule-detail">Check in at museum shop 15 min early · Tickets #11245550–51 on phone · Not refundable or exchangeable · Continue exterior tour after</div>
+        </div>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-time">After tour</div>
+        <div class="schedule-body">
+          <div class="schedule-event">Finish Exterior + Hyde Park Explore</div>
+          <div class="schedule-detail">Complete exterior audio tour · Hyde Park neighborhood walk · Museum of Science & Industry nearby if time allows</div>
+        </div>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-time">~6:30 PM</div>
+        <div class="schedule-body">
+          <div class="schedule-event">Head back — regroup with Tiffany</div>
+          <div class="schedule-detail">Uber from Hyde Park ~45 min (~$25) · Leave by 6:30 PM</div>
+          <div class="schedule-alert">Leave Hyde Park no later than 6:30 PM for 7:30 PM reservation</div>
+        </div>
+      </div>
+      <div class="schedule-item confirmed">
+        <div class="schedule-time">7:30 PM</div>
+        <div class="schedule-body">
+          <div class="schedule-event">Dinner — Gibsons Steakhouse <span class="confirmed-badge">Confirmed</span></div>
+          <div class="schedule-detail">1028 N Rush St · Garrett, Pearl & Tiffany · Reservation confirmed</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 32px; padding: 20px 24px; background: rgba(143,168,200,0.08); border: 1px solid rgba(143,168,200,0.2); border-left: 4px solid var(--mist);">
+      <div style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--mist); margin-bottom: 10px;">Tiffany — America's Beauty Show</div>
+      <div style="font-size: 13px; color: var(--cream); line-height: 1.6;">
+        Donald E. Stephens Convention Center · 5555 N. River Rd, Rosemont · <a href="https://www.americasbeautyshow.com" style="color:var(--mist);">americasbeautyshow.com</a><br>
+        <strong style="color:var(--warm-white)">To show:</strong> Walk to Clark/Lake → Blue Line toward O'Hare (~36 min) → Rosemont station → Pace Bus 811 (~5 min) · Regional Day Pass $9.50 in Ventra app covers all transit<br>
+        <strong style="color:var(--warm-white)">Sample departures:</strong> Clark/Lake 8:00 AM → Rosemont 8:36 AM | 8:10 → 8:46 | 8:20 → 8:56<br>
+        <strong style="color:var(--warm-white)">To Gibsons:</strong> Uber from convention center direct (~30 min, ~$25–30) · Leave by 6:45 PM
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+
+<!-- SUNDAY -->
+<section class="section" id="sunday">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">05</div>
+      <div class="section-title">Sunday, April 19 — Boat Tour & Departure</div>
+    </div>
+    <div class="day-subtitle">CAC Architecture Boat Tour · Departure MDW 6:25 PM</div>
+    <div class="alert-box"><strong>Weather alert:</strong> 47°F with 35% rain chance — warm coat and hat/gloves for the outdoor boat tour. CAC tours run rain or shine.</div>
+    <div class="schedule">
+      <div class="schedule-item">
+        <div class="schedule-time">Morning</div>
+        <div class="schedule-body">
+          <div class="schedule-event">Breakfast — Tiny Café (Riverwalk)</div>
+          <div class="schedule-detail">55 W Riverwalk South (between Clark & Dearborn) · Open 7:30 AM weekends · ~10 min walk to CAC · Views of Marina City</div>
+        </div>
+      </div>
+      <div class="schedule-item confirmed">
+        <div class="schedule-time">9:30 AM</div>
+        <div class="schedule-body">
+          <div class="schedule-event">Arrive CAC <span class="confirmed-badge">Confirmed</span></div>
+          <div class="schedule-detail">111 E Wacker Dr · Tickets: Ticketmaster / Apple Wallet · Check in early</div>
+        </div>
+      </div>
+      <div class="schedule-item confirmed">
+        <div class="schedule-time">10:00 AM</div>
+        <div class="schedule-body">
+          <div class="schedule-event">Architecture Boat Tour <span class="confirmed-badge">Confirmed</span></div>
+          <div class="schedule-detail">~1.5 hrs along the Chicago River · Dress warmly — river wind is real at 47°F</div>
+        </div>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-time">~11:30 AM</div>
+        <div class="schedule-body">
+          <div class="schedule-event">Lunch — River Roast</div>
+          <div class="schedule-detail">315 N LaSalle Dr · Sunday brunch 11 AM–3 PM · Carved tableside · Reservations recommended · Big river patio</div>
+        </div>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-time">Early PM</div>
+        <div class="schedule-body">
+          <div class="schedule-event">Last Sightseeing</div>
+          <div class="schedule-detail">Millennium Park / The Bean · Riverwalk · Ceres Café at Board of Trade · Luke's Italian Beef (215 W Jackson)</div>
+        </div>
+      </div>
+      <div class="schedule-item confirmed">
+        <div class="schedule-time">4:00 PM</div>
+        <div class="schedule-body">
+          <div class="schedule-event">Leave for Midway (MDW) <span class="confirmed-badge">Depart by</span></div>
+          <div class="schedule-detail">Orange Line from Washington/Wabash → Midway (~30 min, $2.50) · Trains every 10 min · Sample trains: 4:00, 4:10, 4:20, 4:30 PM</div>
+          <div class="schedule-alert">Board no later than 4:00 PM to allow 90 min before 6:25 PM departure</div>
+        </div>
+      </div>
+      <div class="schedule-item confirmed">
+        <div class="schedule-time">6:25 PM</div>
+        <div class="schedule-body">
+          <div class="schedule-event">Depart MDW → DEN <span class="confirmed-badge">Confirmed</span></div>
+          <div class="schedule-detail">Southwest · Conf B6LAM8 · Check in reminder set for Saturday 5:55 PM</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+
+<!-- TRANSPORT -->
+<section class="section" id="transport">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">06</div>
+      <div class="section-title">Transportation</div>
+    </div>
+
+    <div class="transport-grid">
+      <div class="transport-card">
+        <div class="transport-num">1</div>
+        <div class="transport-mode">🚶 Walk</div>
+        <div class="transport-desc">Under ~1 mile downtown. Hotel → CAC = 8 min. Default first choice.</div>
+      </div>
+      <div class="transport-card">
+        <div class="transport-num">2</div>
+        <div class="transport-mode">🚇 L Train</div>
+        <div class="transport-desc">Over 1 mile or direct route. $2.50/ride. Free L-to-L transfer.</div>
+      </div>
+      <div class="transport-card">
+        <div class="transport-num">3</div>
+        <div class="transport-mode">🚌 Bus</div>
+        <div class="transport-desc">More direct crosstown than L. $2.25/ride. Track in Ventra app.</div>
+      </div>
+      <div class="transport-card">
+        <div class="transport-num">4</div>
+        <div class="transport-mode">🚗 Uber/Lyft</div>
+        <div class="transport-desc">Hyde Park ($25–30), Midway ($25–35), late nights, or time-critical.</div>
+      </div>
+    </div>
+
+    <div class="alert-box"><strong>⚠ State/Lake Station CLOSED through 2029.</strong> Use <strong>Clark/Lake</strong> (2 blocks west) or <strong>Washington/Wabash</strong> (1 block south on Wabash) as your Loop L stations. Washington/Wabash is the best exit for the hotel — 10 min walk north. Red Line Lake station underground is unaffected.</div>
+
+    <div class="two-col">
+      <div>
+        <div class="prep-group-title">🟠 Orange Line — Midway ↔ Loop</div>
+        <div style="font-size:13px; color:var(--mist); margin-bottom: 16px;">Every <strong style="color:var(--warm-white)">10 minutes</strong> daytime Sundays · First 4:30 AM · Last 1:05 AM</div>
+        <table class="l-table">
+          <thead><tr><th>Station</th><th>From MDW</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td><span class="line-dot orange"></span>Midway (MDW)</td><td>0 min</td><td>Follow signs to Orange Line</td></tr>
+            <tr><td>35th/Archer</td><td>~12 min</td><td>Bridgeport — passing through</td></tr>
+            <tr><td>Roosevelt</td><td>~22 min</td><td>Red/Green Line transfer</td></tr>
+            <tr><td>Harold Washington Library</td><td>~24 min</td><td>Near Board of Trade & Ceres Café</td></tr>
+            <tr><td>LaSalle/Van Buren</td><td>~25 min</td><td>Rookery Building, Luke's Italian Beef</td></tr>
+            <tr><td>Adams/Wabash</td><td>~27 min</td><td>Art Institute, Millennium Park</td></tr>
+            <tr class="highlight"><td>★ Washington/Wabash</td><td>~28 min</td><td>Best for hotel — 10 min walk north</td></tr>
+            <tr><td>Clark/Lake</td><td>~30 min</td><td>Blue Line transfer (Tiffany → Rosemont)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="prep-group-title">🔵 Blue Line — Loop ↔ Rosemont (Tiffany)</div>
+        <div style="font-size:13px; color:var(--mist); margin-bottom: 16px;">Every <strong style="color:var(--warm-white)">7–10 minutes</strong> Saturdays · 24-hour service · Board at Clark/Lake</div>
+        <table class="l-table">
+          <thead><tr><th>Station</th><th>From Clark/Lake</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr class="highlight"><td>★ Clark/Lake — Board</td><td>0 min</td><td>Free transfer from Orange Line</td></tr>
+            <tr><td>Grand</td><td>~3 min</td><td>River North / hotel area</td></tr>
+            <tr><td>Chicago</td><td>~5 min</td><td>Near Water Tower / Mag Mile</td></tr>
+            <tr><td>Division</td><td>~8 min</td><td>Gold Coast area</td></tr>
+            <tr><td>Logan Square</td><td>~17 min</td><td>Goes above ground here</td></tr>
+            <tr><td>Jefferson Park</td><td>~26 min</td><td>Metra connection</td></tr>
+            <tr><td>Cumberland</td><td>~33 min</td><td>Second to last stop</td></tr>
+            <tr class="highlight"><td>★ Rosemont — Exit</td><td>~36 min</td><td>Pace Bus 811 to convention center (~5 min)</td></tr>
+          </tbody>
+        </table>
+        <div class="tip-box" style="margin-top:16px;"><strong>Tiffany's pass:</strong> Regional Day Pass ($9.50) in Ventra app covers Blue Line + Pace Bus 811 all day Saturday. Buy before leaving hotel.</div>
+      </div>
+    </div>
+
+    <div class="tip-box" style="margin-top: 24px;"><strong>Ventra App:</strong> Download before leaving Denver. Set up account and load your card. 1-Day CTA Pass ($5) recommended for Garrett & Pearl on Saturday and Sunday — buy from Midway vending machine Friday. Regional Day Pass ($9.50) for Tiffany Saturday.</div>
+  </div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+
+<!-- PREP LIST -->
+<section class="section" id="prep">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">07</div>
+      <div class="section-title">Trip Prep Checklist</div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div class="prep-group">
+          <div class="prep-group-title">Tickets & Confirmations</div>
+          <ul class="prep-list">
+            <li>Willis Tower — 3 individual ticket files on each person's phone. Each has a unique barcode — everyone presents their OWN file.</li>
+            <li>Art Deco CAC Tour — Apple Wallet | Booking 1WRQHKR8</li>
+            <li>CAC Boat Tour — Ticketmaster / Apple Wallet</li>
+            <li>Robie House — 4 individual files on Garrett & Pearl's phones | Order #14322931 | Check in 15 min early at museum shop</li>
+            <li>Southwest check-in reminder set for Saturday 5:55 PM CDT (24 hrs before MDW departure)</li>
+            <li>EarlyBird Check-In reminder set for Friday 5:55 PM CDT</li>
+          </ul>
+        </div>
+
+        <div class="prep-group">
+          <div class="prep-group-title">Packing</div>
+          <ul class="prep-list">
+            <li>Warm coat — Saturday & Sunday cold (highs 47–49°F, lows 38–40°F)</li>
+            <li>Packable rain layer — rain possible all 3 days</li>
+            <li>Hat and gloves — strongly recommended for Sunday boat tour</li>
+            <li>Comfortable walking shoes — major ground covered every day</li>
+            <li>Portable phone charger / power bank — long days, lots of ticket scanning</li>
+            <li>Snacks — Saturday tours are back-to-back with meals spaced out</li>
+            <li>Water bottles — refillable</li>
+          </ul>
+        </div>
+      </div>
+
+      <div>
+        <div class="prep-group">
+          <div class="prep-group-title">Logistics</div>
+          <ul class="prep-list">
+            <li>Ventra app — download and set up account before leaving Denver</li>
+            <li>Uber/Lyft — confirm payment method. Hyde Park Saturday ~$25–30 each way</li>
+            <li>Google Maps — download Chicago offline map before departing</li>
+            <li>Hotel cancellation deadline was April 13 (passed — non-refundable)</li>
+            <li>Coordinate with Tiffany on Saturday Beauty Show end time for Gibsons</li>
+            <li>River Roast Sunday — consider making a reservation in advance</li>
+          </ul>
+        </div>
+
+        <div class="prep-group">
+          <div class="prep-group-title">Apps to Download</div>
+          <ul class="prep-list">
+            <li>Ventra — L passes, real-time train/bus tracking</li>
+            <li>Google Maps — walking directions, offline Chicago map</li>
+            <li>Uber and/or Lyft — have both, compare surge pricing</li>
+            <li>Pace Bus Tracker — for Tiffany's Bus 811 at Rosemont</li>
+          </ul>
+        </div>
+
+        <div class="tip-box">✓ Weather checked: Fri 72°F (45% rain), Sat 49°F, Sun 47°F — pack warm coat, rain layer, hat and gloves for boat tour.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-col-title">Quick Contacts</div>
+      <div class="footer-item"><strong>Hotel</strong> — Courtyard River North<br>(312) 329-2500 · Conf: 976569210</div>
+      <div class="footer-item"><strong>Southwest</strong> — Conf B6LAM8<br><a href="https://www.southwest.com/air/manage-reservation/view" target="_blank">southwest.com →</a></div>
+      <div class="footer-item"><strong>FLW Trust</strong> — 312-994-4000<br><a href="https://flwright.org" target="_blank">flwright.org →</a></div>
+      <div class="footer-item"><strong>CAC</strong> — 111 E Wacker Dr<br><a href="https://www.architecture.org" target="_blank">architecture.org →</a></div>
+      <div class="footer-item"><strong>Emergency</strong> — 911<br>Chicago non-emergency: (312) 746-6000</div>
+    </div>
+    <div>
+      <div class="footer-col-title">Key Links</div>
+      <div class="footer-item"><a href="https://drive.google.com/file/d/1MBWzqiIL-o7vY0NpI7LqlnYS9opYMh4t/view?usp=sharing" target="_blank">All Tickets PDF (Google Drive) →</a></div>
+      <div class="footer-item"><a href="https://theskydeck.com" target="_blank">Skydeck Chicago →</a></div>
+      <div class="footer-item"><a href="https://www.architecture.org" target="_blank">Chicago Architecture Center →</a></div>
+      <div class="footer-item"><a href="https://navypier.org" target="_blank">Navy Pier →</a></div>
+      <div class="footer-item"><a href="https://flwright.org/tours" target="_blank">FLW Trust Tours →</a></div>
+      <div class="footer-item"><a href="https://forecast.weather.gov/MapClick.php?CityName=Chicago&state=IL" target="_blank">NWS Chicago Forecast →</a></div>
+    </div>
+    <div>
+      <div class="footer-col-title">Uber Estimates</div>
+      <div class="footer-item"><strong>Downtown trips</strong> — $12–18</div>
+      <div class="footer-item"><strong>Hyde Park (Robie House)</strong> — $25–30</div>
+      <div class="footer-item"><strong>Midway Airport</strong> — $25–35</div>
+      <div class="footer-item"><strong>Rosemont → Gibsons</strong> — $25–30</div>
+      <div class="footer-item"><strong>Navy Pier → Willis Tower</strong> — ~$12</div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>Itinerary Last Updated: Thursday, April 16, 2026 at 10:30 PM CDT</span>
+    <span style="color:var(--gold); font-family: 'Playfair Display', serif; font-style: italic;">Chicago Weekend · Phillips Family</span>
+  </div>
+</footer>
+
+</body>
+</html>
