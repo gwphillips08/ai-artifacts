@@ -1,0 +1,2201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metalmark Cash & Unpaid Bills — Training Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0f0f0e;
+    --surface: #1a1a18;
+    --surface2: #242422;
+    --border: #2e2e2b;
+    --gold: #c9a84c;
+    --gold-dim: #8a6e2e;
+    --gold-glow: rgba(201,168,76,0.12);
+    --text: #e8e4d9;
+    --text-muted: #8a8577;
+    --text-dim: #5a5750;
+    --green: #6bba8a;
+    --red: #d16b6b;
+    --blue: #6b9ed1;
+    --tag-bg: rgba(201,168,76,0.1);
+    --v1: #4a7c8f;
+    --v2: #7a6fa0;
+    --v3: #6b9e72;
+    --v4: #b07040;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--gold);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .brand-text h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--text);
+    letter-spacing: 0.02em;
+  }
+
+  .brand-text p {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* Goals banner */
+  .goals-banner {
+    margin-top: 14px;
+    background: var(--gold-glow);
+    border: 1px solid var(--gold-dim);
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .goal {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .goal-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    line-height: 1;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .goal-text {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  .goal-text strong {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--gold);
+    margin-bottom: 2px;
+  }
+
+  /* ─── SEARCH ─── */
+  .search-bar {
+    margin-top: 12px;
+    position: relative;
+  }
+
+  .search-bar input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 14px 9px 36px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search-bar input:focus { border-color: var(--gold-dim); }
+  .search-bar input::placeholder { color: var(--text-dim); }
+
+  .search-icon {
+    position: absolute;
+    left: 11px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-dim);
+    font-size: 14px;
+    pointer-events: none;
+  }
+
+  #search-results {
+    margin-top: 8px;
+    display: none;
+  }
+
+  .sr-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+
+  .sr-item:hover { border-color: var(--gold-dim); background: var(--gold-glow); }
+
+  .sr-item-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  .sr-vid-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+  }
+
+  .sr-timestamp {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    background: var(--tag-bg);
+    padding: 2px 7px;
+    border-radius: 4px;
+  }
+
+  .sr-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .sr-snippet {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .sr-snippet mark {
+    background: rgba(201,168,76,0.25);
+    color: var(--gold);
+    border-radius: 2px;
+    padding: 0 2px;
+  }
+
+  .no-results {
+    padding: 12px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  /* ─── MAIN LAYOUT ─── */
+  .layout {
+    display: flex;
+    min-height: calc(100vh - 200px);
+  }
+
+  /* ─── SIDEBAR ─── */
+  nav {
+    width: 200px;
+    flex-shrink: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 16px 0;
+    position: sticky;
+    top: 200px;
+    height: calc(100vh - 200px);
+    overflow-y: auto;
+  }
+
+  .nav-section {
+    padding: 0 12px;
+    margin-bottom: 8px;
+  }
+
+  .nav-section-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    padding: 8px 4px 4px;
+    font-weight: 600;
+  }
+
+  .nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 7px 8px;
+    border-radius: 6px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12.5px;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s, color 0.15s;
+    line-height: 1.3;
+  }
+
+  .nav-btn:hover { background: var(--surface2); color: var(--text); }
+  .nav-btn.active { background: var(--gold-glow); color: var(--gold); }
+
+  .nav-vid-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ─── CONTENT ─── */
+  main {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+    max-width: 900px;
+  }
+
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* video header */
+  .vid-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .vid-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 48px;
+    line-height: 1;
+    color: var(--border);
+    flex-shrink: 0;
+    width: 52px;
+  }
+
+  .vid-meta h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .vid-meta p {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .vid-tag {
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    flex-shrink: 0;
+  }
+
+  /* sections */
+  .section {
+    margin-bottom: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: var(--surface2);
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid transparent;
+    transition: background 0.15s;
+  }
+
+  .section-header:hover { background: rgba(201,168,76,0.05); }
+  .section-header.open { border-bottom-color: var(--border); }
+
+  .section-icon { font-size: 16px; flex-shrink: 0; }
+
+  .section-title {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text);
+    flex: 1;
+  }
+
+  .ts-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    background: var(--tag-bg);
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--gold-dim);
+  }
+
+  .chevron {
+    font-size: 10px;
+    color: var(--text-dim);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+
+  .section-header.open .chevron { transform: rotate(90deg); }
+
+  .section-body {
+    display: none;
+    padding: 14px 16px;
+  }
+
+  .section-body.open { display: block; }
+
+  /* step list */
+  .steps { list-style: none; counter-reset: step; }
+
+  .steps li {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+    align-items: flex-start;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .steps li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+  .step-num {
+    counter-increment: step;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 1px;
+  }
+
+  .step-content { flex: 1; }
+
+  .step-title {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+
+  .step-detail {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .step-ts {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    flex-shrink: 0;
+    padding-top: 3px;
+    cursor: pointer;
+    opacity: 0.8;
+  }
+
+  .step-ts:hover { opacity: 1; }
+
+  /* app cards */
+  .app-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 10px;
+    padding: 14px 16px;
+  }
+
+  .app-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    transition: border-color 0.15s;
+  }
+
+  .app-card:hover { border-color: var(--gold-dim); }
+
+  .app-name {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .app-icon { font-size: 16px; }
+
+  .app-purpose {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.4;
+    margin-bottom: 6px;
+  }
+
+  .app-note {
+    font-size: 11px;
+    color: var(--gold);
+    background: var(--tag-bg);
+    border-radius: 4px;
+    padding: 3px 6px;
+    display: inline-block;
+  }
+
+  /* callout boxes */
+  .callout {
+    border-radius: 7px;
+    padding: 10px 13px;
+    margin: 10px 0;
+    font-size: 12px;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    line-height: 1.5;
+  }
+
+  .callout-icon { flex-shrink: 0; font-size: 14px; }
+
+  .callout-warn { background: rgba(209,107,107,0.1); border: 1px solid rgba(209,107,107,0.3); color: #d16b6b; }
+  .callout-tip  { background: rgba(107,186,138,0.1); border: 1px solid rgba(107,186,138,0.3); color: #6bba8a; }
+  .callout-info { background: rgba(107,158,209,0.1); border: 1px solid rgba(107,158,209,0.3); color: #6b9ed1; }
+  .callout-gold { background: var(--gold-glow); border: 1px solid var(--gold-dim); color: var(--gold); }
+
+  /* inline code */
+  code {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1px 5px;
+    color: var(--gold);
+  }
+
+  /* companies */
+  .co-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 14px 16px;
+  }
+
+  .co-chip {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid;
+  }
+
+  .co-mm   { background: rgba(74,124,143,0.15); border-color: #4a7c8f; color: #6bb8d4; }
+  .co-car  { background: rgba(107,158,114,0.15); border-color: #6b9e72; color: #8ed4a0; }
+  .co-phx  { background: rgba(176,112,64,0.15); border-color: #b07040; color: #d4a070; }
+
+  /* quick ref table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+
+  th {
+    text-align: left;
+    padding: 8px 10px;
+    background: var(--surface2);
+    color: var(--text-muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* overview home */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .ov-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+
+  .ov-card:hover { border-color: var(--gold-dim); transform: translateY(-1px); }
+
+  .ov-card-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .ov-card h3 {
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+
+  .ov-card p {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  .ov-duration {
+    margin-top: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+  }
+
+  /* process flow */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    padding: 14px 16px;
+    row-gap: 10px;
+  }
+
+  .flow-step {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 7px 11px;
+    font-size: 12px;
+    color: var(--text);
+  }
+
+  .flow-arrow {
+    color: var(--text-dim);
+    font-size: 12px;
+    padding: 0 4px;
+    flex-shrink: 0;
+  }
+
+  /* video links */
+  .vid-link {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gold);
+    text-decoration: none;
+    background: var(--tag-bg);
+    border: 1px solid var(--gold-dim);
+    border-radius: 4px;
+    padding: 3px 9px;
+    letter-spacing: 0.03em;
+    transition: background 0.15s, color 0.15s;
+  }
+  .vid-link:hover { background: rgba(201,168,76,0.22); color: #e8c870; }
+
+  /* drive path banner */
+  .drive-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 20px;
+  }
+  .drive-icon { font-size: 20px; flex-shrink: 0; }
+
+  /* video link in vid-header */
+  .vid-watch-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gold);
+    text-decoration: none;
+    background: var(--tag-bg);
+    border: 1px solid var(--gold-dim);
+    border-radius: 6px;
+    padding: 5px 12px;
+    margin-left: auto;
+    white-space: nowrap;
+    transition: background 0.15s;
+    flex-shrink: 0;
+  }
+  .vid-watch-link:hover { background: rgba(201,168,76,0.22); }
+
+  /* ─── AUTH OVERLAY ─── */
+  #auth-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  #auth-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 40px 36px;
+    width: 100%;
+    max-width: 360px;
+    text-align: center;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+  }
+
+  #auth-logo {
+    font-size: 32px;
+    color: var(--gold);
+    background: var(--gold-glow);
+    border: 1px solid var(--gold-dim);
+    border-radius: 10px;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px;
+  }
+
+  #auth-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  #auth-subtitle {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+  }
+
+  #auth-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  #auth-input-wrap {
+    position: relative;
+    margin-bottom: 12px;
+  }
+
+  #auth-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 11px 40px 11px 14px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    text-align: center;
+    letter-spacing: 0.1em;
+  }
+
+  #auth-input:focus { border-color: var(--gold-dim); }
+
+  #auth-show-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    opacity: 0.5;
+    padding: 2px;
+  }
+
+  #auth-show-btn:hover { opacity: 1; }
+
+  #auth-submit {
+    width: 100%;
+    background: var(--gold);
+    border: none;
+    border-radius: 8px;
+    padding: 11px;
+    color: #0f0f0e;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+    transition: background 0.15s, transform 0.1s;
+  }
+
+  #auth-submit:hover { background: #e8c870; }
+  #auth-submit:active { transform: scale(0.98); }
+
+  #auth-error {
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--red);
+    min-height: 18px;
+    transition: opacity 0.2s;
+  }
+
+  .auth-shake {
+    animation: shake 0.35s ease;
+  }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20%      { transform: translateX(-8px); }
+    40%      { transform: translateX(8px); }
+    60%      { transform: translateX(-5px); }
+    80%      { transform: translateX(5px); }
+  }
+
+  /* responsive */
+  @media (max-width: 640px) {
+    nav { display: none; }
+    main { padding: 16px; }
+    .vid-number { font-size: 32px; width: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ PASSWORD GATE ═══ -->
+<div id="auth-overlay">
+  <div id="auth-box">
+    <div id="auth-logo">◈</div>
+    <h2 id="auth-title">Metalmark Cash Report</h2>
+    <p id="auth-subtitle">Training &amp; Process Guide</p>
+    <p id="auth-label">Enter password to continue</p>
+    <div id="auth-input-wrap">
+      <input type="password" id="auth-input" placeholder="Password" autocomplete="current-password">
+      <button id="auth-show-btn" onclick="toggleAuthShow()" title="Show/hide">👁</button>
+    </div>
+    <button id="auth-submit" onclick="checkAuth()">Unlock</button>
+    <p id="auth-error"></p>
+  </div>
+</div>
+
+<div id="app-content" style="display:none">
+<header>
+  <div class="header-top">
+    <div class="brand">
+      <div class="brand-icon">◈</div>
+      <div class="brand-text">
+        <h1>Metalmark Cash Report</h1>
+        <p>Training Reference Guide</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="goals-banner">
+    <div class="goal">
+      <div class="goal-num">1</div>
+      <div class="goal-text">
+        <strong>Accurate Balances</strong>
+        Report accurate, current cash, credit card, and liability balances across all three companies.
+      </div>
+    </div>
+    <div class="goal">
+      <div class="goal-num">2</div>
+      <div class="goal-text">
+        <strong>No Omissions or Duplicates</strong>
+        Ensure no material amounts are missed or double-counted in any account or ledger.
+      </div>
+    </div>
+  </div>
+
+  <div class="search-bar">
+    <span class="search-icon">⌕</span>
+    <input type="text" id="search-input" placeholder="Search steps, topics, or keywords… (e.g. refund, reconcile, journal entry)" autocomplete="off">
+  </div>
+  <div id="search-results"></div>
+</header>
+
+<div class="layout">
+  <nav>
+    <div class="nav-section">
+      <div class="nav-section-label">Start Here</div>
+      <button class="nav-btn active" onclick="showView('overview')">
+        <span style="color:#c9a84c">◈</span> Overview
+      </button>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Videos</div>
+      <button class="nav-btn" onclick="showView('v1')">
+        <span class="nav-vid-dot" style="background:#4a7c8f"></span> V1 · Apps & Access
+      </button>
+      <a href="https://vimeo.com/1193696493?fl=ml&fe=ec" target="_blank" style="display:block; font-size:10px; color:var(--gold); padding:2px 8px 6px 28px; text-decoration:none; opacity:0.8">▶ Watch V1</a>
+      <button class="nav-btn" onclick="showView('v2')">
+        <span class="nav-vid-dot" style="background:#7a6fa0"></span> V2 · Credit Card Batches
+      </button>
+      <a href="https://vimeo.com/1193696492?fl=ml&fe=ec" target="_blank" style="display:block; font-size:10px; color:var(--gold); padding:2px 8px 6px 28px; text-decoration:none; opacity:0.8">▶ Watch V2</a>
+      <button class="nav-btn" onclick="showView('v3')">
+        <span class="nav-vid-dot" style="background:#6b9e72"></span> V3 · QBO Transactions
+      </button>
+      <a href="https://vimeo.com/1193696491?fl=ml&fe=ec" target="_blank" style="display:block; font-size:10px; color:var(--gold); padding:2px 8px 6px 28px; text-decoration:none; opacity:0.8">▶ Watch V3</a>
+      <button class="nav-btn" onclick="showView('v4')">
+        <span class="nav-vid-dot" style="background:#b07040"></span> V4 · Report & Email
+      </button>
+      <a href="https://vimeo.com/1193696490?fl=ml&fe=ec" target="_blank" style="display:block; font-size:10px; color:var(--gold); padding:2px 8px 6px 28px; text-decoration:none; opacity:0.8">▶ Watch V4</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Quick Ref</div>
+      <button class="nav-btn" onclick="showView('companies')">🏪 Three Companies</button>
+      <button class="nav-btn" onclick="showView('checklist')">✓ Run Checklist</button>
+    </div>
+  </nav>
+
+  <main id="main-content">
+
+    <!-- ═══════════════════════════════ OVERVIEW ══════════════════════════════ -->
+    <div class="view active" id="view-overview">
+      <div class="vid-header">
+        <div class="vid-meta">
+          <h2>Weekly Cash &amp; Unpaid Bills Report</h2>
+          <p>Process manual &amp; training guide — four videos cover the complete weekly workflow.</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header open" onclick="toggleSection(this)">
+          <span class="section-icon">📖</span>
+          <span class="section-title">How To Use This Guide</span>
+          <span class="chevron">▶</span>
+        </div>
+        <div class="section-body open">
+          <p style="font-size:13px; color:var(--text); line-height:1.7; margin-bottom:14px">This is both a <strong>process manual</strong> and a <strong>training reference</strong> for the Metalmark weekly Cash and Unpaid Bills Report. It was built from the recorded training session on May 19, 2026, and is designed to support you whether you're learning the process for the first time or looking up a specific step mid-run.</p>
+
+          <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap:10px; margin-bottom:16px">
+            <div style="background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:12px">
+              <div style="font-size:18px; margin-bottom:6px">🎬</div>
+              <div style="font-weight:600; font-size:12px; color:var(--text); margin-bottom:4px">Learning the process for the first time</div>
+              <div style="font-size:11px; color:var(--text-muted); line-height:1.5">Watch Videos 1–4 in order. Use the video cards above to open each one. Then run through the process yourself — refer back to the video sections in this guide if you get stuck on a specific step.</div>
+            </div>
+            <div style="background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:12px">
+              <div style="font-size:18px; margin-bottom:6px">⌕</div>
+              <div style="font-weight:600; font-size:12px; color:var(--text); margin-bottom:4px">Stuck on a specific step mid-run</div>
+              <div style="font-size:11px; color:var(--text-muted); line-height:1.5">Use the <strong>search bar</strong> at the top. Type any keyword (e.g. "refund," "reconcile," "pending," "journal entry") and results will show you the step description plus the exact video timestamp to jump to.</div>
+            </div>
+            <div style="background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:12px">
+              <div style="font-size:18px; margin-bottom:6px">✓</div>
+              <div style="font-weight:600; font-size:12px; color:var(--text); margin-bottom:4px">Running the report each week</div>
+              <div style="font-size:11px; color:var(--text-muted); line-height:1.5">Open the <strong>Run Checklist</strong> (left sidebar) and tick off each step as you complete it. Covers all three videos in order. Reset when done.</div>
+            </div>
+            <div style="background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:12px">
+              <div style="font-size:18px; margin-bottom:6px">🏪</div>
+              <div style="font-weight:600; font-size:12px; color:var(--text); margin-bottom:4px">Unsure which company to use</div>
+              <div style="font-size:11px; color:var(--text-muted); line-height:1.5">Open the <strong>Three Companies</strong> quick reference (left sidebar) for a summary of Metalmark, Carmel, and Phoenix — their roles, merchant accounts, and common quirks.</div>
+            </div>
+          </div>
+
+          <div class="callout callout-info">
+            <span class="callout-icon">ℹ</span>
+            <div><strong>Process flexibility is by design.</strong> As Garrett noted in the training: "As long as accurate cash and bill data reaches Mary, the exact steps can evolve." This manual documents the current established process — if you and Mary agree to streamline any steps (e.g. skip the Previous Day comparison column, or skip combining PDFs), update the checklist accordingly.</div>
+          </div>
+
+          <div style="margin-top:14px; padding:12px 14px; background:var(--surface2); border:1px solid var(--border); border-radius:8px">
+            <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.07em; color:var(--text-muted); margin-bottom:8px; font-weight:600">What this guide covers</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; font-size:12px; color:var(--text-muted)">
+              <div>✔ All required apps &amp; login procedures</div>
+              <div>✔ Credit card batch entry &amp; verification</div>
+              <div>✔ QBO journal entries (incl. refunds)</div>
+              <div>✔ Bank feed matching &amp; categorization</div>
+              <div>✔ Reconciliation for all 3 companies</div>
+              <div>✔ Unpaid bills reports &amp; PDF combining</div>
+              <div>✔ Excel report population</div>
+              <div>✔ Email delivery to Mary</div>
+              <div>✔ Security / MFA procedures</div>
+              <div>✔ Common errors &amp; how to fix them</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="overview-grid">
+        <div class="ov-card" onclick="showView('v1')">
+          <div class="ov-card-num" style="color:#4a7c8f">01</div>
+          <h3>Apps &amp; Access</h3>
+          <p>All websites, software, and logins you need before starting.</p>
+          <div class="ov-duration">~10 min</div>
+          <a href="https://vimeo.com/1193696493?fl=ml&fe=ec" target="_blank" class="vid-link" onclick="event.stopPropagation()">▶ Watch Video 1</a>
+        </div>
+        <div class="ov-card" onclick="showView('v2')">
+          <div class="ov-card-num" style="color:#7a6fa0">02</div>
+          <h3>Credit Card Batches</h3>
+          <p>Pull batch totals from M Reports, match deposits in Chase, enter journal entries in QBO.</p>
+          <div class="ov-duration">~33 min</div>
+          <a href="https://vimeo.com/1193696492?fl=ml&fe=ec" target="_blank" class="vid-link" onclick="event.stopPropagation()">▶ Watch Video 2</a>
+        </div>
+        <div class="ov-card" onclick="showView('v3')">
+          <div class="ov-card-num" style="color:#6b9e72">03</div>
+          <h3>QBO Transactions</h3>
+          <p>Update bank feeds, categorize &amp; match all transactions, reconcile all three accounts.</p>
+          <div class="ov-duration">~28 min</div>
+          <a href="https://vimeo.com/1193696491?fl=ml&fe=ec" target="_blank" class="vid-link" onclick="event.stopPropagation()">▶ Watch Video 3</a>
+        </div>
+        <div class="ov-card" onclick="showView('v4')">
+          <div class="ov-card-num" style="color:#b07040">04</div>
+          <h3>Report &amp; Email</h3>
+          <p>Populate Excel report with ledger balances, run unpaid bills PDFs, combine and email.</p>
+          <div class="ov-duration">~15 min</div>
+          <a href="https://vimeo.com/1193696490?fl=ml&fe=ec" target="_blank" class="vid-link" onclick="event.stopPropagation()">▶ Watch Video 4</a>
+        </div>
+      </div>
+
+      <div class="drive-banner">
+        <span class="drive-icon">📁</span>
+        <div>
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.07em; color:var(--text-muted); margin-bottom:2px">Videos also saved to Metalmark Google Drive</div>
+          <div style="font-family:'DM Mono',monospace; font-size:12px; color:var(--text)">Google Drive › Accounting Files › Process &amp; Procedures › 2026 Teams Meetings Recordings</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header open" onclick="toggleSection(this)">
+          <span class="section-icon">🔄</span>
+          <span class="section-title">End-to-End Process Flow</span>
+          <span class="chevron">▶</span>
+        </div>
+        <div class="section-body open">
+          <div class="flow">
+            <div class="flow-step">M Reports<br><small style="color:var(--text-dim)">batch totals</small></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">Chase Bank<br><small style="color:var(--text-dim)">deposit amounts</small></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">Excel Spreadsheet<br><small style="color:var(--text-dim)">enter batches</small></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">QBO Journal Entries<br><small style="color:var(--text-dim)">per batch / company</small></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">QBO Bank Feeds<br><small style="color:var(--text-dim)">match &amp; categorize</small></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">Reconcile<br><small style="color:var(--text-dim)">all 3 accounts</small></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">Populate Report<br><small style="color:var(--text-dim)">ledger balances</small></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">Unpaid Bills PDF<br><small style="color:var(--text-dim)">3 companies → 1 PDF</small></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step" style="border-color:var(--gold-dim); color:var(--gold)">Email to Mary ✓</div>
+          </div>
+          <div class="callout callout-gold" style="margin: 10px 16px 14px;">
+            <span class="callout-icon">⚑</span>
+            <div>Always use the <strong>Ledger Balance from QBO</strong>, never the raw bank balance. The ledger balance accounts for outstanding checks and pending items not yet cleared.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-icon">🔐</span>
+          <span class="section-title">Security Reminders</span>
+          <span class="chevron">▶</span>
+        </div>
+        <div class="section-body">
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠</span>
+            <div><strong>Treat M Reports like a bank account.</strong> Access to M Reports allows changing deposit destinations. Always use MFA and delete MFA codes immediately after use so they're not reused. (V1 ~6:25)</div>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠</span>
+            <div><strong>Never share logins across people or devices.</strong> Shopify and M Reports both use location-aware 2FA — using someone else's credentials from a different device will trigger their phone, not yours.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════ VIDEO 1 ══════════════════════════════ -->
+    <div class="view" id="view-v1">
+      <div class="vid-header">
+        <div class="vid-number" style="color:#4a7c8f">01</div>
+        <div class="vid-meta">
+          <h2>Apps &amp; Access</h2>
+          <p>Everything you need installed, logged into, and accessible before running the report.</p>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex-shrink:0">
+          <div class="vid-tag" style="background:rgba(74,124,143,0.15); color:#4a7c8f; border:1px solid #4a7c8f">Video 1 · ~10 min</div>
+          <a href="https://vimeo.com/1193696493?fl=ml&fe=ec" target="_blank" class="vid-watch-link">▶ Watch on Vimeo</a>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header open" onclick="toggleSection(this)">
+          <span class="section-icon">🌐</span>
+          <span class="section-title">Required Applications &amp; Websites</span>
+          <span class="chevron">▶</span>
+        </div>
+        <div class="app-grid">
+          <div class="app-card">
+            <div class="app-name"><span class="app-icon">💳</span>M Reports</div>
+            <div class="app-purpose">Aurora's portal — credit card batch totals, settlement reports. Requires MFA every login.</div>
+            <div class="app-note">⏱ V1 ~1:36</div>
+          </div>
+          <div class="app-card">
+            <div class="app-name"><span class="app-icon">🏦</span>Chase Bank</div>
+            <div class="app-purpose">Source of actual deposit amounts and pending transactions for all 3 companies.</div>
+            <div class="app-note">⏱ V1 ~6:49</div>
+          </div>
+          <div class="app-card">
+            <div class="app-name"><span class="app-icon">🛍</span>Shopify</div>
+            <div class="app-purpose">Track website sales and pending payouts not yet transferred to Chase.</div>
+            <div class="app-note">⏱ V1 ~2:46 · Mary must set up login</div>
+          </div>
+          <div class="app-card">
+            <div class="app-name"><span class="app-icon">📧</span>Gmail</div>
+            <div class="app-purpose">accounting@themetalmarkhouse.com — receives MFA codes from M Reports.</div>
+            <div class="app-note">⏱ V1 ~2:46</div>
+          </div>
+          <div class="app-card">
+            <div class="app-name"><span class="app-icon">💳</span>Amex</div>
+            <div class="app-purpose">Cross-check Amex transactions; avoid missed payments. Also syncs to QBO.</div>
+            <div class="app-note">⏱ V1 ~7:05</div>
+          </div>
+          <div class="app-card">
+            <div class="app-name"><span class="app-icon">📊</span>QuickBooks Online</div>
+            <div class="app-purpose">Desktop app preferred — lets you have all 3 company accounts open in tabs simultaneously.</div>
+            <div class="app-note">⏱ V1 ~8:28 · Use Desktop App</div>
+          </div>
+          <div class="app-card">
+            <div class="app-name"><span class="app-icon">📗</span>MS Excel</div>
+            <div class="app-purpose">Main cash reporting spreadsheet. Stored on OneDrive for autosave. Organized by year → month.</div>
+            <div class="app-note">⏱ V2 ~0:28</div>
+          </div>
+          <div class="app-card">
+            <div class="app-name"><span class="app-icon">📄</span>Adobe Acrobat</div>
+            <div class="app-purpose">Combine three separate unpaid bills PDFs into a single report file.</div>
+            <div class="app-note">⏱ V1 ~7:45 · Basic plan ~$12–15/mo</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-icon">🔑</span>
+          <span class="section-title">Access &amp; Login Tips</span>
+          <span class="ts-badge">V1 ~1:36</span>
+          <span class="chevron">▶</span>
+        </div>
+        <div class="section-body">
+          <ul class="steps">
+            <li>
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <div class="step-title">M Reports — MFA via Gmail</div>
+                <div class="step-detail">Login triggers a 2FA code sent to accounting@themetalmarkhouse.com. Copy the code, log in, then <strong>immediately delete</strong> the email so old codes aren't accidentally reused later.</div>
+              </div>
+              <div class="step-ts">~6:25</div>
+            </li>
+            <li>
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <div class="step-title">Shopify — Get Your Own Login</div>
+                <div class="step-detail">Mary must create a new user account for you. Use your personal Metalmark email, not the accounting email (it may already be tied to another user). Shopify is location-aware — you cannot use someone else's credentials from your computer.</div>
+              </div>
+              <div class="step-ts">~3:06</div>
+            </li>
+            <li>
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <div class="step-title">QBO Desktop App — Install &amp; Set Up Tabs</div>
+                <div class="step-detail">Go to the gear icon in QBO web → "Get the Desktop App." Once installed, use the <code>+</code> button at the top to open new tabs and switch companies without losing your place. Huge timesaver with 3 companies.</div>
+              </div>
+              <div class="step-ts">~8:55</div>
+            </li>
+            <li>
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <div class="step-title">Excel — Keep on OneDrive, not Google Drive</div>
+                <div class="step-detail">The spreadsheet must be on Garrett's OneDrive (or wherever you have autosave enabled). If placed on Google Drive and autosave is off, you risk losing work. If you move it, ensure autosave is working before you start.</div>
+              </div>
+              <div class="step-ts">~3:31</div>
+            </li>
+          </ul>
+          <div class="callout callout-info" style="margin-top:10px">
+            <span class="callout-icon">📁</span>
+            <div><strong>Training videos are saved to Google Drive</strong> at:<br>
+            <span style="font-family:'DM Mono',monospace; font-size:11px">Google Drive › Accounting Files › Process &amp; Procedures › 2026 Teams Meetings Recordings</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-icon">🏪</span>
+          <span class="section-title">The Three QBO Companies</span>
+          <span class="chevron">▶</span>
+        </div>
+        <div class="section-body">
+          <div class="co-chips">
+            <div class="co-chip co-mm">Metalmark LLC (Metalmark)</div>
+            <div class="co-chip co-car">MM Carmel LLC (Carmel)</div>
+            <div class="co-chip co-phx">MM Phoenix LLC (Phoenix)</div>
+          </div>
+          <p style="padding: 0 0 10px; font-size:12px; color:var(--text-muted)">Each has its own separate QBO database, Chase bank account, and credit card account. All three must be processed every time.</p>
+          <div class="callout callout-info">
+            <span class="callout-icon">ℹ</span>
+            <div>Metalmark is the parent/vendor entity. Carmel and Phoenix are the retail stores with Aurora merchant accounts and sales activity. Wire payments for retail sales should go to Carmel or Phoenix, not Metalmark directly.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════ VIDEO 2 ══════════════════════════════ -->
+    <div class="view" id="view-v2">
+      <div class="vid-header">
+        <div class="vid-number" style="color:#7a6fa0">02</div>
+        <div class="vid-meta">
+          <h2>Credit Card Batches</h2>
+          <p>Pull batch totals from M Reports, match to Chase deposits, enter QBO journal entries for each batch.</p>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex-shrink:0">
+          <div class="vid-tag" style="background:rgba(122,111,160,0.15); color:#7a6fa0; border:1px solid #7a6fa0">Video 2 · ~33 min</div>
+          <a href="https://vimeo.com/1193696492?fl=ml&fe=ec" target="_blank" class="vid-watch-link">▶ Watch on Vimeo</a>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header open" onclick="toggleSection(this)">
+          <span class="section-icon">📋</span>
+          <span class="section-title">Step 1 — Set Up the Excel Spreadsheet for Today</span>
+          <span class="ts-badge">V2 ~0:28</span>
+          <span class="chevron">▶</span>
+        </div>
+        <div class="section-body open">
+          <ul class="steps">
+            <li>
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <div class="step-title">Open the month's Excel file</div>
+                <div class="step-detail">Navigate to Accounting → Year → Month folder. One spreadsheet per month to avoid hundreds of tabs.</div>
+              </div>
+              <div class="step-ts">~0:51</div>
+            </li>
+            <li>
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <div class="step-title">Duplicate the last date's tab</div>
+                <div class="step-detail">Right-click the most recent date tab → <strong>Move or Copy</strong> → check "Create a copy." Rename it to today's date (e.g., "19").</div>
+              </div>
+              <div class="step-ts">~1:19</div>
+            </li>
+            <li>
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <div class="step-title">Paste Previous Day values</div>
+                <div class="step-detail">Select the entire "Current Day" column → <code>Ctrl+C</code> → click the "Previous Day" column → right-click → Paste Special → <strong>Values</strong> only. This freezes yesterday's numbers without breaking formulas.</div>
+              </div>
+              <div class="step-ts">~2:15</div>
+            </li>
+            <li>
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <div class="step-title">Zero out all Current Day fields</div>
+                <div class="step-detail">Clear all values in the Current Day column — you'll refill them with today's data in the steps below.</div>
+              </div>
+              <div class="step-ts">~3:04</div>
+            </li>
+          </ul>
+          <div class="callout callout-tip">
+            <span class="callout-icon">✔</span>
+            <div>The spreadsheet compares Current Day vs Previous Day. If Mary only wants current balances, the Previous Day step can be skipped to save time.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header open" onclick="toggleSection(this)">
+          <span class="section-icon">💳</span>
+          <span class="section-title">Step 2 — Get Batch Totals from M Reports</span>
+          <span class="ts-badge">V2 ~5:33</span>
+          <span class="chevron">▶</span>
+        </div>
+        <div class="section-body open">
+          <ul class="steps">
+            <li>
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <div class="step-title">Log into M Reports for Phoenix (account #1863)</div>
+                <div class="step-detail">Enter credentials → MFA code sent to Gmail → copy code → log in → delete email immediately.</div>
+              </div>
+              <div class="step-ts">~5:53</div>
+            </li>
+            <li>
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <div class="step-title">Run Batch Summary report</div>
+                <div class="step-detail">Go to <strong>Reports → Batch Summary</strong>. Set date range back ~1 week to capture all recent batches. Note: some reports cap at 7 days.</div>
+              </div>
+              <div class="step-ts">~7:27</div>
+            </li>
+            <li>
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <div class="step-title">Copy batch totals into Excel (Phoenix section)</div>
+                <div class="step-detail">Copy &amp; paste each batch date and total sales amount. Each day gets its own line item — if multiple batches on the same day, add separate rows.</div>
+              </div>
+              <div class="step-ts">~7:59</div>
+            </li>
+            <li>
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <div class="step-title">Log out, then log into Carmel (account #1897)</div>
+                <div class="step-detail">Repeat the Batch Summary process for Carmel. A new MFA code will be sent to Gmail each time you log in.</div>
+              </div>
+              <div class="step-ts">~9:41</div>
+            </li>
+            <li>
+              <div class="step-num">5</div>
+              <div class="step-content">
+                <div class="step-title">Watch for negative batches (returns)</div>
+                <div class="step-detail">A return creates a <strong>negative batch</strong>. Enter the return amount as a negative number in Excel. On the same date there will typically be two separate bank transactions: the return going OUT and the regular deposit going IN. Each gets its own row.</div>
+              </div>
+              <div class="step-ts">~11:00</div>
+            </li>
+          </ul>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠</span>
+            <div><strong>Date consistency matters.</strong> The date you enter in Excel, the date on M Reports, and the journal entry date in QBO must all match for reconciliation to work cleanly. (V2 ~12:11)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header open" onclick="toggleSection(this)">
+          <span class="section-icon">🏦</span>
+          <span class="section-title">Step 3 — Match Deposit Amounts in Chase</span>
+          <span class="ts-badge">V2 ~16:58</span>
+          <span class="chevron">▶</span>
+        </div>
+        <div class="section-body open">
+          <ul class="steps">
+            <li>
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <div class="step-title">Open Chase for Carmel, then Phoenix</div>
+                <div class="step-detail">Look for deposits described as "Merchant Services" or "Aurora." Pending items (today's) show with a pending flag and won't download to QBO until tomorrow.</div>
+              </div>
+              <div class="step-ts">~16:58</div>
+            </li>
+            <li>
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <div class="step-title">Enter actual deposit amounts in Excel</div>
+                <div class="step-detail">The deposit amount is slightly less than the batch total — the difference is the <strong>merchant fee</strong>. The spreadsheet formula auto-calculates the fee % for you.</div>
+              </div>
+              <div class="step-ts">~15:01</div>
+            </li>
+            <li>
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <div class="step-title">Verify merchant fee % is between 2%–3%</div>
+                <div class="step-detail">The spreadsheet calculates (Batch Total − Deposit) ÷ Batch Total. It should come out to 2%–3%. If it's outside that range, you probably matched the wrong batch to the wrong deposit. Re-check your pairing.</div>
+              </div>
+              <div class="step-ts">~15:01</div>
+            </li>
+            <li>
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <div class="step-title">Handle return transactions in Chase</div>
+                <div class="step-detail">A return day will show TWO separate items in Chase: one debit (return going out, e.g. −$2,628.45) and one credit (net positive batch deposited, e.g. +$3,228.87). Enter both as separate rows in Excel.</div>
+              </div>
+              <div class="step-ts">~13:01</div>
+            </li>
+          </ul>
+          <div class="callout callout-tip">
+            <span class="callout-icon">✔</span>
+            <div><strong>Pending transactions:</strong> Even if a transaction is still "pending" in Chase (not yet cleared), include it in the report as a line item. This is how you catch material amounts that haven't downloaded to QBO yet. (V2 ~22:27)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header open" onclick="toggleSection(this)">
+          <span class="section-icon">📒</span>
+          <span class="section-title">Step 4 — Enter QBO Journal Entries (Per Batch)</span>
+          <span class="ts-badge">V2 ~20:36</span>
+          <span class="chevron">▶</span>
+        </div>
+        <div class="section-body open">
+          <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px">Each credit card batch gets its own journal entry. Do Phoenix first, then Carmel. Use the most recent JE as a template by copying it forward.</p>
+          <ul class="steps">
+            <li>
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <div class="step-title">Open QBO for Phoenix → + → Journal Entry</div>
+                <div class="step-detail">Click the clock/history icon to see past journal entries. Open the most recent one (highest number / latest date).</div>
+              </div>
+              <div class="step-ts">~23:22</div>
+            </li>
+            <li>
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <div class="step-title">Copy it: More → Copy</div>
+                <div class="step-detail"><strong>Critical:</strong> always copy, never overwrite. Overwriting changes historical bookkeeping. The copy will say "This is a copy" in the memo — that's your safety signal.</div>
+              </div>
+              <div class="step-ts">~26:02</div>
+            </li>
+            <li>
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <div class="step-title">Update the date and amounts</div>
+                <div class="step-detail">Change the JE date to match the batch date. Fill in: <strong>Credit → Sales</strong> (batch total), <strong>Debit → Accounts Receivable</strong> (deposit amount to Chase), <strong>Debit → Merchant Card Expense</strong> (the fee).</div>
+              </div>
+              <div class="step-ts">~26:05</div>
+            </li>
+            <li>
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <div class="step-title">Save → then Copy again for the next batch date</div>
+                <div class="step-detail">Save the current entry, then immediately go to More → Copy to create the template for the next date. Repeat for each batch date until all are entered.</div>
+              </div>
+              <div class="step-ts">~25:37</div>
+            </li>
+            <li>
+              <div class="step-num">5</div>
+              <div class="step-content">
+                <div class="step-title">Switch to Carmel and repeat</div>
+                <div class="step-detail">Same process. The last JE you use for regular batches becomes your template — do refunds separately using the 14th's entry as a base.</div>
+              </div>
+              <div class="step-ts">~28:15</div>
+            </li>
+          </ul>
+
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠</span>
+            <div><strong>Refund Journal Entries are different.</strong> Instead of Credit → Sales, it's <strong>Debit → Sales</strong> (negative sale) and <strong>Credit → Accounts Receivable</strong>. There is NO merchant fee on a refund. See Video 3 for matching the refund in Chase. (V2 ~32:03)</div>
+          </div>
+          <div class="callout callout-info">
+            <span class="callout-icon">ℹ</span>
+            <div>The vendor name in QBO for Aurora deposits is <strong>"Chosen"</strong> (a legacy name from when Aurora was called Aurora &amp; Chosen). Don't update it — QBO doesn't handle vendor renames gracefully.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════ VIDEO 3 ══════════════════════════════ -->
+    <div class="view" id="view-v3">
+      <div class="vid-header">
+        <div class="vid-number" style="color:#6b9e72">03</div>
+        <div class="vid-meta">
+          <h2>Update QBO Transactions &amp; Reconcile</h2>
+          <p>Refresh bank feeds, match and categorize all downloaded transactions, then reconcile all three accounts.</p>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex-shrink:0">
+          <div class="vid-tag" style="background:rgba(107,158,114,0.15); color:#6b9e72; border:1px solid #6b9e72">Video 3 · ~28 min</div>
+          <a href="https://vimeo.com/1193696491?fl=ml&fe=ec" target="_blank" class="vid-watch-link">▶ Watch on Vimeo</a>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header open" onclick="toggleSection(this)">
+          <span class="section-icon">🔄</span>
+          <span class="section-title">Step 1 — Update Bank Feeds in All Three Companies</span>
+          <span class="ts-badge">V3 ~0:04</span>
+          <span class="chevron">▶</span>
+        </div>
+        <div class="section-body open">
+          <ul class="steps">
+            <li>
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <div class="step-title">In each QBO company: Accounting → Bank Transactions → Update</div>
+                <div class="step-detail">Click the Update button to pull in all new transactions from the bank. Do this for Carmel, Phoenix, and Metalmark before you start matching anything.</div>
+              </div>
+              <div class="step-ts">~0:47</div>
+            </li>
+          </ul>
+          <div class="callout callout-info">
+            <span class="callout-icon">ℹ</span>
+            <div>Transactions posted today at the bank download into QBO <strong>the next business day</strong>. That's why pending transactions are tracked manually in the report — QBO won't have them yet.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header open" onclick="toggleSection(this)">
+          <span class="section-icon">✅</span>
+          <span class="section-title">Step 2 — Categorize &amp; Match Transactions</span>
+          <span class="ts-badge">V3 ~1:20</span>
+          <span class="chevron">▶</span>
+        </div>
+        <div class="section-body open">
+          <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px">For each downloaded transaction you have two options: <strong>Match</strong> it to an existing ledger entry, or <strong>Post</strong> it to a new ledger account. Always be 100% sure before posting.</p>
+          <ul class="steps">
+            <li>
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <div class="step-title">Credit card deposits → Match to Journal Entries</div>
+                <div class="step-detail">QBO should auto-match deposits to the A/R entries you created in Video 2. If not, click "Match" manually. The match creates a payment receipt that reduces A/R and increases Cash.</div>
+              </div>
+              <div class="step-ts">~2:06</div>
+            </li>
+            <li>
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <div class="step-title">Handle unrecognized expenses</div>
+                <div class="step-detail">If you can identify it (Jimmy John's → Meals &amp; Entertainment, FedEx → Shipping), post it. If unsure, post to <strong>Uncategorized Expenses</strong> and review with Mary later. Don't post something to the wrong account just to clear it.</div>
+              </div>
+              <div class="step-ts">~2:55</div>
+            </li>
+            <li>
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <div class="step-title">Amex transactions — do credit card side FIRST</div>
+                <div class="step-detail">Amex payments download twice: once from Amex, once from Chase. Always match the Amex-side first, then the Chase side will auto-match. If you do it in the wrong order you can create a duplicate payment.</div>
+              </div>
+              <div class="step-ts">~11:35</div>
+            </li>
+            <li>
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <div class="step-title">Refund transactions — two-step process</div>
+                <div class="step-detail">
+                  1. Find the return in Chase (it's a debit going out). It won't auto-match.<br>
+                  2. Create an Expense to "Chosen" posted to Accounts Receivable for the return amount.<br>
+                  3. Go to Receive Payment → Customer "Chosen" → match the journal entry credit side against this new expense.<br>
+                  This closes out the outstanding A/R balance.
+                </div>
+              </div>
+              <div class="step-ts">~6:06</div>
+            </li>
+            <li>
+              <div class="step-num">5</div>
+              <div class="step-content">
+                <div class="step-title">Transfers between entities</div>
+                <div class="step-detail">When Metalmark transfers funds to Carmel/Phoenix (or vice versa), it downloads on both sides. Post as a Transfer or A/P on the sending side and A/R on the receiving side. Make sure both sides get entered.</div>
+              </div>
+              <div class="step-ts">~10:16</div>
+            </li>
+          </ul>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠</span>
+            <div><strong>Downloaded ≠ Posted.</strong> A transaction appearing in QBO's bank feed is NOT in your books yet. You must either Post it or Match it. Non-accountants often miss this distinction and accidentally post duplicate entries. (V3 ~22:34)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header open" onclick="toggleSection(this)">
+          <span class="section-icon">⚖️</span>
+          <span class="section-title">Step 3 — Reconcile All Three Accounts</span>
+          <span class="ts-badge">V3 ~15:56</span>
+          <span class="chevron">▶</span>
+        </div>
+        <div class="section-body open">
+          <ul class="steps">
+            <li>
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <div class="step-title">For each company: open Reconciliation → Resume Reconciling</div>
+                <div class="step-detail">Go to Accounting → Reconcile → select the Chase account → Resume Reconciling (not Start New — you use ongoing reconciliation).</div>
+              </div>
+              <div class="step-ts">~15:56</div>
+            </li>
+            <li>
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <div class="step-title">Edit Info → update Statement Ending Balance</div>
+                <div class="step-detail">Enter the last available balance from Chase (as of the most recent business day). The difference should be $0 if everything was entered correctly.</div>
+              </div>
+              <div class="step-ts">~16:27</div>
+            </li>
+            <li>
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <div class="step-title">Review all outstanding items — even if difference = $0</div>
+                <div class="step-detail">A duplicate entry can still leave you reconciled at $0 if the debit and credit cancel out. Always scroll through outstanding checks and bills to verify they're legitimate and not old duplicates.</div>
+              </div>
+              <div class="step-ts">~17:18</div>
+            </li>
+            <li>
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <div class="step-title">Save for Later — do NOT click Finish</div>
+                <div class="step-detail">Clicking Finish posts a formal reconciliation in QBO. Use "Save for Later" so you can continue incrementally. Only Finish at month-end.</div>
+              </div>
+              <div class="step-ts">~17:57</div>
+            </li>
+          </ul>
+          <div class="callout callout-gold">
+            <span class="callout-icon">⚑</span>
+            <div><strong>Why reconcile even when balanced?</strong> You could have a $10,000 duplicate check in outstanding items that's offsetting a real deposit — you'd be reconciled but under-reporting cash by $10K. The review catches that. (V3 ~17:18)</div>
+          </div>
+
+          <div style="margin-top:14px">
+            <table>
+              <thead><tr><th>Company</th><th>Common Outstanding Items</th><th>Notes</th></tr></thead>
+              <tbody>
+                <tr><td><span class="co-chip co-mm" style="font-size:10px; padding:2px 8px">Metalmark</span></td><td>Recent bill payments (may clear next day)</td><td>Check for MSJA check ~$595 if still open</td></tr>
+                <tr><td><span class="co-chip co-car" style="font-size:10px; padding:2px 8px">Carmel</span></td><td>Monthly rent check (ACH, different amount each time)</td><td>Update recurring rent amount when it changes</td></tr>
+                <tr><td><span class="co-chip co-phx" style="font-size:10px; padding:2px 8px">Phoenix</span></td><td>Monthly rent (sent by check, landlord holds till end of month)</td><td>Normal — not a duplicate</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-icon">🛠</span>
+          <span class="section-title">Troubleshooting: Duplicate Rent / Bill Issues</span>
+          <span class="ts-badge">V3 ~19:02</span>
+          <span class="chevron">▶</span>
+        </div>
+        <div class="section-body">
+          <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px">A common issue: a recurring bill is set at an old amount. When the ACH clears at a different amount, both the old and new entries are in QBO.</p>
+          <ul class="steps">
+            <li>
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <div class="step-title">Find what actually cleared Chase</div>
+                <div class="step-detail">Search Chase for the vendor name and see the actual amount that debited.</div>
+              </div>
+            </li>
+            <li>
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <div class="step-title">Delete the bill payment in QBO (not the bill itself)</div>
+                <div class="step-detail">Delete the erroneous bill payment, then match the downloaded transaction to the correct bill. Update the bill amount to the actual paid amount.</div>
+              </div>
+              <div class="step-ts">~21:27</div>
+            </li>
+            <li>
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <div class="step-title">Update the recurring template amount</div>
+                <div class="step-detail">If rent changes periodically, update the recurring transaction template so it defaults to the new amount going forward.</div>
+              </div>
+              <div class="step-ts">~26:16</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════ VIDEO 4 ══════════════════════════════ -->
+    <div class="view" id="view-v4">
+      <div class="vid-header">
+        <div class="vid-number" style="color:#b07040">04</div>
+        <div class="vid-meta">
+          <h2>Populate Report &amp; Send Email</h2>
+          <p>Enter reconciled ledger balances into Excel, run unpaid bills PDFs, combine them, and email to Mary.</p>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex-shrink:0">
+          <div class="vid-tag" style="background:rgba(176,112,64,0.15); color:#b07040; border:1px solid #b07040">Video 4 · ~15 min</div>
+          <a href="https://vimeo.com/1193696490?fl=ml&fe=ec" target="_blank" class="vid-watch-link">▶ Watch on Vimeo</a>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header open" onclick="toggleSection(this)">
+          <span class="section-icon">📊</span>
+          <span class="section-title">Step 1 — Fill Excel Report with Ledger Balances</span>
+          <span class="ts-badge">V4 ~0:04</span>
+          <span class="chevron">▶</span>
+        </div>
+        <div class="section-body open">
+          <ul class="steps">
+            <li>
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <div class="step-title">Use the QBO Ledger Balance — not the bank balance</div>
+                <div class="step-detail">The ledger balance accounts for outstanding checks and bill payments that have been entered but not yet cleared. Bank balance is always different.</div>
+              </div>
+              <div class="step-ts">~0:04</div>
+            </li>
+            <li>
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <div class="step-title">Enter balances for each company</div>
+                <div class="step-detail">
+                  <strong>Carmel:</strong> QBO Chase ledger balance<br>
+                  <strong>Phoenix:</strong> QBO Chase ledger balance<br>
+                  <strong>Metalmark:</strong> QBO Chase ledger balance + Amex balance
+                </div>
+              </div>
+              <div class="step-ts">~0:26</div>
+            </li>
+            <li>
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <div class="step-title">Enter Shopify pending amount</div>
+                <div class="step-detail">Check Shopify for any sales that have not yet been transferred to Chase. These are "in transit" funds. Enter the pending payout total as a line item. If everything has already paid out, enter $0.</div>
+              </div>
+              <div class="step-ts">~1:51</div>
+            </li>
+            <li>
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <div class="step-title">Enter any pending credit card amounts</div>
+                <div class="step-detail">From Video 2 Step 3 — any M Reports batches that are still "pending" in Chase (not yet deposited) are entered here as Credit Cards In Transit. This captures money earned but not yet in the bank.</div>
+              </div>
+              <div class="step-ts">~2:43</div>
+            </li>
+          </ul>
+          <div class="callout callout-gold">
+            <span class="callout-icon">⚑</span>
+            <div>When Mary asks "how much cash do we have to pay bills?", the answer is: <strong>Total Ledger Cash + Pending Credit Card Receivables</strong>. The report shows both.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header open" onclick="toggleSection(this)">
+          <span class="section-icon">🧾</span>
+          <span class="section-title">Step 2 — Run Unpaid Bills Reports from QBO</span>
+          <span class="ts-badge">V4 ~3:07</span>
+          <span class="chevron">▶</span>
+        </div>
+        <div class="section-body open">
+          <ul class="steps">
+            <li>
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <div class="step-title">Metalmark — use Standard Unpaid Bills report</div>
+                <div class="step-detail">Reports → Standard → Unpaid Bills. Scan for any weird negative amounts or anything that looks like a duplicate. Note: the regular Carmel report may show confusing internal Metalmark entries — use the <strong>custom "Unpaid Bills Report Daily"</strong> for Carmel instead.</div>
+              </div>
+              <div class="step-ts">~3:07</div>
+            </li>
+            <li>
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <div class="step-title">Carmel — use custom "Unpaid Bills Report Daily"</div>
+                <div class="step-detail">The standard Carmel report shows confusing Metalmark vendor entries. The custom report filters those out for a cleaner view.</div>
+              </div>
+              <div class="step-ts">~10:08</div>
+            </li>
+            <li>
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <div class="step-title">Phoenix — use Standard Unpaid Bills report</div>
+                <div class="step-detail">Same as Metalmark. Export to PDF.</div>
+              </div>
+              <div class="step-ts">~11:16</div>
+            </li>
+            <li>
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <div class="step-title">Export each to PDF → save to Accounting/Month/Unpaid Bills folder</div>
+                <div class="step-detail">File → Export → PDF. Name them clearly (e.g., Unpaid_Bills_0519_Metalmark.pdf, etc.) so you can combine them in the next step.</div>
+              </div>
+              <div class="step-ts">~8:39</div>
+            </li>
+          </ul>
+          <div class="callout callout-tip">
+            <span class="callout-icon">✔</span>
+            <div><strong>Spot-check bills before exporting.</strong> Look for duplicate invoices (same vendor, same amount, entered twice), old stale bills from prior years, and any negative bills that may indicate unmatched payments. (V4 ~3:49)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header open" onclick="toggleSection(this)">
+          <span class="section-icon">📎</span>
+          <span class="section-title">Step 3 — Combine PDFs in Adobe Acrobat</span>
+          <span class="ts-badge">V4 ~11:26</span>
+          <span class="chevron">▶</span>
+        </div>
+        <div class="section-body open">
+          <ul class="steps">
+            <li>
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <div class="step-title">Open Metalmark PDF in Acrobat</div>
+                <div class="step-detail">This is your base document.</div>
+              </div>
+            </li>
+            <li>
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <div class="step-title">Right-click in Pages panel → Insert Pages from File</div>
+                <div class="step-detail">Insert Carmel PDF before the end, then insert Phoenix PDF. Keep order consistent every time (Metalmark → Carmel → Phoenix).</div>
+              </div>
+              <div class="step-ts">~11:38</div>
+            </li>
+            <li>
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <div class="step-title">Save the combined file</div>
+                <div class="step-detail">Save as the final Unpaid Bills PDF (e.g., Unpaid_Bills_0519_Combined.pdf).</div>
+              </div>
+            </li>
+          </ul>
+          <div class="callout callout-info">
+            <span class="callout-icon">ℹ</span>
+            <div>If you don't have Acrobat, you can send Mary three separate PDFs — it just takes longer for her to review. Adobe Acrobat Basic is ~$12–15/month.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header open" onclick="toggleSection(this)">
+          <span class="section-icon">📧</span>
+          <span class="section-title">Step 4 — Compose and Send Email to Mary</span>
+          <span class="ts-badge">V4 ~12:25</span>
+          <span class="chevron">▶</span>
+        </div>
+        <div class="section-body open">
+          <ul class="steps">
+            <li>
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <div class="step-title">Create new email: To → Mary, CC → Alex</div>
+                <div class="step-detail">Subject line: <code>Metalmark Cash and Unpaid Bills</code></div>
+              </div>
+              <div class="step-ts">~12:25</div>
+            </li>
+            <li>
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <div class="step-title">Paste the Excel report as an image</div>
+                <div class="step-detail">In Excel, select all cells of the report → Ctrl+C → in the email, paste as Image (not as a table). This renders better on mobile for Mary.</div>
+              </div>
+              <div class="step-ts">~13:05</div>
+            </li>
+            <li>
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <div class="step-title">Attach the combined Unpaid Bills PDF</div>
+                <div class="step-detail">Double-click the file to confirm it's the right one before attaching.</div>
+              </div>
+              <div class="step-ts">~13:24</div>
+            </li>
+            <li>
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <div class="step-title">Note any pending items in the email body</div>
+                <div class="step-detail">If any credit card deposits are still "pending" (not yet received at the bank), mention it: e.g., "The $995.28 Carmel deposit is still pending as of today."</div>
+              </div>
+              <div class="step-ts">~2:43</div>
+            </li>
+            <li>
+              <div class="step-num">5</div>
+              <div class="step-content">
+                <div class="step-title">Double-check everything and hit Send</div>
+                <div class="step-detail">Verify the unpaid bills total in the email matches what's in the spreadsheet, then send.</div>
+              </div>
+              <div class="step-ts">~14:12</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════ COMPANIES ══════════════════════════════ -->
+    <div class="view" id="view-companies">
+      <div class="vid-header">
+        <div class="vid-meta">
+          <h2>The Three Companies</h2>
+          <p>Each has a separate QBO database, Chase account, and merchant account. All three are processed every week.</p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header open" onclick="toggleSection(this)">
+          <span class="section-icon">🏢</span>
+          <span class="section-title">Company Reference</span>
+          <span class="chevron">▶</span>
+        </div>
+        <div class="section-body open">
+          <table>
+            <thead><tr><th>Entity</th><th>Short Name</th><th>Role</th><th>Merchant Acct</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong style="color:#6bb8d4">Metalmark LLC</strong></td>
+                <td>Metalmark</td>
+                <td>Parent / vendor entity</td>
+                <td>None (no retail sales)</td>
+                <td>Has Chase + Amex. Receives transfers from Carmel &amp; Phoenix. Has EIDL and SBA loans.</td>
+              </tr>
+              <tr>
+                <td><strong style="color:#8ed4a0">MM Carmel LLC</strong></td>
+                <td>Carmel</td>
+                <td>Retail store — primary volume</td>
+                <td>Aurora #1897</td>
+                <td>Higher transaction volume. Custom QBO unpaid bills report needed.</td>
+              </tr>
+              <tr>
+                <td><strong style="color:#d4a070">MM Phoenix LLC</strong></td>
+                <td>Phoenix</td>
+                <td>Retail store — lower volume</td>
+                <td>Aurora #1863</td>
+                <td>Lower activity than Carmel. Pays rent by check (landlord holds it).</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="callout callout-warn" style="margin-top:12px">
+            <span class="callout-icon">⚠</span>
+            <div><strong>Sales should happen at Carmel or Phoenix, not Metalmark.</strong> If a retail customer wire pays to Metalmark, that's an error — it should have gone to Carmel. Flag it and book the A/R to MM Phoenix or MM Carmel as applicable.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════ CHECKLIST ══════════════════════════════ -->
+    <div class="view" id="view-checklist">
+      <div class="vid-header">
+        <div class="vid-meta">
+          <h2>Run Checklist</h2>
+          <p>Use this as a quick sanity check each time you run the report.</p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header open" onclick="toggleSection(this)">
+          <span class="section-icon">✓</span>
+          <span class="section-title">Complete Run Checklist</span>
+          <span class="chevron">▶</span>
+        </div>
+        <div class="section-body open" id="checklist-body">
+          <!-- Checklist rendered by JS -->
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ─── AUTH ────────────────────────────────────────────────────────────────────
+// Simple password gate — keeps casual visitors out.
+// Not cryptographically secure; a determined person could view source to bypass.
+const AUTH_PASSWORD = 'metalmark2026';
+const AUTH_SESSION_KEY = 'mm_guide_auth';
+
+function checkAuth() {
+  const input = document.getElementById('auth-input').value;
+  if (input === AUTH_PASSWORD) {
+    sessionStorage.setItem(AUTH_SESSION_KEY, '1');
+    unlockApp();
+  } else {
+    const box = document.getElementById('auth-box');
+    const err = document.getElementById('auth-error');
+    err.textContent = 'Incorrect password — try again.';
+    box.classList.remove('auth-shake');
+    void box.offsetWidth; // reflow to restart animation
+    box.classList.add('auth-shake');
+    document.getElementById('auth-input').value = '';
+    document.getElementById('auth-input').focus();
+  }
+}
+
+function unlockApp() {
+  document.getElementById('auth-overlay').style.display = 'none';
+  document.getElementById('app-content').style.display = 'block';
+}
+
+function toggleAuthShow() {
+  const inp = document.getElementById('auth-input');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+}
+
+// Allow Enter key to submit
+document.addEventListener('DOMContentLoaded', () => {
+  // Check if already authenticated this session
+  if (sessionStorage.getItem(AUTH_SESSION_KEY) === '1') {
+    unlockApp();
+  }
+  const inp = document.getElementById('auth-input');
+  if (inp) {
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') checkAuth(); });
+    inp.focus();
+  }
+});
+
+// ─── SEARCH DATA ────────────────────────────────────────────────────────────
+const searchIndex = [
+  { vid:'V1', ts:'~1:36', title:'M Reports login (MFA)', snippet:'Aurora credit card portal requires MFA every login. Code sent to accounting@themetalmarkhouse.com Gmail. Copy code, log in, delete email immediately.' },
+  { vid:'V1', ts:'~2:46', title:'Shopify access setup', snippet:'Mary must create your login. Use your personal Metalmark email. Location-aware 2FA means you cannot use someone else\'s login.' },
+  { vid:'V1', ts:'~4:31', title:'Shopify payouts to Chase', snippet:'Shopify payouts transfer automatically to Chase. Track as pending until transferred. Then QuickBooks downloads from Chase.' },
+  { vid:'V1', ts:'~7:05', title:'American Express access', snippet:'Amex is connected to QBO. Get access to verify transactions and avoid missed payments.' },
+  { vid:'V1', ts:'~7:45', title:'Adobe Acrobat needed', snippet:'Need Acrobat to combine three unpaid bills PDFs into one file. Basic version ~$12–15/month.' },
+  { vid:'V1', ts:'~8:28', title:'QBO Desktop App installation', snippet:'Go to gear icon in QBO web → Get the Desktop App. Lets you have all 3 companies open in tabs simultaneously.' },
+  { vid:'V1', ts:'~8:55', title:'QBO tabs — new tab button', snippet:'Use the + button at the top to open new tabs. Switch between companies without losing your place. Major time saver.' },
+  { vid:'V2', ts:'~0:51', title:'Excel spreadsheet — folder structure', snippet:'Accounting folder → Year → Month. One spreadsheet per month to avoid 250+ tabs.' },
+  { vid:'V2', ts:'~1:19', title:'Duplicate last tab in Excel', snippet:'Right-click last date tab → Move or Copy → Create a copy. Rename to today\'s date.' },
+  { vid:'V2', ts:'~2:15', title:'Paste special — values only', snippet:'Copy Current Day column → Paste Special → Values into Previous Day. Preserves formulas in current day.' },
+  { vid:'V2', ts:'~5:53', title:'M Reports — batch summary', snippet:'Reports → Batch Summary. Go back 1 week to capture all recent batches. Phoenix is account #1863, Carmel is #1897.' },
+  { vid:'V2', ts:'~11:00', title:'Negative batch (return)', snippet:'Return creates a negative batch in M Reports. Enter as negative number. Chase will show TWO transactions: return going out and deposit going in. Each gets its own row.' },
+  { vid:'V2', ts:'~12:11', title:'Date consistency rule', snippet:'Date in Excel, on M Reports, and in QBO journal entry must all match. Mismatched dates cause reconciliation problems.' },
+  { vid:'V2', ts:'~15:01', title:'Merchant fee 2%–3% check', snippet:'Spreadsheet formula calculates (Batch − Deposit) ÷ Batch. Should be 2–3%. Outside range means wrong batch/deposit pairing.' },
+  { vid:'V2', ts:'~16:58', title:'Find deposits in Chase', snippet:'Look for "Merchant Services" or "Aurora" descriptions. Pending items won\'t download to QBO until tomorrow.' },
+  { vid:'V2', ts:'~20:36', title:'QBO journal entry structure', snippet:'Credit → Sales (batch total). Debit → Accounts Receivable (deposit amount). Debit → Merchant Card Expense (fee).' },
+  { vid:'V2', ts:'~22:27', title:'Why include pending transactions', snippet:'Pending bank items not yet in QBO could be material. Always include in report. They download to QBO the next business day.' },
+  { vid:'V2', ts:'~26:02', title:'Copy journal entry — never overwrite', snippet:'Always use More → Copy to make next entry. Never overwrite an old entry — changes historical bookkeeping.' },
+  { vid:'V2', ts:'~32:03', title:'Refund journal entry', snippet:'Debit → Sales (negative sale). Credit → Accounts Receivable. No merchant fee on refunds. Opposite of normal batch entry.' },
+  { vid:'V3', ts:'~0:47', title:'Update bank feeds', snippet:'Accounting → Bank Transactions → Update button. Do all 3 companies before starting. Today\'s transactions download tomorrow.' },
+  { vid:'V3', ts:'~2:06', title:'Match credit card deposits to journal entries', snippet:'QBO auto-matches deposits to A/R entries from Video 2 journal entries. If not auto-matched, click Match manually.' },
+  { vid:'V3', ts:'~2:55', title:'Uncategorized expenses', snippet:'If unsure what an expense is, post to Uncategorized Expenses. Review with Mary later. Don\'t guess wrong categories.' },
+  { vid:'V3', ts:'~6:06', title:'Refund matching process', snippet:'Two-step: (1) Create expense to Chosen posted to A/R. (2) Go to Receive Payment → Chosen → match journal entry against expense.' },
+  { vid:'V3', ts:'~11:35', title:'Amex payment — credit card side first', snippet:'Match the Amex download first, then Chase side matches automatically. Prevents duplicate payment recording.' },
+  { vid:'V3', ts:'~15:56', title:'Reconcile Chase — resume reconciling', snippet:'Accounting → Reconcile → Chase → Resume Reconciling. Edit Info to update Statement Ending Balance to last available bank date.' },
+  { vid:'V3', ts:'~17:18', title:'Review outstanding items even at $0 difference', snippet:'A $10K duplicate entry could leave you reconciled but under-reporting cash. Always scroll through outstanding items.' },
+  { vid:'V3', ts:'~17:57', title:'Save for Later — not Finish', snippet:'Click Save for Later, not Finish. Finish posts a formal reconciliation. Only Finish at month-end.' },
+  { vid:'V3', ts:'~19:02', title:'Duplicate rent / bill fix', snippet:'If rent cleared for a different amount: delete bill payment, update bill amount, re-match. Also update recurring template.' },
+  { vid:'V3', ts:'~22:34', title:'Downloaded vs posted — key distinction', snippet:'Downloaded transactions in QBO feed are NOT in books yet. Must Post or Match each one. Common mistake for non-accountants.' },
+  { vid:'V4', ts:'~0:04', title:'Use ledger balance not bank balance', snippet:'Always enter the QBO ledger balance in the report. Bank balance doesn\'t include outstanding checks or pending items.' },
+  { vid:'V4', ts:'~1:51', title:'Shopify pending payouts', snippet:'Check Shopify for sales not yet transferred to Chase. Enter as pending line item. If all paid out, enter $0.' },
+  { vid:'V4', ts:'~2:43', title:'Pending credit card receivables in report', snippet:'Any M Reports batches still "pending" in Chase go here. This captures earned money not yet in bank. Note in email.' },
+  { vid:'V4', ts:'~3:07', title:'Run unpaid bills — Metalmark', snippet:'Reports → Standard → Unpaid Bills. Scan for duplicates, negative amounts, stale bills.' },
+  { vid:'V4', ts:'~3:49', title:'Spot-check bills for duplicates', snippet:'Look for same vendor / same amount entered twice, old December prior-year bills, negative bills indicating unmatched payments.' },
+  { vid:'V4', ts:'~10:08', title:'Carmel custom report — Unpaid Bills Report Daily', snippet:'Use the custom report "Unpaid Bills Report Daily" for Carmel. Standard report shows confusing internal Metalmark entries.' },
+  { vid:'V4', ts:'~11:26', title:'Combine PDFs in Acrobat', snippet:'Open Metalmark PDF → right-click Pages → Insert Pages from File → add Carmel → add Phoenix. Save combined file.' },
+  { vid:'V4', ts:'~12:25', title:'Email to Mary', snippet:'To: Mary, CC: Alex. Subject: Metalmark Cash and Unpaid Bills. Paste report as image. Attach combined unpaid bills PDF.' },
+  { vid:'V4', ts:'~13:05', title:'Paste Excel as image in email', snippet:'Select all in Excel → Ctrl+C → paste as Image in email. Renders better on Mary\'s phone.' },
+];
+
+const vidColors = { V1:'#4a7c8f', V2:'#7a6fa0', V3:'#6b9e72', V4:'#b07040' };
+
+function highlight(text, query) {
+  if (!query) return text;
+  const re = new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+  return text.replace(re, '<mark>$1</mark>');
+}
+
+document.getElementById('search-input').addEventListener('input', function() {
+  const q = this.value.trim().toLowerCase();
+  const container = document.getElementById('search-results');
+  if (q.length < 2) { container.style.display = 'none'; container.innerHTML = ''; return; }
+  container.style.display = 'block';
+
+  const results = searchIndex.filter(item =>
+    item.title.toLowerCase().includes(q) || item.snippet.toLowerCase().includes(q)
+  );
+
+  if (results.length === 0) {
+    container.innerHTML = '<div class="no-results">No results found — try different keywords.</div>';
+    return;
+  }
+
+  container.innerHTML = results.map(r => `
+    <div class="sr-item" onclick="showView('${r.vid.toLowerCase()}'); clearSearch()">
+      <div class="sr-item-header">
+        <span class="sr-vid-badge" style="background:${vidColors[r.vid]}22; color:${vidColors[r.vid]}; border:1px solid ${vidColors[r.vid]}">${r.vid}</span>
+        <span class="sr-timestamp">${r.ts}</span>
+      </div>
+      <div class="sr-title">${highlight(r.title, this.value.trim())}</div>
+      <div class="sr-snippet">${highlight(r.snippet, this.value.trim())}</div>
+    </div>
+  `).join('');
+});
+
+function clearSearch() {
+  document.getElementById('search-input').value = '';
+  const c = document.getElementById('search-results');
+  c.style.display = 'none';
+  c.innerHTML = '';
+}
+
+// ─── NAV ────────────────────────────────────────────────────────────────────
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const view = document.getElementById('view-' + id);
+  if (view) { view.classList.add('active'); }
+  const btn = [...document.querySelectorAll('.nav-btn')].find(b => b.getAttribute('onclick') === `showView('${id}')`);
+  if (btn) btn.classList.add('active');
+  // Expand first section of new view
+  if (view) {
+    const first = view.querySelector('.section-header');
+    if (first && !first.classList.contains('open')) toggleSection(first);
+  }
+}
+
+// ─── ACCORDION ──────────────────────────────────────────────────────────────
+function toggleSection(header) {
+  const body = header.nextElementSibling;
+  const isOpen = header.classList.contains('open');
+  header.classList.toggle('open', !isOpen);
+  body.classList.toggle('open', !isOpen);
+}
+
+// ─── CHECKLIST ──────────────────────────────────────────────────────────────
+const checklistItems = [
+  { section:'Video 2 — Credit Cards', items:[
+    'Excel: duplicate last tab, rename to today, paste previous day values, zero current day',
+    'M Reports Phoenix (#1863): run Batch Summary, enter all batch totals in Excel',
+    'M Reports Carmel (#1897): run Batch Summary, enter all batch totals in Excel',
+    'Negative batch (return)? → enter as negative, expect 2 bank transactions',
+    'Chase: find all Aurora deposit amounts, enter in Excel alongside batch totals',
+    'Verify each merchant fee % is between 2%–3%',
+    'Shopify: any pending payouts? Note the amount.',
+    'QBO Phoenix: create journal entry for each batch (Credit→Sales, Debit→A/R, Debit→Merchant Fee)',
+    'QBO Carmel: create journal entry for each batch',
+    'Refund? → separate JE with Debit→Sales, Credit→A/R, no merchant fee',
+  ]},
+  { section:'Video 3 — QBO Transactions', items:[
+    'QBO all 3 companies: Accounting → Bank Transactions → Update',
+    'Carmel: match credit card deposits to journal entries, categorize expenses',
+    'Phoenix: match credit card deposits to journal entries, categorize expenses',
+    'Metalmark: categorize expenses, match Amex payment (Amex side first), categorize wire/cash deposits',
+    'Refund: create Expense → Chosen → A/R, then Receive Payment → match entries',
+    'Metalmark: Reconcile Chase → Resume → update balance → review outstanding → Save for Later',
+    'Carmel: Reconcile Chase → Resume → update balance → review outstanding (rent?) → Save for Later',
+    'Phoenix: Reconcile Chase → Resume → update balance → review outstanding (rent check normal) → Save for Later',
+  ]},
+  { section:'Video 4 — Report & Email', items:[
+    'Excel: enter QBO ledger balance for Carmel',
+    'Excel: enter QBO ledger balance for Phoenix',
+    'Excel: enter QBO ledger balance for Metalmark',
+    'Excel: enter Amex balance for Metalmark',
+    'Excel: enter Shopify pending payout (if any)',
+    'Excel: enter pending credit card receivables (if any)',
+    'QBO Metalmark: Reports → Standard → Unpaid Bills → Export PDF',
+    'QBO Carmel: Reports → Custom → Unpaid Bills Report Daily → Export PDF',
+    'QBO Phoenix: Reports → Standard → Unpaid Bills → Export PDF',
+    'Spot-check all three reports for duplicates / stale bills',
+    'Acrobat: combine all 3 PDFs into one (Metalmark → Carmel → Phoenix)',
+    'Email: To Mary, CC Alex, Subject "Metalmark Cash and Unpaid Bills"',
+    'Paste Excel report as image in email',
+    'Attach combined Unpaid Bills PDF',
+    'Note any pending items in email body',
+    'Double-check unpaid bills total matches spreadsheet → Send',
+  ]},
+];
+
+function buildChecklist() {
+  const body = document.getElementById('checklist-body');
+  let html = '';
+  checklistItems.forEach((section, si) => {
+    html += `<div style="margin-bottom:16px">
+      <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted); font-weight:600; margin-bottom:8px; padding-left:4px">${section.section}</div>`;
+    section.items.forEach((item, ii) => {
+      const id = `chk-${si}-${ii}`;
+      html += `<label for="${id}" style="display:flex; align-items:flex-start; gap:10px; padding:7px 8px; border-radius:5px; cursor:pointer; margin-bottom:3px; transition: background 0.1s" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background='transparent'">
+        <input type="checkbox" id="${id}" style="margin-top:2px; accent-color:var(--gold); flex-shrink:0">
+        <span style="font-size:12.5px; color:var(--text); line-height:1.5" class="chk-label">${item}</span>
+      </label>`;
+    });
+    html += '</div>';
+  });
+  html += `<div style="margin-top:16px; padding-top:12px; border-top:1px solid var(--border); display:flex; gap:10px; flex-wrap:wrap">
+    <button onclick="resetChecklist()" style="background:var(--surface2); border:1px solid var(--border); border-radius:6px; color:var(--text-muted); font-size:12px; padding:6px 14px; cursor:pointer; font-family:inherit">Reset All</button>
+    <span id="chk-progress" style="font-size:12px; color:var(--text-muted); padding:6px 0"></span>
+  </div>`;
+  body.innerHTML = html;
+  body.classList.add('open');
+
+  // Add listeners
+  body.querySelectorAll('input[type=checkbox]').forEach(cb => {
+    cb.addEventListener('change', () => {
+      updateChecklistProgress();
+      const label = cb.nextElementSibling;
+      label.style.textDecoration = cb.checked ? 'line-through' : '';
+      label.style.color = cb.checked ? 'var(--text-dim)' : 'var(--text)';
+    });
+  });
+  updateChecklistProgress();
+}
+
+function updateChecklistProgress() {
+  const all = document.querySelectorAll('#checklist-body input[type=checkbox]');
+  const done = [...all].filter(c => c.checked).length;
+  document.getElementById('chk-progress').textContent = `${done} / ${all.length} complete`;
+}
+
+function resetChecklist() {
+  document.querySelectorAll('#checklist-body input[type=checkbox]').forEach(cb => {
+    cb.checked = false;
+    const label = cb.nextElementSibling;
+    label.style.textDecoration = '';
+    label.style.color = 'var(--text)';
+  });
+  updateChecklistProgress();
+}
+
+buildChecklist();
+</script>
+</div><!-- /app-content -->
+</body>
+</html>
