@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Time & Expense Tracking — App Comparison</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181c27;
+    --surface2: #1e2333;
+    --border: #2a3048;
+    --border-light: #323a55;
+    --text: #e8eaf0;
+    --text-muted: #7e8aaa;
+    --text-dim: #4a5470;
+    --accent1: #4f9cf9;   /* Toggl blue */
+    --accent2: #f5a623;   /* Harvest amber */
+    --accent3: #6de8a0;   /* Clockify green */
+    --accent4: #d47aff;   /* Hubstaff purple */
+    --check: #4ade80;
+    --cross: #ef4444;
+    --partial: #fbbf24;
+    --cat-bg: #141826;
+    --row-hover: rgba(255,255,255,0.025);
+    --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    max-width: 1160px;
+    margin: 0 auto 40px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent1);
+    margin-bottom: 12px;
+  }
+
+  .header h1 {
+    font-size: clamp(26px, 4vw, 44px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .header h1 span {
+    color: var(--accent1);
+  }
+
+  .header-sub {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    max-width: 640px;
+  }
+
+  .header-meta {
+    margin-top: 16px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .meta-pill {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+
+  /* ── LEGEND ── */
+  .legend {
+    max-width: 1160px;
+    margin: 0 auto 24px;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .legend-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .legend-icon {
+    font-size: 14px;
+    width: 20px;
+    text-align: center;
+  }
+
+  /* ── PRICING CARDS ── */
+  .pricing-section {
+    max-width: 1160px;
+    margin: 0 auto 36px;
+  }
+
+  .section-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    padding-left: 2px;
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .app-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .app-card-header {
+    padding: 16px 18px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .app-name {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+
+  .app-tagline {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  .app-card.toggl .app-name  { color: var(--accent1); }
+  .app-card.harvest .app-name { color: var(--accent2); }
+  .app-card.clockify .app-name { color: var(--accent3); }
+  .app-card.hubstaff .app-name { color: var(--accent4); }
+
+  .app-card.toggl  { border-top: 3px solid var(--accent1); }
+  .app-card.harvest { border-top: 3px solid var(--accent2); }
+  .app-card.clockify { border-top: 3px solid var(--accent3); }
+  .app-card.hubstaff { border-top: 3px solid var(--accent4); }
+
+  .plan-list {
+    padding: 14px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .plan-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .plan-name {
+    font-size: 12px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+
+  .plan-price {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .plan-free .plan-price { color: var(--check); }
+  .plan-note {
+    font-size: 10px;
+    color: var(--text-dim);
+    font-style: italic;
+    margin-top: 2px;
+    line-height: 1.4;
+    padding: 0 18px 12px;
+  }
+
+  /* ── MAIN TABLE ── */
+  .table-wrap {
+    max-width: 1160px;
+    margin: 0 auto;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  /* Sticky header */
+  thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--surface2);
+    padding: 16px 14px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 13px;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+
+  thead th:first-child {
+    text-align: left;
+    width: 260px;
+    min-width: 220px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  thead th.col-toggl  { color: var(--accent1); }
+  thead th.col-harvest { color: var(--accent2); }
+  thead th.col-clockify { color: var(--accent3); }
+  thead th.col-hubstaff { color: var(--accent4); }
+
+  .col-indicator {
+    display: block;
+    height: 3px;
+    border-radius: 2px;
+    margin-bottom: 8px;
+  }
+  th.col-toggl   .col-indicator { background: var(--accent1); }
+  th.col-harvest  .col-indicator { background: var(--accent2); }
+  th.col-clockify .col-indicator { background: var(--accent3); }
+  th.col-hubstaff .col-indicator { background: var(--accent4); }
+
+  /* Category rows */
+  tr.cat-row td {
+    background: var(--cat-bg);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 10px 16px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Feature rows */
+  tr.feat-row {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.12s;
+  }
+  tr.feat-row:hover { background: var(--row-hover); }
+
+  tr.feat-row td {
+    padding: 11px 14px;
+    vertical-align: middle;
+    border-right: 1px solid var(--border);
+  }
+  tr.feat-row td:last-child { border-right: none; }
+
+  .feat-name {
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .feat-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+    line-height: 1.45;
+  }
+
+  .feat-highlight {
+    display: inline-block;
+    font-size: 9px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(79,156,249,0.12);
+    color: var(--accent1);
+    border: 1px solid rgba(79,156,249,0.25);
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-left: 7px;
+    vertical-align: middle;
+  }
+
+  /* Cell indicators */
+  td.cell-val {
+    text-align: center;
+    width: 170px;
+    min-width: 130px;
+  }
+
+  .check { font-size: 18px; color: var(--check); }
+  .cross { font-size: 16px; color: var(--cross); opacity: 0.6; }
+  .partial { font-size: 16px; color: var(--partial); }
+
+  .cell-note {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 3px;
+    line-height: 1.4;
+  }
+
+  /* Plan tier badges */
+  .tier {
+    display: inline-block;
+    font-size: 9px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-top: 2px;
+  }
+  .tier-free  { background: rgba(74,222,128,0.12); color: #4ade80; border: 1px solid rgba(74,222,128,0.25); }
+  .tier-paid  { background: rgba(251,191,36,0.1); color: #fbbf24; border: 1px solid rgba(251,191,36,0.25); }
+  .tier-high  { background: rgba(212,122,255,0.1); color: #d47aff; border: 1px solid rgba(212,122,255,0.25); }
+  .tier-enterprise { background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid rgba(239,68,68,0.25); }
+
+  /* Count bar at bottom */
+  .score-row td {
+    background: var(--surface2);
+    border-top: 2px solid var(--border);
+    padding: 14px;
+    text-align: center;
+  }
+  .score-row td:first-child {
+    text-align: left;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .score-bar-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+  .score-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 22px;
+    font-weight: 600;
+  }
+  .score-label { font-size: 10px; color: var(--text-muted); }
+  .score-toggl { color: var(--accent1); }
+  .score-harvest { color: var(--accent2); }
+  .score-clockify { color: var(--accent3); }
+  .score-hubstaff { color: var(--accent4); }
+
+  /* ── FOOTNOTES ── */
+  .footnotes {
+    max-width: 1160px;
+    margin: 28px auto 0;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .footnote-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+  }
+
+  .footnote-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+  }
+
+  .footnote-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+
+  .footnote-item strong {
+    font-size: 12px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .footnote-item p {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .toggl-accent { color: var(--accent1); }
+  .harvest-accent { color: var(--accent2); }
+  .clockify-accent { color: var(--accent3); }
+  .hubstaff-accent { color: var(--accent4); }
+
+  @media (max-width: 820px) {
+    .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+    thead th:first-child { width: 160px; min-width: 140px; }
+    .feat-desc { display: none; }
+  }
+
+  @media (max-width: 560px) {
+    .pricing-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-eyebrow">Software Comparison · 2026</div>
+  <h1>Time &amp; Expense<br><span>Tracking Apps</span></h1>
+  <p class="header-sub">A feature-by-feature breakdown of the four leading time and expense tracking platforms — including pricing tiers, QuickBooks integration depth, and key differentiators for teams and freelancers.</p>
+  <div class="header-meta">
+    <span class="meta-pill">4 Platforms Compared</span>
+    <span class="meta-pill">Pricing as of May 2026</span>
+    <span class="meta-pill">Annual Billing Shown</span>
+    <span class="meta-pill">QuickBooks Integration Highlighted</span>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <span class="legend-label">Key:</span>
+  <span class="legend-item"><span class="legend-icon check">✓</span> Included</span>
+  <span class="legend-item"><span class="legend-icon cross">✗</span> Not Available</span>
+  <span class="legend-item"><span class="legend-icon partial">◑</span> Partial / Limited</span>
+  <span class="legend-item">
+    <span class="tier tier-free">Free</span>&nbsp;Which plan includes it
+  </span>
+  <span class="legend-item">
+    <span class="tier tier-paid">Paid</span>&nbsp;Starter/Pro tier
+  </span>
+  <span class="legend-item">
+    <span class="tier tier-high">Premium</span>&nbsp;Higher tier required
+  </span>
+</div>
+
+<!-- PRICING CARDS -->
+<div class="pricing-section">
+  <div class="section-title">Plan Pricing (Annual Billing)</div>
+  <div class="pricing-grid">
+
+    <div class="app-card toggl">
+      <div class="app-card-header">
+        <div class="app-name">Toggl Track</div>
+        <div class="app-tagline">Best-in-class UX; strong reporting &amp; profitability insights</div>
+      </div>
+      <div class="plan-list">
+        <div class="plan-item plan-free"><span class="plan-name">Free</span><span class="plan-price">$0 / up to 5 users</span></div>
+        <div class="plan-item"><span class="plan-name">Starter</span><span class="plan-price">$9 / user / mo</span></div>
+        <div class="plan-item"><span class="plan-name">Premium</span><span class="plan-price">$18 / user / mo</span></div>
+        <div class="plan-item"><span class="plan-name">Enterprise</span><span class="plan-price">Custom</span></div>
+      </div>
+      <div class="plan-note">~10–20% discount vs monthly billing · 30-day Premium free trial · No setup fees</div>
+    </div>
+
+    <div class="app-card harvest">
+      <div class="app-card-header">
+        <div class="app-name">Harvest</div>
+        <div class="app-tagline">Smoothest invoicing workflow; recently acquired by Bending Spoons</div>
+      </div>
+      <div class="plan-list">
+        <div class="plan-item plan-free"><span class="plan-name">Free</span><span class="plan-price">$0 / 1 user, 2 projects</span></div>
+        <div class="plan-item"><span class="plan-name">Teams</span><span class="plan-price">$9 / user / mo</span></div>
+        <div class="plan-item"><span class="plan-name">Enterprise</span><span class="plan-price">Custom</span></div>
+      </div>
+      <div class="plan-note">20% annual discount · 30-day trial (no CC required) · ⚠ Price increases reported post-Bending Spoons acquisition (2025)</div>
+    </div>
+
+    <div class="app-card clockify">
+      <div class="app-card-header">
+        <div class="app-name">Clockify</div>
+        <div class="app-tagline">Most generous free tier; budget-friendly for growing teams</div>
+      </div>
+      <div class="plan-list">
+        <div class="plan-item plan-free"><span class="plan-name">Free</span><span class="plan-price">$0 / up to 5 users*</span></div>
+        <div class="plan-item"><span class="plan-name">Basic</span><span class="plan-price">$3.99 / user / mo</span></div>
+        <div class="plan-item"><span class="plan-name">Standard</span><span class="plan-price">$5.49 / user / mo</span></div>
+        <div class="plan-item"><span class="plan-name">Pro</span><span class="plan-price">$7.99 / user / mo</span></div>
+        <div class="plan-item"><span class="plan-name">Enterprise</span><span class="plan-price">$11.99 / user / mo</span></div>
+      </div>
+      <div class="plan-note">*Free plan changed from unlimited to 5-user cap in April 2026 · 7-day paid trial</div>
+    </div>
+
+    <div class="app-card hubstaff">
+      <div class="app-card-header">
+        <div class="app-name">Hubstaff</div>
+        <div class="app-tagline">Best for remote/field teams; workforce monitoring built-in</div>
+      </div>
+      <div class="plan-list">
+        <div class="plan-item plan-free"><span class="plan-name">Free</span><span class="plan-price">$0 / 1 user only</span></div>
+        <div class="plan-item"><span class="plan-name">Starter</span><span class="plan-price">$5.83 / user / mo</span></div>
+        <div class="plan-item"><span class="plan-name">Grow</span><span class="plan-price">$7.50 / user / mo</span></div>
+        <div class="plan-item"><span class="plan-name">Team</span><span class="plan-price">$10 / user / mo</span></div>
+        <div class="plan-item"><span class="plan-name">Enterprise</span><span class="plan-price">Custom</span></div>
+      </div>
+      <div class="plan-note">2-seat minimum on all paid plans · 14-day trial (no CC) · 30-day money-back guarantee</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MAIN COMPARISON TABLE -->
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th class="col-toggl"><span class="col-indicator"></span>Toggl Track</th>
+      <th class="col-harvest"><span class="col-indicator"></span>Harvest</th>
+      <th class="col-clockify"><span class="col-indicator"></span>Clockify</th>
+      <th class="col-hubstaff"><span class="col-indicator"></span>Hubstaff</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <!-- ── CORE TIME TRACKING ── -->
+    <tr class="cat-row"><td colspan="5">Core Time Tracking</td></tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">One-click / Start-Stop Timer</div><div class="feat-desc">Instantly start a timer from the web, desktop, or mobile app</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Manual Time Entry</div><div class="feat-desc">Log hours retroactively without starting a live timer</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Mobile App (iOS &amp; Android)</div><div class="feat-desc">Native apps for tracking on the go</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Desktop App (Mac / Windows)</div><div class="feat-desc">Native desktop application for background tracking</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Browser Extension</div><div class="feat-desc">Chrome/Firefox extension for in-browser time tracking</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Offline Tracking</div><div class="feat-desc">Track time without an internet connection; sync on reconnect</div></td>
+      <td class="cell-val"><span class="partial">◑</span><div class="cell-note">Local store, sync on reconnect</div></td>
+      <td class="cell-val"><span class="partial">◑</span><div class="cell-note">Desktop/mobile only</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note">Desktop apps</div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Calendar View / Timesheet</div><div class="feat-desc">Visual calendar layout and weekly timesheet grid</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Starter+</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Idle Detection</div><div class="feat-desc">Detects and prompts to discard idle time automatically</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+      <td class="cell-val"><span class="cross">✗</span></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Basic+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Grow+</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Automatic Time Tracking</div><div class="feat-desc">Tracks apps/websites used (10+ sec) for suggested entries</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span> desktop app</div></td>
+      <td class="cell-val"><span class="cross">✗</span></td>
+      <td class="cell-val"><span class="partial">◑</span><div class="cell-note">App tracker on desktop</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Starter+</span></div></td>
+    </tr>
+
+    <!-- ── PROJECT & CLIENT MANAGEMENT ── -->
+    <tr class="cat-row"><td colspan="5">Project &amp; Client Management</td></tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Unlimited Projects</div><div class="feat-desc">No cap on number of active projects you can track</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+      <td class="cell-val"><span class="partial">◑</span><div class="cell-note">Teams plan only; Free = 2 projects</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Starter+</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Tasks / Sub-projects</div><div class="feat-desc">Break projects into tasks and track time per task</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Starter+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Teams+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Starter+</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Project Budget &amp; Estimates</div><div class="feat-desc">Set hour/dollar budgets; alert when nearing limits</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Starter+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Teams+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-high">Pro+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Grow+</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Project Templates</div><div class="feat-desc">Save and reuse project setups with predefined rates and tasks</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Starter+</span></div></td>
+      <td class="cell-val"><span class="cross">✗</span></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-high">Pro+</span></div></td>
+      <td class="cell-val"><span class="cross">✗</span></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Client Budgets</div><div class="feat-desc">Track total hours or costs per client across projects</div></td>
+      <td class="cell-val"><span class="partial">◑</span><div class="cell-note">Via project budgets</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Teams+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-high">Pro+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Grow+</span></div></td>
+    </tr>
+
+    <!-- ── BILLING & INVOICING ── -->
+    <tr class="cat-row"><td colspan="5">Billing, Invoicing &amp; Rates</td></tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Billable vs Non-Billable Hours</div><div class="feat-desc">Tag time entries as billable and separate them in reports</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Starter+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Teams+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Basic+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Starter+</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Custom Billable Rates</div><div class="feat-desc">Set different hourly rates per user, project, or task</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Starter+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Teams+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Standard+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Starter+</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Native Invoice Generation</div><div class="feat-desc">Create &amp; send invoices directly from tracked billable time</div></td>
+      <td class="cell-val"><span class="partial">◑</span><div class="cell-note">Basic invoice; export to QB<br><span class="tier tier-paid">Starter+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note">Best-in-class workflow<br><span class="tier tier-free">Free</span> (limited)</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Standard+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Grow+</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Online Payment Collection</div><div class="feat-desc">Accept credit card or ACH payments on invoices via Stripe/PayPal</div></td>
+      <td class="cell-val"><span class="cross">✗</span></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note">Stripe &amp; PayPal<br>2.9% + $0.30 processing fee</div></td>
+      <td class="cell-val"><span class="cross">✗</span></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note">Via PayPal / Wise<br><span class="tier tier-paid">Team+</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Expense Tracking</div><div class="feat-desc">Log non-time expenses; attach receipts to projects</div></td>
+      <td class="cell-val"><span class="cross">✗</span><div class="cell-note">Not natively supported</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Teams+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-high">Pro+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Grow+</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Labor Cost Tracking</div><div class="feat-desc">Define team member costs to track profit vs. labor spend</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-high">Premium+</span></div></td>
+      <td class="cell-val"><span class="cross">✗</span></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-high">Pro+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Team+</span></div></td>
+    </tr>
+
+    <!-- ── QB INTEGRATION ── -->
+    <tr class="cat-row"><td colspan="5">QuickBooks Integration <span class="feat-highlight">Highlighted</span></td></tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">QuickBooks Online Integration</div><div class="feat-desc">Native, built-in sync with QuickBooks Online (no third-party connector required)</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note">One-way sync (invoices to QB)<br><span class="tier tier-paid">Starter+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note">Bi-directional sync<br><span class="tier tier-paid">Teams+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note">One-way bulk export<br><span class="tier tier-paid">Standard+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note">Auto-sync every hour<br><span class="tier tier-paid">Grow+ (1 integration)</span><br><span class="tier tier-high">Team+ (unlimited)</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">QuickBooks Desktop Integration</div><div class="feat-desc">Export timesheets to QuickBooks Desktop (.IIF file)</div></td>
+      <td class="cell-val"><span class="cross">✗</span></td>
+      <td class="cell-val"><span class="partial">◑</span><div class="cell-note">CSV export only</div></td>
+      <td class="cell-val"><span class="cross">✗</span><div class="cell-note">Online only</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note">.IIF export to QBD<br><span class="tier tier-paid">Grow+</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">QB Sync: Time Entries</div><div class="feat-desc">Push tracked billable time entries into QuickBooks automatically</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note">Via invoice export</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note">Direct sync</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note">Bulk send; manual mapping required</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note">Auto every 60 min</div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">QB Sync: Customers &amp; Projects</div><div class="feat-desc">Import QB customers into the time tracking tool</div></td>
+      <td class="cell-val"><span class="cross">✗</span></td>
+      <td class="cell-val"><span class="check">✓</span></td>
+      <td class="cell-val"><span class="partial">◑</span><div class="cell-note">Manual mapping required on setup</div></td>
+      <td class="cell-val"><span class="check">✓</span></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">QB Sync: Payroll &amp; Expenses</div><div class="feat-desc">Push payroll hours and expense data to QuickBooks</div></td>
+      <td class="cell-val"><span class="cross">✗</span></td>
+      <td class="cell-val"><span class="partial">◑</span><div class="cell-note">Expenses only</div></td>
+      <td class="cell-val"><span class="partial">◑</span><div class="cell-note">Time only; no payroll push</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note">Time + expenses + payroll<br><span class="tier tier-high">Team+</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Which Plan Unlocks QB Integration</div><div class="feat-desc">Minimum paid plan required to access QuickBooks sync</div></td>
+      <td class="cell-val"><div class="cell-note" style="font-size:12px; color:var(--accent1); font-weight:600;">Starter<br>$9/user/mo</div></td>
+      <td class="cell-val"><div class="cell-note" style="font-size:12px; color:var(--accent2); font-weight:600;">Teams<br>$9/user/mo</div></td>
+      <td class="cell-val"><div class="cell-note" style="font-size:12px; color:var(--accent3); font-weight:600;">Standard<br>$5.49/user/mo</div></td>
+      <td class="cell-val"><div class="cell-note" style="font-size:12px; color:var(--accent4); font-weight:600;">Grow<br>$7.50/user/mo</div></td>
+    </tr>
+
+    <!-- ── TEAM & APPROVAL WORKFLOWS ── -->
+    <tr class="cat-row"><td colspan="5">Team Management &amp; Approval Workflows</td></tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Timesheet Approvals</div><div class="feat-desc">Managers review and approve submitted timesheets before billing</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-high">Premium+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-enterprise">Enterprise</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Standard+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Starter+</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Time Off / PTO Tracking</div><div class="feat-desc">Manage vacation, sick leave, and holiday policies</div></td>
+      <td class="cell-val"><span class="cross">✗</span><div class="cell-note">Not supported</div></td>
+      <td class="cell-val"><span class="cross">✗</span></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Standard+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Team+</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Scheduling / Shift Management</div><div class="feat-desc">Assign and manage team schedules and shifts</div></td>
+      <td class="cell-val"><span class="partial">◑</span><div class="cell-note">Via Toggl Focus add-on</div></td>
+      <td class="cell-val"><span class="partial">◑</span><div class="cell-note">Via Forecast add-on<br>(+$9/user/mo)</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-high">Pro+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Team+</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Payroll Automation</div><div class="feat-desc">Auto-calculate and process payroll based on tracked hours</div></td>
+      <td class="cell-val"><span class="cross">✗</span></td>
+      <td class="cell-val"><span class="cross">✗</span></td>
+      <td class="cell-val"><span class="cross">✗</span></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Team+</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">GPS / Location Tracking</div><div class="feat-desc">Track field team locations in real time via GPS</div></td>
+      <td class="cell-val"><span class="cross">✗</span></td>
+      <td class="cell-val"><span class="cross">✗</span></td>
+      <td class="cell-val"><span class="partial">◑</span><div class="cell-note"><span class="tier tier-high">Pro+</span> (limited)</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note">GPS + geofencing add-on</div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Screenshot / Activity Monitoring</div><div class="feat-desc">Periodic screenshots &amp; keyboard/mouse activity for remote oversight</div></td>
+      <td class="cell-val"><span class="cross">✗</span><div class="cell-note">Privacy-first; not offered</div></td>
+      <td class="cell-val"><span class="cross">✗</span></td>
+      <td class="cell-val"><span class="cross">✗</span><div class="cell-note">No screenshots (GPS only)</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Starter+</span> (limited)<br><span class="tier tier-paid">Team+</span> (unlimited)</div></td>
+    </tr>
+
+    <!-- ── REPORTING & ANALYTICS ── -->
+    <tr class="cat-row"><td colspan="5">Reporting &amp; Analytics</td></tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Summary &amp; Detailed Reports</div><div class="feat-desc">Filterable time reports by client, project, user, or tag</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span> (basic)<br><span class="tier tier-paid">Starter+</span> (custom filters)</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Teams+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Grow+</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Profitability Reports</div><div class="feat-desc">Revenue vs. labor cost; project and client P&amp;L analysis</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-high">Premium+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-enterprise">Enterprise</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-high">Pro+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Grow+</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Project Forecasting</div><div class="feat-desc">Predicted completion dates and over-budget alerts based on pace</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-high">Premium+</span><br>80% budget alert</div></td>
+      <td class="cell-val"><span class="partial">◑</span><div class="cell-note">Via Forecast add-on only</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-high">Pro+</span></div></td>
+      <td class="cell-val"><span class="partial">◑</span><div class="cell-note">Budget alerts; no date forecasting</div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Scheduled Report Emails</div><div class="feat-desc">Automatically email reports to stakeholders on a schedule</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-high">Premium+</span></div></td>
+      <td class="cell-val"><span class="cross">✗</span></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-high">Pro+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Grow+</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Export (CSV / PDF)</div><div class="feat-desc">Download reports in standard spreadsheet and PDF formats</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Starter+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Teams+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-free">Free</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Starter+</span></div></td>
+    </tr>
+
+    <!-- ── INTEGRATIONS ── -->
+    <tr class="cat-row"><td colspan="5">Integrations &amp; Ecosystem</td></tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Xero Integration</div><div class="feat-desc">Sync time and invoices with Xero accounting</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Starter+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Teams+</span></div></td>
+      <td class="cell-val"><span class="partial">◑</span><div class="cell-note">Via Zapier</div></td>
+      <td class="cell-val"><span class="cross">✗</span></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">FreshBooks Integration</div><div class="feat-desc">Sync time with FreshBooks for invoicing</div></td>
+      <td class="cell-val"><span class="check">✓</span></td>
+      <td class="cell-val"><span class="cross">✗</span></td>
+      <td class="cell-val"><span class="cross">✗</span></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Grow+</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Jira Integration</div><div class="feat-desc">Link Jira issues/projects to time entries</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-paid">Starter+</span></div></td>
+      <td class="cell-val"><span class="check">✓</span></td>
+      <td class="cell-val"><span class="check">✓</span></td>
+      <td class="cell-val"><span class="check">✓</span></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Asana / Trello / ClickUp</div><div class="feat-desc">Project management tool integrations</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note">100+ integrations</div></td>
+      <td class="cell-val"><span class="check">✓</span></td>
+      <td class="cell-val"><span class="check">✓</span></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note">30+ integrations</div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Salesforce Integration</div><div class="feat-desc">Sync CRM objects and track time against Salesforce records</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-high">Premium+</span></div></td>
+      <td class="cell-val"><span class="cross">✗</span></td>
+      <td class="cell-val"><span class="cross">✗</span></td>
+      <td class="cell-val"><span class="cross">✗</span></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Zapier / API Access</div><div class="feat-desc">Connect via Zapier or direct API for custom integrations</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note">API + Zapier</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note">API + Zapier</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note">API + Zapier</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note">API + Zapier (7,000+ via Zapier)</div></td>
+    </tr>
+
+    <!-- ── SECURITY & ENTERPRISE ── -->
+    <tr class="cat-row"><td colspan="5">Security &amp; Enterprise Features</td></tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Single Sign-On (SSO / SAML)</div><div class="feat-desc">Enterprise authentication via SAML-based SSO provider</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-enterprise">Enterprise</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-enterprise">Enterprise</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-enterprise">Enterprise</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-enterprise">Enterprise</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Audit Logs</div><div class="feat-desc">Full activity audit trail for compliance and admin oversight</div></td>
+      <td class="cell-val"><span class="cross">✗</span></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-enterprise">Enterprise</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-enterprise">Enterprise</span></div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-enterprise">Enterprise</span></div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">SOC 2 Compliance</div><div class="feat-desc">SOC 2 Type II certification for data security standards</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note">SOC 2 Type 1</div></td>
+      <td class="cell-val"><span class="partial">◑</span><div class="cell-note">Not confirmed post-acquisition</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note"><span class="tier tier-enterprise">Enterprise</span></div></td>
+      <td class="cell-val"><span class="partial">◑</span><div class="cell-note">HIPAA via Enterprise</div></td>
+    </tr>
+
+    <tr class="feat-row">
+      <td><div class="feat-name">Free Plan Available</div><div class="feat-desc">A genuinely usable free tier (not just a trial)</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note">5 users; unlimited projects</div></td>
+      <td class="cell-val"><span class="partial">◑</span><div class="cell-note">1 user, 2 projects only</div></td>
+      <td class="cell-val"><span class="check">✓</span><div class="cell-note">5 users (was unlimited pre-Apr 2026)</div></td>
+      <td class="cell-val"><span class="partial">◑</span><div class="cell-note">1 user only</div></td>
+    </tr>
+
+    <!-- SCORE ROW -->
+    <tr class="score-row">
+      <td>Feature Score (out of 29)</td>
+      <td><div class="score-bar-wrap"><span class="score-num score-toggl">23</span><span class="score-label">Toggl Track</span></div></td>
+      <td><div class="score-bar-wrap"><span class="score-num score-harvest">20</span><span class="score-label">Harvest</span></div></td>
+      <td><div class="score-bar-wrap"><span class="score-num score-clockify">24</span><span class="score-label">Clockify</span></div></td>
+      <td><div class="score-bar-wrap"><span class="score-num score-hubstaff">26</span><span class="score-label">Hubstaff</span></div></td>
+    </tr>
+
+  </tbody>
+</table>
+</div>
+
+<!-- FOOTNOTES / NOTES -->
+<div class="footnotes">
+  <div class="footnote-title">Notes &amp; Considerations</div>
+  <div class="footnote-grid">
+    <div class="footnote-item">
+      <strong class="toggl-accent">Toggl Track</strong>
+      <p>Best UX &amp; reporting for agencies. Profitability tracking requires Premium ($18/user). No native expense tracking or PTO — you'll need add-ons or Harvest for those. QB integration is one-way (sends invoices to QB, not time data directly). Salesforce integration is a differentiator vs competitors.</p>
+    </div>
+    <div class="footnote-item">
+      <strong class="harvest-accent">Harvest ⚠</strong>
+      <p>Acquired by Bending Spoons in 2025. Users are reporting major price increases at renewal — some 10–100x prior rates. The smoothest invoicing workflow in the category. Forecast (resource scheduling) is a separate paid product at +$9/user/mo. Evaluate carefully given acquisition risk.</p>
+    </div>
+    <div class="footnote-item">
+      <strong class="clockify-accent">Clockify</strong>
+      <p>Best value at scale — ended unlimited free plan in April 2026 (now capped at 5 users). QB integration available at Standard tier ($5.49/user/mo). Utilitarian UI but full-featured. No payroll automation. Strong expense tracking and time-off on Pro+. Good middle-ground for growing teams.</p>
+    </div>
+    <div class="footnote-item">
+      <strong class="hubstaff-accent">Hubstaff</strong>
+      <p>Most features overall, especially for remote/field teams. Only platform with payroll automation, GPS, and QB Desktop support. QB integration auto-syncs hourly (Online) or via .IIF export (Desktop). Requires QB integration on Grow plan ($7.50/user/mo); unlimited integrations on Team ($10). 2-seat minimum on all paid plans.</p>
+    </div>
+    <div class="footnote-item">
+      <strong>QuickBooks Integration Summary</strong>
+      <p>All four platforms integrate with QuickBooks Online. Harvest and Hubstaff offer the deepest integrations (bi-directional / auto-sync). Hubstaff is the only option supporting QB Desktop. Clockify offers the most affordable QB-enabled plan at $5.49/user/mo. Toggl's QB sync is invoice-focused only.</p>
+    </div>
+    <div class="footnote-item">
+      <strong>Best Fit Guide</strong>
+      <p><strong class="toggl-accent">Toggl</strong> → Agencies valuing UI &amp; reporting. <strong class="harvest-accent">Harvest</strong> → Freelancers who bill by the hour (but watch pricing). <strong class="clockify-accent">Clockify</strong> → Budget-conscious teams needing solid QB integration. <strong class="hubstaff-accent">Hubstaff</strong> → Remote/field teams needing monitoring, payroll &amp; QB sync.</p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
