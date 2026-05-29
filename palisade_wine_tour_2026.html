@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Palisade Wine Tour · July 11, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --peach: #F4A261;
+    --peach-light: #FDEBD0;
+    --peach-dark: #D4813A;
+    --lavender: #9B8EC4;
+    --lavender-light: #E8E4F5;
+    --lavender-dark: #6B5EA8;
+    --wine: #722F37;
+    --wine-dark: #4A1C22;
+    --wine-light: #C4717A;
+    --cream: #FDF6ED;
+    --sage: #7A9E7E;
+    --gold: #C9A84C;
+    --dark: #2C1810;
+    --text: #3D2314;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--cream);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative;
+    text-align: center;
+    padding: 3rem 2rem 2rem;
+    background: linear-gradient(160deg, var(--wine-dark) 0%, var(--wine) 50%, var(--peach-dark) 100%);
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(155,142,196,0.25) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 20%, rgba(244,162,97,0.2) 0%, transparent 50%);
+  }
+
+  .vine-left, .vine-right {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 80px;
+    opacity: 0.15;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+  }
+  .vine-left { left: 0; }
+  .vine-right { right: 0; }
+
+  .header-inner { position: relative; z-index: 2; }
+
+  .trip-label {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--peach-light);
+    opacity: 0.85;
+    margin-bottom: 0.75rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2.2rem, 6vw, 3.8rem);
+    color: var(--cream);
+    line-height: 1.1;
+    margin-bottom: 0.4rem;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+
+  .header-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--peach-light);
+    opacity: 0.9;
+    margin-bottom: 1.5rem;
+  }
+
+  .header-meta {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .meta-pill {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 0.4rem 1rem;
+    border-radius: 2rem;
+    backdrop-filter: blur(4px);
+  }
+
+  /* ── MAIN CONTENT ── */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+  }
+
+  /* ── ITINERARY CARD ── */
+  .itinerary-card {
+    background: white;
+    border-radius: 16px;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 4px 30px rgba(114,47,55,0.1), 0 1px 4px rgba(0,0,0,0.05);
+    overflow: hidden;
+    border: 1px solid rgba(244,162,97,0.2);
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .itinerary-card:nth-child(1) { animation-delay: 0.1s; }
+  .itinerary-card:nth-child(2) { animation-delay: 0.2s; }
+  .itinerary-card:nth-child(3) { animation-delay: 0.3s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── CARD HEADER ── */
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.4rem 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .card-header-left { display: flex; align-items: center; gap: 1rem; }
+
+  .itinerary-number {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .card-title-block {}
+  .card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    line-height: 1.2;
+  }
+  .card-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    opacity: 0.7;
+    margin-top: 0.15rem;
+  }
+
+  /* ── DIVIDER ── */
+  .card-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(244,162,97,0.3), transparent);
+    margin: 0 2rem;
+  }
+
+  /* ── STOPS ── */
+  .stops {
+    padding: 1.5rem 2rem 0.5rem;
+  }
+
+  .stop {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1rem;
+    gap: 0 1rem;
+    margin-bottom: 1.2rem;
+    position: relative;
+  }
+
+  .stop > div:first-child {
+    flex: 0 0 68px;
+    width: 68px;
+  }
+
+  .stop:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 35px;
+    top: 42px;
+    bottom: -12px;
+    width: 2px;
+    background: linear-gradient(to bottom, rgba(244,162,97,0.4), rgba(155,142,196,0.2));
+  }
+
+  .stop-time {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--lavender-dark);
+    padding-top: 0.2rem;
+    text-align: right;
+    font-weight: 600;
+  }
+
+  .stop-icon {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    margin-top: -2px;
+  }
+
+  .stop-body {
+    flex: 1;
+    min-width: 0;
+    padding-bottom: 0.5rem;
+  }
+
+  .stop-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.2rem;
+  }
+
+  .stop-address {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.67rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text);
+    opacity: 0.5;
+    margin-bottom: 0.35rem;
+  }
+
+  .stop-desc {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    opacity: 0.8;
+    margin-bottom: 0.4rem;
+  }
+
+  .stop-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .tag {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: 1rem;
+    border: 1px solid;
+  }
+
+  .tag-wine { background: rgba(114,47,55,0.08); border-color: rgba(114,47,55,0.2); color: var(--wine); }
+  .tag-food { background: rgba(244,162,97,0.12); border-color: rgba(244,162,97,0.35); color: var(--peach-dark); }
+  .tag-music { background: rgba(155,142,196,0.12); border-color: rgba(155,142,196,0.35); color: var(--lavender-dark); }
+  .tag-reservation { background: rgba(201,168,76,0.1); border-color: rgba(201,168,76,0.3); color: #8A6A00; }
+  .tag-alert { background: rgba(200,80,80,0.08); border-color: rgba(200,80,80,0.25); color: #8B2020; }
+  .tag-tour { background: rgba(122,158,126,0.1); border-color: rgba(122,158,126,0.3); color: var(--sage); }
+
+  .stop-contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    margin-top: 0.35rem;
+    max-width: 100%;
+  }
+
+  .contact-link {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.67rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    white-space: nowrap;
+  }
+  .contact-link:hover { opacity: 1; }
+
+  .note-box {
+    background: var(--lavender-light);
+    border-left: 3px solid var(--lavender);
+    border-radius: 0 8px 8px 0;
+    padding: 0.6rem 0.9rem;
+    margin-top: 0.5rem;
+    font-size: 0.88rem;
+    font-style: italic;
+    color: var(--lavender-dark);
+    line-height: 1.5;
+  }
+
+  .alert-box {
+    background: #FFF5F5;
+    border-left: 3px solid #C84B4B;
+    border-radius: 0 8px 8px 0;
+    padding: 0.6rem 0.9rem;
+    margin-top: 0.5rem;
+    font-size: 0.88rem;
+    color: #8B2020;
+    line-height: 1.5;
+  }
+
+  .waitlist-box {
+    background: rgba(201,168,76,0.08);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 0.6rem 0.9rem;
+    margin-top: 0.5rem;
+    font-size: 0.88rem;
+    color: #6B4C00;
+    line-height: 1.5;
+  }
+
+  /* ── WINERY REFERENCE TABLE ── */
+  .winery-ref {
+    background: white;
+    border-radius: 16px;
+    padding: 1.8rem 2rem;
+    box-shadow: 0 4px 20px rgba(114,47,55,0.08);
+    border: 1px solid rgba(244,162,97,0.2);
+    margin-bottom: 2.5rem;
+    overflow-x: auto;
+  }
+
+  .winery-ref h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--wine-dark);
+    margin-bottom: 1.2rem;
+  }
+
+  .winery-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+
+  .winery-table th {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text);
+    opacity: 0.5;
+    text-align: left;
+    padding: 0.4rem 0.8rem 0.6rem;
+    border-bottom: 2px solid rgba(244,162,97,0.2);
+  }
+
+  .winery-table td {
+    padding: 0.6rem 0.8rem;
+    border-bottom: 1px solid rgba(244,162,97,0.1);
+    vertical-align: top;
+    line-height: 1.4;
+  }
+
+  .winery-table tr:last-child td { border-bottom: none; }
+  .winery-table tr:hover td { background: rgba(244,162,97,0.04); }
+
+  .winery-name { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 0.92rem; }
+  .winery-hours { font-family: 'Josefin Sans', sans-serif; font-size: 0.72rem; letter-spacing: 0.05em; white-space: nowrap; }
+  .winery-location { font-family: 'Josefin Sans', sans-serif; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--lavender-dark); }
+  .winery-dist { font-family: 'Josefin Sans', sans-serif; font-size: 0.7rem; color: var(--sage); white-space: nowrap; }
+
+  /* ── ITINERARY COLORS ── */
+  .it-1 .card-header { background: linear-gradient(135deg, #FDF0E4 0%, #FDF6ED 100%); border-bottom: 1px solid rgba(244,162,97,0.2); }
+  .it-1 .itinerary-number { background: linear-gradient(135deg, var(--peach-dark), var(--peach)); }
+  .it-1 .card-name { color: var(--wine-dark); }
+  .it-1 .stop-icon { background: var(--peach-light); }
+
+  .it-2 .card-header { background: linear-gradient(135deg, #EEE8F8 0%, #F5F2FC 100%); border-bottom: 1px solid rgba(155,142,196,0.2); }
+  .it-2 .itinerary-number { background: linear-gradient(135deg, var(--lavender-dark), var(--lavender)); }
+  .it-2 .card-name { color: var(--lavender-dark); }
+  .it-2 .stop-icon { background: var(--lavender-light); }
+
+  .it-3 .card-header { background: linear-gradient(135deg, #EAF3EB 0%, #F3F9F4 100%); border-bottom: 1px solid rgba(122,158,126,0.2); }
+  .it-3 .itinerary-number { background: linear-gradient(135deg, #4A7D4E, var(--sage)); }
+  .it-3 .card-name { color: #2D5C31; }
+  .it-3 .stop-icon { background: #EAF3EB; }
+
+  .note-box-full {
+    margin: -0.5rem 2rem 1.2rem 2rem;
+    background: var(--lavender-light);
+    border-left: 3px solid var(--lavender);
+    border-radius: 0 8px 8px 0;
+    padding: 0.75rem 1rem;
+    font-size: 0.88rem;
+    color: var(--lavender-dark);
+    line-height: 1.7;
+  }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text);
+    opacity: 0.4;
+    text-align: center;
+    margin: 2.5rem 0 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .section-label::before, .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.3;
+  }
+
+  /* ── REMINDERS ── */
+  .reminders {
+    background: white;
+    border-radius: 16px;
+    padding: 1.8rem 2rem;
+    box-shadow: 0 4px 20px rgba(114,47,55,0.08);
+    border: 1px solid rgba(201,168,76,0.2);
+    margin-bottom: 2.5rem;
+  }
+
+  .reminders h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--wine-dark);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .reminder-list { list-style: none; }
+  .reminder-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(244,162,97,0.12);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  .reminder-list li:last-child { border-bottom: none; }
+  .reminder-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 0.1rem; }
+  .reminder-text { flex: 1; }
+  .reminder-urgent { color: var(--wine); font-weight: 600; }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 2rem;
+    background: var(--wine-dark);
+    color: var(--cream);
+  }
+  footer p {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    opacity: 0.7;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .card-header { padding: 1.2rem 1.2rem; }
+    .stops { padding: 1.2rem 1.2rem 0.5rem; }
+    .stop {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1rem; grid-template-columns: 60px 1fr; }
+    .pizza-stop { margin: 0 -1.2rem; padding: 1.2rem; }
+    .reminders { padding: 1.4rem 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="vine-left">🍇</div>
+  <div class="vine-right">🍇</div>
+  <div class="header-inner">
+    <p class="trip-label">Annual Wine Country Excursion · Basecamp Campground</p>
+    <h1>Palisade Wine Tour</h1>
+    <p style="font-family:'Josefin Sans', sans-serif; font-size:clamp(0.85rem, 2.5vw, 1.05rem); letter-spacing:0.25em; text-transform:uppercase; color:var(--peach-light); opacity:0.9; margin-bottom:0.6rem;">July 11, 2026</p>
+    <p class="header-sub">Peaches, lavender & live music in Colorado wine country</p>
+    <div class="header-meta">
+      <span class="meta-pill">🚐 Van departs Basecamp</span>
+      <span class="meta-pill">👥 Party of 10</span>
+      <span class="meta-pill">🍕 Pool pizza ~6:30 pm</span>
+    </div>
+  </div>
+</header>
+
+
+
+<main>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!-- ITINERARY 1 -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="itinerary-card it-1" id="itin-1">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="itinerary-number">I</div>
+        <div class="card-title-block">
+          <div class="card-name">The Essence of Terroir</div>
+          <div class="card-tagline">Rooted in place, unhurried by pace — the soul of Palisade wine country</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-divider"></div>
+
+    <div class="stops">
+
+      <!-- STOP 0: The Uncorking -->
+      <div class="stop">
+        <div style="text-align:center;">
+          <div class="stop-time">10:00 am</div>
+          <div class="stop-icon">🔓</div>
+        </div>
+        <div class="stop-body">
+          <div class="stop-name">The Uncorking — Pick Your Pour</div>
+          <div class="stop-address">Deroco Cellars: 102 W 3rd St, Palisade · Graystone Winery: Clifton (near TWP)</div>
+          <div class="stop-tags">
+            <span class="tag tag-wine">Choose One</span>
+            <span class="tag tag-wine">Opens 9–10 am</span>
+          </div>
+          <div class="stop-desc">
+            <strong>Deroco Cellars</strong> — Palisade's multi-winery tasting room, open from 9 am. Sample wines from several local producers in one stop. Great casual warm-up before the day begins.<br><br>
+            <strong>Graystone Winery</strong> — Port wine specialist in Clifton, opens 10 am. Conveniently located right near TWP — two stops, one neighborhood, no backtracking.
+          </div>
+        </div>
+      </div>
+
+      <!-- STOP 1: TWP -->
+      <div class="stop">
+        <div style="text-align:center;">
+          <div class="stop-time">11:00 am</div>
+          <div class="stop-icon">🇿🇦</div>
+        </div>
+        <div class="stop-body">
+          <div class="stop-name">TWP Winery & Farmhouse</div>
+          <div class="stop-address">3334 F Rd, Clifton · (303) 875-9609</div>
+          <div class="stop-tags">
+            <span class="tag tag-wine">Boutique Tasting</span>
+            <span class="tag tag-food">Charcuterie Lunch</span>
+            <span class="tag tag-reservation">✓ Reserved 11:00 am</span>
+            <span class="tag tag-tour">Peacocks & Goats</span>
+          </div>
+          <div class="stop-desc">South African-inspired farmhouse winery owned by Shari & Edwin. The "Kaas en Vleis" charcuterie board is included with the tasting — a proper, leisurely lunch. Small batches, big personality. Watch for the roaming peacocks.</div>
+          <div class="stop-contact">
+            <a class="contact-link" href="tel:3038759609">📞 (303) 875-9609</a>
+            <a class="contact-link" href="mailto:shari@twpwinery.com">✉ shari@twpwinery.com</a>
+            <a class="contact-link" href="https://twpwinery.com" target="_blank">🌐 twpwinery.com</a>
+          </div>
+          <div class="note-box">⏰ Last reservation of the day is 3:45 pm — our 11:00 am booking gives us full, unhurried time. Closes at 4:00 pm.</div>
+        </div>
+      </div>
+
+      <!-- STOP 2: TerraVin -->
+      <div class="stop">
+        <div style="text-align:center;">
+          <div class="stop-time">1:00 pm</div>
+          <div class="stop-icon">🌿</div>
+        </div>
+        <div class="stop-body">
+          <div class="stop-name">TerraVin Cellars</div>
+          <div class="stop-address">349 W 8th Street, Palisade 81526 · David Forenza · (970) 390-2332</div>
+          <div class="stop-tags">
+            <span class="tag tag-wine">Tasting Room</span>
+            <span class="tag tag-tour">Private Tour — Pending</span>
+            <span class="tag tag-food">Build-Your-Own Charcuterie</span>
+            <span class="tag tag-music">Evening Music — TBD</span>
+          </div>
+          <div class="stop-desc">A boutique gem in the heart of downtown Palisade. Winemaker Corey (Australian, 20+ years in the valley) crafts wines from old and new world techniques. Open noon–8 pm Saturdays.</div>
+          <div class="stop-contact">
+            <a class="contact-link" href="tel:9703902332">📞 (970) 390-2332</a>
+            <a class="contact-link" href="mailto:dforenza@gmail.com">✉ dforenza@gmail.com</a>
+            <a class="contact-link" href="https://terravincellars.com" target="_blank">🌐 terravincellars.com</a>
+          </div>
+          <div class="note-box">
+            📧 <strong>Email sent to David (May 29):</strong> Garrett reached out about visiting July 11, either 1:00–3:00 pm or 5:30 pm, asking about reservations for 10–12, any events, and tour/tasting options. <strong>Awaiting reply.</strong><br><br>
+            🔄 <strong>Itinerary note:</strong> TerraVin time slot — and possibly which itinerary wins the vote — may shift depending on David's response. If a private tour or evening event is confirmed, a 5:30 pm slot opens up as a strong option in alternate itineraries.
+          </div>
+        </div>
+      </div>
+
+      <!-- STOP 3: Afternoon Flight -->
+      <div class="stop">
+        <div style="text-align:center;">
+          <div class="stop-time">2:15 pm</div>
+          <div class="stop-icon">🥂</div>
+        </div>
+        <div class="stop-body">
+          <div class="stop-name">The Afternoon Flight — Pick Your Pour</div>
+          <div class="stop-address">BookCliff: 670 39th Rd · Cliff Dweller: 3674 G Rd · Ordinary Fellow: 202 Peach Ave</div>
+          <div class="stop-tags">
+            <span class="tag tag-wine">Choose One</span>
+            <span class="tag tag-wine">Tasting Only — No Food</span>
+          </div>
+          <div class="stop-desc">
+            <strong>BookCliff Vineyards</strong> — 2x Governor's Cup winner, panoramic valley views, award-winning Albariño & Viognier. A Palisade classic. Open 11 am–7 pm. · <a href="https://bookcliffvineyards.com" target="_blank" style="color:var(--lavender-dark);">bookcliffvineyards.com</a><br><br>
+            <strong>Cliff Dweller Wine Co.</strong> — Family-owned, natural winemaking, Moroccan lounge vibe, shaded pet-friendly patio. New to most of the group. Opens 2:00 pm Saturdays. · <a href="https://cliffdwellerwines.com" target="_blank" style="color:var(--lavender-dark);">cliffdwellerwines.com</a><br><br>
+            <strong>Ordinary Fellow</strong> — Craft winery focused on French varietals, rotating local food trucks on the shaded patio. Noon–? · <a href="https://ordinaryfellow.com" target="_blank" style="color:var(--lavender-dark);">ordinaryfellow.com</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- STOP 4: Restoration -->
+      <div class="stop stop-with-note">
+        <div style="text-align:center;">
+          <div class="stop-time">3:30 pm</div>
+          <div class="stop-icon">🎸</div>
+        </div>
+        <div class="stop-body">
+          <div class="stop-name">Restoration Vineyards — Band in the Barrel</div>
+          <div class="stop-address">3594 E ½ Rd, Palisade · (970) 985-0832</div>
+          <div class="stop-tags">
+            <span class="tag tag-music">Gonzales & Ritchen · 3:30–5:00</span>
+            <span class="tag tag-food">2+ Food Trucks — TBD</span>
+            <span class="tag tag-reservation">✓ Confirmed · 8 Guests</span>
+            <span class="tag tag-reservation">✓ Confirmed · 2 Guests</span>
+            <span class="tag tag-wine">Bottle & Glass Sales Only</span>
+          </div>
+          <div class="stop-desc">The annual highlight — <strong>Gonzales & Ritchen</strong> perform live in the vineyard. Colorado Winery of the Year, surrounded by peach & cherry orchards with Grand Mesa views. Bottle and glass sales only during the concert. Bring lawn chairs or blankets — shade not guaranteed.</div>
+          <div class="stop-desc" style="font-style:italic; margin-top: 0.5rem;">Vocalist Gonzales — former frontwoman of Peach Street Revival, Grand Junction Rockestra featured artist — channels Aretha, Etta James, and Chaka Khan with powerful elegance. Bassist Bill Ritchen brings Juilliard training and 35 years with the San Francisco Symphony, with credits spanning Steely Dan to the Allman Brothers.</div>
+          <div class="stop-contact">
+            <a class="contact-link" href="tel:9709850832">📞 (970) 985-0832</a>
+            <a class="contact-link" href="mailto:lbrauns@restorationvineyards.com">✉ lbrauns@restorationvineyards.com</a>
+            <a class="contact-link" href="https://restorationvineyards.com" target="_blank">🌐 restorationvineyards.com</a>
+            <a class="contact-link" href="https://www.exploretock.com/restorationvineyards" target="_blank">🎟 Manage on Tock</a>
+            <a class="contact-link" href="https://www.gonzalesmusic.com/about" target="_blank">🎤 gonzalesmusic.com</a>
+            <a class="contact-link" href="https://music.apple.com/us/album/memento-mori/1876484473" target="_blank">🎵 Memento Mori on Apple Music</a>
+          </div>
+        </div>
+      </div>
+      <div class="note-box note-box-full">
+        ✅ <strong>Garrett Phillips</strong> — Party of 8 · Confirmation #TOCK-T-9OFQZJ59 &nbsp;|&nbsp;
+        ✅ <strong>Tiffany Phillips</strong> — Party of 2 · stiffhair@yahoo.com · (720) 289-5893 &nbsp;|&nbsp;
+        🍔 Food trucks TBD — check restorationvineyards.com or call Linda · (970) 985-0832 &nbsp;|&nbsp;
+        🚗 Parking limited — carpool strongly encouraged. No outside food or alcohol.
+      </div>
+
+      <!-- STOP: Diorio's Pizza -->
+      <div class="stop">
+        <div style="text-align:center;">
+          <div class="stop-time">5:15 pm</div>
+          <div class="stop-icon">🍕</div>
+        </div>
+        <div class="stop-body">
+          <div class="stop-name">Diorio's of Palisade — Pizza Pickup</div>
+          <div class="stop-address">309 W 8th St, Palisade · (970) 464-7966</div>
+          <div class="stop-tags">
+            <span class="tag tag-food">Call Ahead ~4:15 pm</span>
+            <span class="tag tag-food">2–3 Pizzas</span>
+          </div>
+          <div class="stop-desc">NY-style pizza, open until 9 pm. Order 2–3 pies about an hour ahead so they're hot and ready on arrival. Quick stop — van stays running!</div>
+          <div class="stop-contact">
+            <a class="contact-link" href="tel:9704647966">📞 (970) 464-7966</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- STOP: Basecamp Pool -->
+      <div class="stop">
+        <div style="text-align:center;">
+          <div class="stop-time">5:30 pm</div>
+          <div class="stop-icon">🏊</div>
+        </div>
+        <div class="stop-body">
+          <div class="stop-name">Basecamp RV Resort — Pool & Pizza</div>
+          <div class="stop-address">985 N River Rd, Palisade · 1 mile from downtown</div>
+          <div class="stop-tags">
+            <span class="tag tag-food">Pizza at the Pool</span>
+            <span class="tag tag-tour">Heated Pool thru Oct 15</span>
+          </div>
+          <div class="stop-desc">The perfect ending — cold drinks, warm pizza, and a heated pool surrounded by orchards and vineyards along the Colorado River. 🌅</div>
+        </div>
+      </div>
+
+    </div><!-- /stops -->
+
+  </div><!-- /card 1 -->
+
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!-- ITINERARY 2 -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="itinerary-card it-2" id="itin-2">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="itinerary-number">II</div>
+        <div class="card-title-block">
+          <div class="card-name">The Long Pour</div>
+          <div class="card-tagline">Five stops, two music venues, and TerraVin as a sunset sendoff</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-divider"></div>
+
+    <div class="stops">
+
+      <!-- STOP 1: TWP -->
+      <div class="stop">
+        <div style="text-align:center;">
+          <div class="stop-time">11:00 am</div>
+          <div class="stop-icon">🇿🇦</div>
+        </div>
+        <div class="stop-body">
+          <div class="stop-name">TWP Winery & Farmhouse</div>
+          <div class="stop-address">3334 F Rd, Clifton · (303) 875-9609</div>
+          <div class="stop-tags">
+            <span class="tag tag-wine">Boutique Tasting</span>
+            <span class="tag tag-food">Charcuterie Lunch</span>
+            <span class="tag tag-reservation">✓ Reserved 11:00 am</span>
+            <span class="tag tag-tour">Peacocks & Goats</span>
+          </div>
+          <div class="stop-desc">Same great South African farmhouse start — "Kaas en Vleis" charcuterie board included with the tasting. Leisurely lunch pace, then head back into town.</div>
+          <div class="stop-contact">
+            <a class="contact-link" href="tel:3038759609">📞 (303) 875-9609</a>
+            <a class="contact-link" href="mailto:shari@twpwinery.com">✉ shari@twpwinery.com</a>
+            <a class="contact-link" href="https://twpwinery.com" target="_blank">🌐 twpwinery.com</a>
+          </div>
+          <div class="note-box">⏰ Closes 4:00 pm — our 11:00 am booking gives us full, unhurried time before heading to BookCliff.</div>
+        </div>
+      </div>
+
+      <!-- STOP 2: BookCliff -->
+      <div class="stop">
+        <div style="text-align:center;">
+          <div class="stop-time">1:00 pm</div>
+          <div class="stop-icon">🏔️</div>
+        </div>
+        <div class="stop-body">
+          <div class="stop-name">BookCliff Vineyards</div>
+          <div class="stop-address">670 39th Rd, Palisade · (303) 499-7301</div>
+          <div class="stop-tags">
+            <span class="tag tag-wine">Governor's Cup Winner</span>
+            <span class="tag tag-wine">Panoramic Views</span>
+          </div>
+          <div class="stop-desc">2x Colorado Governor's Cup winner with spectacular valley views. Known for their Albariño and Viognier. A classic Palisade stop that never gets old. Open 11 am–7 pm.</div>
+          <div class="stop-contact">
+            <a class="contact-link" href="tel:3034997301">📞 (303) 499-7301</a>
+            <a class="contact-link" href="mailto:winery@bookcliffvineyards.com">✉ winery@bookcliffvineyards.com</a>
+            <a class="contact-link" href="https://bookcliffvineyards.com" target="_blank">🌐 bookcliffvineyards.com</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- STOP 3: Cliff Dweller -->
+      <div class="stop">
+        <div style="text-align:center;">
+          <div class="stop-time">2:15 pm</div>
+          <div class="stop-icon">🪨</div>
+        </div>
+        <div class="stop-body">
+          <div class="stop-name">Cliff Dweller Wine Co.</div>
+          <div class="stop-address">3674 G Rd, Palisade · (970) 464-2222</div>
+          <div class="stop-tags">
+            <span class="tag tag-wine">New to Most of the Group</span>
+            <span class="tag tag-wine">Natural Winemaking</span>
+          </div>
+          <div class="stop-desc">Family-owned, natural winemaking philosophy with a Moroccan lounge vibe and pet-friendly shaded patio. New to most of the group — a fresh discovery. Opens 2:00 pm Saturdays, so timing is just right.</div>
+          <div class="stop-contact">
+            <a class="contact-link" href="https://cliffdwellerwines.com" target="_blank">🌐 cliffdwellerwines.com</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- STOP 4: Restoration -->
+      <div class="stop">
+        <div style="text-align:center;">
+          <div class="stop-time">3:30 pm</div>
+          <div class="stop-icon">🎸</div>
+        </div>
+        <div class="stop-body">
+          <div class="stop-name">Restoration Vineyards — Band in the Barrel</div>
+          <div class="stop-address">3594 E ½ Rd, Palisade · (970) 985-0832</div>
+          <div class="stop-tags">
+            <span class="tag tag-music">Gonzales & Ritchen · 3:30–5:00</span>
+            <span class="tag tag-food">2+ Food Trucks — TBD</span>
+            <span class="tag tag-reservation">✓ Confirmed · 8 Guests</span>
+            <span class="tag tag-reservation">✓ Confirmed · 2 Guests</span>
+            <span class="tag tag-wine">Bottle & Glass Sales Only</span>
+          </div>
+          <div class="stop-desc"><strong>Gonzales & Ritchen</strong> on the vineyard lawn with food trucks and Grand Mesa views. 90 minutes of wine, music and sunshine. Bring chairs and blankets — shade not guaranteed.</div>
+          <div class="stop-desc" style="font-style:italic; margin-top:0.5rem;">Vocalist Gonzales — former frontwoman of Peach Street Revival, Grand Junction Rockestra featured artist — channels Aretha, Etta James, and Chaka Khan with powerful elegance. Bassist Bill Ritchen brings Juilliard training and 35 years with the San Francisco Symphony, with credits spanning Steely Dan to the Allman Brothers.</div>
+          <div class="stop-contact">
+            <a class="contact-link" href="tel:9709850832">📞 (970) 985-0832</a>
+            <a class="contact-link" href="mailto:lbrauns@restorationvineyards.com">✉ lbrauns@restorationvineyards.com</a>
+            <a class="contact-link" href="https://restorationvineyards.com" target="_blank">🌐 restorationvineyards.com</a>
+            <a class="contact-link" href="https://www.exploretock.com/restorationvineyards" target="_blank">🎟 Manage on Tock</a>
+            <a class="contact-link" href="https://www.gonzalesmusic.com/about" target="_blank">🎤 gonzalesmusic.com</a>
+            <a class="contact-link" href="https://music.apple.com/us/album/memento-mori/1876484473" target="_blank">🎵 Memento Mori on Apple Music</a>
+          </div>
+        </div>
+      </div>
+      <div class="note-box note-box-full">
+        ✅ <strong>Garrett Phillips</strong> — Party of 8 · Confirmation #TOCK-T-9OFQZJ59 &nbsp;|&nbsp;
+        ✅ <strong>Tiffany Phillips</strong> — Party of 2 · stiffhair@yahoo.com · (720) 289-5893 &nbsp;|&nbsp;
+        🍔 Food trucks TBD — check restorationvineyards.com or call Linda · (970) 985-0832 &nbsp;|&nbsp;
+        🚗 Parking limited — carpool strongly encouraged. No outside food or alcohol.
+      </div>
+
+      <!-- STOP 5: TerraVin -->
+      <div class="stop">
+        <div style="text-align:center;">
+          <div class="stop-time">5:30 pm</div>
+          <div class="stop-icon">🌿</div>
+        </div>
+        <div class="stop-body">
+          <div class="stop-name">TerraVin Cellars</div>
+          <div class="stop-address">349 W 8th Street, Palisade 81526 · David Forenza · (970) 390-2332</div>
+          <div class="stop-tags">
+            <span class="tag tag-wine">Boutique Tasting</span>
+            <span class="tag tag-tour">Private Tour — Pending</span>
+            <span class="tag tag-music">Evening Music — TBD</span>
+          </div>
+          <div class="stop-desc">End the winery day at TerraVin as the valley cools down. Winemaker Corey's old & new world blends, open until 8 pm. A possible evening event or private tour with owner David could make this a memorable cap to the day — pending his reply.</div>
+          <div class="stop-contact">
+            <a class="contact-link" href="tel:9703902332">📞 (970) 390-2332</a>
+            <a class="contact-link" href="mailto:dforenza@gmail.com">✉ dforenza@gmail.com</a>
+            <a class="contact-link" href="https://terravincellars.com" target="_blank">🌐 terravincellars.com</a>
+          </div>
+          <div class="note-box">📧 <strong>Email sent to David (May 29) — awaiting reply.</strong> If evening event or tour is confirmed, this becomes the highlight closer of the day.</div>
+        </div>
+      </div>
+
+      <!-- STOP: Diorio's Pizza -->
+      <div class="stop">
+        <div style="text-align:center;">
+          <div class="stop-time">6:45 pm</div>
+          <div class="stop-icon">🍕</div>
+        </div>
+        <div class="stop-body">
+          <div class="stop-name">Diorio's of Palisade — Pizza Pickup</div>
+          <div class="stop-address">309 W 8th St, Palisade · (970) 464-7966</div>
+          <div class="stop-tags">
+            <span class="tag tag-food">Call Ahead ~5:45 pm</span>
+            <span class="tag tag-food">2–3 Pizzas</span>
+          </div>
+          <div class="stop-desc">NY-style pizza, open until 9 pm. Call from TerraVin about an hour before departure so pies are hot on arrival. Quick stop — van stays running!</div>
+          <div class="stop-contact">
+            <a class="contact-link" href="tel:9704647966">📞 (970) 464-7966</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- STOP: Basecamp Pool -->
+      <div class="stop">
+        <div style="text-align:center;">
+          <div class="stop-time">7:00 pm</div>
+          <div class="stop-icon">🏊</div>
+        </div>
+        <div class="stop-body">
+          <div class="stop-name">Basecamp RV Resort — Pool & Pizza</div>
+          <div class="stop-address">985 N River Rd, Palisade · 1 mile from downtown</div>
+          <div class="stop-tags">
+            <span class="tag tag-food">Pizza at the Pool</span>
+            <span class="tag tag-tour">Heated Pool thru Oct 15</span>
+            <span class="tag tag-alert">⚠️ Long Day — 5 Wineries</span>
+          </div>
+          <div class="stop-desc">Hard-earned finish line — pizza, pool, and Colorado River views after a full five-stop day. 🌅</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div><!-- /card 2 -->
+
+  <div class="section-label">Other Palisade Wineries — For Reference</div>
+
+  <div class="winery-ref">
+    <h3>🍇 Other Wineries In & Around Palisade</h3>
+    <table class="winery-table">
+      <thead>
+        <tr>
+          <th>Winery</th>
+          <th>Location</th>
+          <th>Sat Hours</th>
+          <th>From Basecamp</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="winery-name">Deroco Cellars</div></td>
+          <td><div class="winery-location">In Town</div></td>
+          <td><div class="winery-hours">9 am – 5 pm</div></td>
+          <td><div class="winery-dist">~5 min</div></td>
+          <td>Multi-winery tasting room · Earliest opener</td>
+        </tr>
+        <tr>
+          <td><div class="winery-name">Graystone Winery</div></td>
+          <td><div class="winery-location">Clifton</div></td>
+          <td><div class="winery-hours">10 am – 5 pm</div></td>
+          <td><div class="winery-dist">~15 min</div></td>
+          <td>Port wine specialist · Right near TWP</td>
+        </tr>
+        <tr>
+          <td><div class="winery-name">Hermosa Vineyards</div></td>
+          <td><div class="winery-location">In Town</div></td>
+          <td><div class="winery-hours">10 am – 5 pm</div></td>
+          <td><div class="winery-dist">~5 min</div></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><div class="winery-name">Talon Wines / Meadery</div></td>
+          <td><div class="winery-location">In Town</div></td>
+          <td><div class="winery-hours">10 am – 5 pm</div></td>
+          <td><div class="winery-dist">~5 min</div></td>
+          <td>Lavender wine, meads, charcuterie</td>
+        </tr>
+        <tr>
+          <td><div class="winery-name">Carlson Vineyards</div></td>
+          <td><div class="winery-location">East Orchard Mesa</div></td>
+          <td><div class="winery-hours">10 am – 5:30 pm</div></td>
+          <td><div class="winery-dist">~15 min</div></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><div class="winery-name">Avant Vineyards</div></td>
+          <td><div class="winery-location">East Orchard Mesa</div></td>
+          <td><div class="winery-hours">11 am – 5 pm</div></td>
+          <td><div class="winery-dist">~15 min</div></td>
+          <td>Saturday only</td>
+        </tr>
+        <tr>
+          <td><div class="winery-name">Colorado Cellars</div></td>
+          <td><div class="winery-location">East Orchard Mesa</div></td>
+          <td><div class="winery-hours">11 am – 5 pm</div></td>
+          <td><div class="winery-dist">~15 min</div></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><div class="winery-name">Sauvage Spectrum</div></td>
+          <td><div class="winery-location">In Town</div></td>
+          <td><div class="winery-hours">11 am – 7 pm</div></td>
+          <td><div class="winery-dist">~5 min</div></td>
+          <td>Live music & events</td>
+        </tr>
+        <tr>
+          <td><div class="winery-name">Maison La Belle Vie</div></td>
+          <td><div class="winery-location">In Town</div></td>
+          <td><div class="winery-hours">11 am – 8 pm</div></td>
+          <td><div class="winery-dist">~5 min</div></td>
+          <td>Food, French style, events</td>
+        </tr>
+        <tr>
+          <td><div class="winery-name">Colterris Collections</div></td>
+          <td><div class="winery-location">In Town</div></td>
+          <td><div class="winery-hours">11 am – 6 pm</div></td>
+          <td><div class="winery-dist">~5 min</div></td>
+          <td>Wine memorabilia museum</td>
+        </tr>
+        <tr>
+          <td><div class="winery-name">Carboy Mt. Garfield</div></td>
+          <td><div class="winery-location">In Town</div></td>
+          <td><div class="winery-hours">Noon – ?</div></td>
+          <td><div class="winery-dist">~5 min</div></td>
+          <td>Live music Saturdays 4–7 pm</td>
+        </tr>
+        <tr>
+          <td><div class="winery-name">Peachfork Orchards</div></td>
+          <td><div class="winery-location">In Town</div></td>
+          <td><div class="winery-hours">Noon – 6 pm</div></td>
+          <td><div class="winery-dist">~5 min</div></td>
+          <td>Orchard & vineyard</td>
+        </tr>
+        <tr>
+          <td><div class="winery-name">Mafia Princess Wines</div></td>
+          <td><div class="winery-location">Clifton</div></td>
+          <td><div class="winery-hours">Noon – 6 pm</div></td>
+          <td><div class="winery-dist">~15 min</div></td>
+          <td>Prohibition-era theme · Near TWP</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!-- REMINDERS & LOGISTICS -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="section-label">Action Items & Logistics</div>
+
+  <div class="reminders">
+    <h3>🗒️ Things To Take Care Of</h3>
+    <ul class="reminder-list">
+      <li>
+        <span class="reminder-icon">✅</span>
+        <span class="reminder-text"><span class="reminder-urgent">Restoration Vineyards — CONFIRMED:</span> Two reservations secured for the Band in the Barrel concert featuring <strong>Gonzales & Ritchen</strong>, Saturday July 11, 3:30–5:00 pm.<br>
+        • Garrett Phillips — Party of 8 · Confirmation #TOCK-T-9OFQZJ59<br>
+        • Tiffany Phillips — Party of 2 · (720) 289-5893 · stiffhair@yahoo.com<br>
+        Cancellable any time; please give 24 hrs notice if plans change.</span>
+      </li>
+      <li>
+        <span class="reminder-icon">📧</span>
+        <span class="reminder-text"><strong>TerraVin — Email sent to David Forenza (May 29):</strong> Asked about reservations for 10–12, tour availability, and events on July 11. Preferred slot is 1:00–3:00 pm but 5:30 pm is also possible. <span class="reminder-urgent">Awaiting reply — response may affect itinerary order.</span> Direct contact: <a href="tel:9703902332">(970) 390-2332</a> · <a href="mailto:dforenza@gmail.com">dforenza@gmail.com</a></span>
+      </li>
+      <li>
+        <span class="reminder-icon">📋</span>
+        <span class="reminder-text"><strong>TWP Reservation confirmed</strong> for 11:00 am, July 11, 2026 — 10 guests, unlimited time experience. Address: 3334 F Rd, Clifton (look for the bronze TWP sign on the north side of Hwy 6).</span>
+      </li>
+      <li>
+        <span class="reminder-icon">🏕️</span>
+        <span class="reminder-text"><strong>Basecamp Campground</strong> — Van picks up between 9 and 10 am depending on the chosen itinerary. Confirm pickup time once a vote winner is chosen.</span>
+      </li>
+      <li>
+        <span class="reminder-icon">🪑</span>
+        <span class="reminder-text"><strong>Band in the Barrel tip:</strong> Bring your own lawn chairs, blankets, or umbrellas — shade is not guaranteed. No outside food or alcohol allowed. At least two food trucks on site. Wine by bottle or glass only during the show.</span>
+      </li>
+      <li>
+        <span class="reminder-icon">🍕</span>
+        <span class="reminder-text"><strong>Diorio's Pizza:</strong> Order 2–3 pies about an hour before pickup. Call (970) 464-7966. NY-style pizza, open until 9 pm Saturdays. Address: 309 W 8th St, Palisade.</span>
+      </li>
+      <li>
+        <span class="reminder-icon">🚗</span>
+        <span class="reminder-text"><strong>TWP directions:</strong> From Hwy 6, look for the bronze TWP sign on the north side at the start of the eastbound on-ramp. It's a tight turn down a dirt road running parallel to Hwy 6.</span>
+      </li>
+    </ul>
+  </div>
+
+</main>
+
+<footer>
+  <p>🍇 Palisade, Colorado · Summer 2026 · Cheers to another great year 🥂</p>
+</footer>
+
+
+
+</body>
+</html>
