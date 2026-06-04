@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evie's Move Tracker — Fort Collins → Denver</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f8f6f1;
+  --surface: #ffffff;
+  --surface2: #f2efe8;
+  --border: #e0dbd0;
+  --border2: #cbc5b8;
+  --text: #1c1a16;
+  --muted: #7a7366;
+  --faint: #a09890;
+  --green: #2d7a4f;
+  --green-bg: #eaf3ee;
+  --red: #b03030;
+  --red-bg: #faeaea;
+  --amber: #8a5c10;
+  --amber-bg: #fdf3e0;
+  --blue: #1a5c9e;
+  --blue-bg: #e8f1fb;
+  --accent: #c85a2a;
+  --accent2: #8b3a1a;
+  --radius: 10px;
+  --radius-sm: 6px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── Header ── */
+.site-header {
+  background: var(--text);
+  color: #f8f6f1;
+  padding: 2rem 2rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.site-header::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -60px;
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  background: rgba(200,90,42,0.18);
+}
+.header-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.header-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(24px, 5vw, 36px);
+  line-height: 1.15;
+  color: #f8f6f1;
+  margin-bottom: 6px;
+}
+.header-sub {
+  font-size: 13px;
+  color: rgba(248,246,241,0.6);
+}
+.header-meta {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1.25rem;
+  flex-wrap: wrap;
+}
+.meta-pill {
+  background: rgba(248,246,241,0.1);
+  border: 0.5px solid rgba(248,246,241,0.2);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 12px;
+  color: rgba(248,246,241,0.8);
+}
+
+/* ── Nav ── */
+.nav-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 0;
+  padding: 0 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-tab {
+  padding: 14px 16px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+  white-space: nowrap;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+.nav-tab:hover { color: var(--text); }
+.nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
+
+/* ── Layout ── */
+.page { max-width: 900px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+
+/* ── Section dividers ── */
+.month-divider {
+  font-family: 'DM Serif Display', serif;
+  font-size: 18px;
+  color: var(--text);
+  margin: 2rem 0 1rem;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.month-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+}
+
+/* ── Weekend Card ── */
+.wknd-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+.wknd-card:hover { box-shadow: 0 2px 12px rgba(28,26,22,0.07); }
+.wknd-card.is-current { border-color: var(--accent); border-width: 1.5px; }
+.wknd-card.is-final { border-color: var(--amber); background: #fffdf8; }
+
+.wknd-head {
+  padding: 14px 18px 12px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+.wknd-dates {
+  font-family: 'DM Serif Display', serif;
+  font-size: 17px;
+  line-height: 1.2;
+}
+.wknd-note-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.wknd-badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.badge-current { background: var(--accent); color: #fff; }
+.badge-done { background: var(--green-bg); color: var(--green); }
+.badge-progress { background: var(--surface2); color: var(--muted); }
+.badge-moveout { background: var(--amber-bg); color: var(--amber); }
+
+.wknd-body { padding: 0 18px 16px; border-top: 1px solid var(--border); }
+
+/* ── Availability grid ── */
+.avail-section { margin: 14px 0 12px; }
+.avail-label-row {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 8px;
+}
+.avail-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+.avail-cell {
+  border-radius: var(--radius-sm);
+  padding: 7px 8px;
+  text-align: center;
+}
+.avail-cell .person-name { font-size: 12px; font-weight: 500; margin-bottom: 2px; }
+.avail-cell .person-status { font-size: 11px; }
+.av-yes { background: var(--green-bg); color: var(--green); }
+.av-no { background: var(--red-bg); color: var(--red); }
+.av-partial { background: var(--amber-bg); color: var(--amber); }
+
+/* ── Tasks ── */
+.tasks-section { margin-top: 12px; }
+.tasks-section-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.task-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+.task-row:last-of-type { border-bottom: none; }
+.task-cb {
+  width: 17px; height: 17px;
+  border-radius: 4px;
+  border: 1.5px solid var(--border2);
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 2px;
+  transition: all 0.1s;
+  background: var(--surface);
+}
+.task-cb.checked { background: var(--green); border-color: var(--green); }
+.task-cb svg { display: none; }
+.task-cb.checked svg { display: block; }
+.task-txt { flex: 1; font-size: 13px; }
+.task-txt.done { text-decoration: line-through; color: var(--faint); }
+.task-who { font-size: 11px; color: var(--faint); }
+
+/* Add task row */
+.add-task-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+.add-task-row input {
+  flex: 1;
+  height: 34px;
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  background: var(--surface2);
+  padding: 0 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  outline: none;
+}
+.add-task-row input:focus { border-color: var(--accent); }
+.add-task-row input::placeholder { color: var(--faint); }
+.btn-add {
+  height: 34px;
+  padding: 0 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border2);
+  background: var(--surface);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--text);
+  transition: all 0.15s;
+}
+.btn-add:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* Progress bar */
+.prog-bar {
+  height: 3px;
+  background: var(--surface2);
+  border-radius: 2px;
+  margin: 10px 0 0;
+  overflow: hidden;
+}
+.prog-fill {
+  height: 100%;
+  background: var(--green);
+  border-radius: 2px;
+  transition: width 0.35s ease;
+}
+
+/* Notes */
+.notes-field {
+  width: 100%;
+  min-height: 56px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface2);
+  padding: 8px 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  resize: vertical;
+  margin-top: 12px;
+  outline: none;
+}
+.notes-field:focus { border-color: var(--accent); }
+.notes-field::placeholder { color: var(--faint); }
+
+/* ── Overview table ── */
+.overview-wrap { overflow-x: auto; margin-top: 1rem; }
+.overview-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  min-width: 420px;
+}
+.overview-table th {
+  text-align: left;
+  padding: 9px 10px;
+  border-bottom: 2px solid var(--border2);
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.overview-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.overview-table tr:last-child td { border-bottom: none; }
+.overview-table tr:hover td { background: var(--surface2); }
+.ov-yes { color: var(--green); font-weight: 500; text-align: center; }
+.ov-no { color: var(--red); font-weight: 500; text-align: center; }
+.ov-partial { color: var(--amber); font-weight: 500; text-align: center; }
+.ov-date { font-size: 12px; color: var(--muted); }
+
+/* ── Cleaning checklist ── */
+.clean-header {
+  background: var(--amber-bg);
+  border: 1px solid #e8d49a;
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.clean-header-title { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--amber2, #6a4a0a); }
+.clean-header-sub { font-size: 12px; color: var(--amber); margin-top: 2px; }
+.clean-progress-big {
+  font-size: 22px;
+  font-family: 'DM Serif Display', serif;
+  color: var(--amber);
+  white-space: nowrap;
+}
+
+.clean-area-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.clean-area-head {
+  padding: 10px 16px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+.clean-area-name { font-weight: 500; font-size: 14px; }
+.clean-area-count { font-size: 12px; color: var(--muted); }
+.clean-area-body { padding: 4px 16px 8px; }
+
+/* ── Legend ── */
+.legend {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+.legend-item { display: flex; align-items: center; gap: 5px; }
+.ldot {
+  width: 10px; height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 520px) {
+  .avail-grid { grid-template-columns: repeat(2, 1fr); }
+  .nav-tab { padding: 12px 10px; font-size: 12px; }
+  .page { padding: 1rem 0.875rem 3rem; }
+  .site-header { padding: 1.5rem 1rem 1.25rem; }
+}
+
+/* ── Saved indicator ── */
+.save-toast {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background: var(--text);
+  color: #f8f6f1;
+  font-size: 12px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all 0.25s;
+  pointer-events: none;
+  z-index: 999;
+}
+.save-toast.show { opacity: 1; transform: translateY(0); }
+
+/* Collapsed cards */
+.wknd-body { display: block; }
+.wknd-body.collapsed { display: none; }
+.collapse-icon { font-size: 16px; color: var(--faint); transition: transform 0.2s; }
+.collapse-icon.open { transform: rotate(180deg); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-eyebrow">Move Tracker</div>
+  <div class="header-title">Evie's Move<br><em style="font-style:italic;opacity:0.7">Fort Collins → Denver</em></div>
+  <div class="header-sub">Loomis Ave · Moving out July 31, 2026</div>
+  <div class="header-meta">
+    <div class="meta-pill">👤 Garrett · Evie · Tiffany</div>
+    <div class="meta-pill">📅 Jun 5 – Jul 31, 2026</div>
+    <div class="meta-pill" id="days-left-pill">Loading…</div>
+    <div class="meta-pill" id="sync-status" style="color:var(--muted)">⟳ Connecting…</div>
+  </div>
+</header>
+
+<nav class="nav-bar">
+  <button class="nav-tab active" onclick="showTab('schedule', this)">Weekend Schedule</button>
+  <button class="nav-tab" onclick="showTab('overview', this)">Availability</button>
+  <button class="nav-tab" onclick="showTab('cleaning', this)">Move-out Checklist</button>
+</nav>
+
+<div class="page">
+  <div id="tab-schedule"></div>
+  <div id="tab-overview" style="display:none"></div>
+  <div id="tab-cleaning" style="display:none"></div>
+</div>
+
+<div class="save-toast" id="toast">Saved ✓</div>
+
+<script>
+// ─── Data ───────────────────────────────────────────────────────────────────
+
+const UNAVAILABLE = {
+  Tiffany: ['2026-06-05','2026-06-06','2026-06-07',
+    '2026-06-27','2026-06-28','2026-06-29','2026-06-30',
+    '2026-07-04',
+    '2026-07-09','2026-07-10','2026-07-11','2026-07-12','2026-07-13',
+    '2026-07-17','2026-07-18','2026-07-19','2026-07-20',
+    '2026-07-25'],
+  TIFFANY_TENT: ['2026-06-20'],
+  Garrett: ['2026-06-05','2026-06-06','2026-06-07',
+    '2026-06-28','2026-06-29','2026-06-30',
+    '2026-07-04',
+    '2026-07-09','2026-07-10','2026-07-11','2026-07-12','2026-07-13',
+    '2026-07-17','2026-07-18','2026-07-19','2026-07-20'],
+  Evie: ['2026-06-11','2026-06-12','2026-06-13','2026-06-14','2026-06-15',
+    '2026-06-16','2026-06-17','2026-06-18','2026-06-19','2026-06-20','2026-06-21',
+    '2026-07-03','2026-07-04','2026-07-05']
+};
+
+// Only these weekends have pre-loaded tasks. Key = Friday date string.
+const DEFAULT_TASKS = {
+  '2026-06-05': [
+    { id: 'e1', text: 'Put all dirty clothes into bags or bins', who: 'Evie', done: false },
+    { id: 'e2', text: 'Organize camping gear — tent, sleeping bags, pads, cookware', who: 'Evie', done: false },
+    { id: 'e3', text: 'Organize ski and winter gear', who: 'Evie', done: false },
+    { id: 'e4', text: 'Load camping gear, dirty laundry, and as much ski/winter gear as fits into car', who: 'Evie', done: false },
+    { id: 'e5', text: 'Drive first load to Denver', who: 'Evie', done: false }
+  ],
+  '2026-07-31': [
+    { id: 't1', text: 'Garrett: get quotes from professional cleaners', who: 'Garrett', done: false },
+    { id: 't2', text: 'Confirm move-out inspection date/time with landlord', who: 'Evie', done: false },
+    { id: 't3', text: 'Return any borrowed items to neighbors or friends', who: 'Evie', done: false },
+    { id: 't4', text: 'Document condition of every room with photos before cleaning', who: 'Evie', done: false },
+    { id: 't5', text: 'Final walkthrough — confirm nothing left behind', who: 'All', done: false },
+    { id: 't6', text: 'Return all keys, fobs, and mailbox keys to landlord', who: 'Evie', done: false }
+  ]
+};
+
+// ─── GitHub Gist Sync ────────────────────────────────────────────────────────
+
+const GIST_TOKEN = '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';
+const GIST_ID    = 'e47228ac6caf34bf8ac57bbb1cdf5419';
+const GIST_FILE  = 'evie-move-data.json';
+const GIST_URL   = `https://api.github.com/gists/${GIST_ID}`;
+
+let state = { tasks: {}, notes: {}, collapsed: {} };
+let saveTimer = null;
+
+function mergeDefaults() {
+  Object.keys(DEFAULT_TASKS).forEach(key => {
+    if (!state.tasks[key] || state.tasks[key].length === 0) {
+      state.tasks[key] = DEFAULT_TASKS[key].map(t => ({...t}));
+    }
+  });
+}
+
+function setSyncStatus(status, msg) {
+  const el = document.getElementById('sync-status');
+  if (!el) return;
+  const icons = { loading: '⟳', ok: '✓', error: '⚠', local: '💾' };
+  const colors = { loading: 'var(--muted)', ok: 'var(--green)', error: 'var(--red)', local: 'var(--muted)' };
+  el.textContent = (icons[status] || '') + ' ' + msg;
+  el.style.color = colors[status] || 'var(--muted)';
+}
+
+const IS_LOCAL = location.protocol === 'file:';
+
+async function loadStateFromGist() {
+  if (IS_LOCAL) {
+    setSyncStatus('local', 'Open via GitHub Pages to sync');
+    try {
+      const raw = localStorage.getItem('evie-move-fallback');
+      if (raw) state = JSON.parse(raw);
+    } catch(e) {}
+    if (!state.tasks) state.tasks = {};
+    if (!state.notes) state.notes = {};
+    if (!state.collapsed) state.collapsed = {};
+    mergeDefaults();
+    return;
+  }
+  setSyncStatus('loading', 'Loading…');
+  try {
+    const res = await fetch(GIST_URL, {
+      headers: { 'Authorization': `token ${GIST_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    const content = data.files?.[GIST_FILE]?.content;
+    if (content) {
+      const parsed = JSON.parse(content);
+      if (parsed && typeof parsed === 'object') state = parsed;
+    }
+    if (!state.tasks) state.tasks = {};
+    if (!state.notes) state.notes = {};
+    if (!state.collapsed) state.collapsed = {};
+    mergeDefaults();
+    setSyncStatus('ok', 'Synced');
+  } catch(e) {
+    console.error('Gist load error:', e);
+    setSyncStatus('error', 'Offline — changes saved locally');
+    try {
+      const raw = localStorage.getItem('evie-move-fallback');
+      if (raw) state = JSON.parse(raw);
+    } catch(e2) {}
+    if (!state.tasks) state.tasks = {};
+    if (!state.notes) state.notes = {};
+    if (!state.collapsed) state.collapsed = {};
+    mergeDefaults();
+  }
+}
+
+async function saveStateToGist() {
+  // Also save locally as fallback
+  try { localStorage.setItem('evie-move-fallback', JSON.stringify(state)); } catch(e) {}
+  setSyncStatus('loading', 'Saving…');
+  try {
+    const res = await fetch(GIST_URL, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `token ${GIST_TOKEN}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ files: { [GIST_FILE]: { content: JSON.stringify(state, null, 2) } } })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    setSyncStatus('ok', 'Saved ✓');
+    showToast('Saved to cloud ✓');
+  } catch(e) {
+    console.error('Gist save error:', e);
+    setSyncStatus('error', 'Save failed — will retry');
+    showToast('Save failed — check connection');
+  }
+}
+
+function saveState() {
+  // Debounce — wait 800ms after last change before writing to Gist
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveStateToGist, 800);
+}
+
+// ─── Helpers ────────────────────────────────────────────────────────────────
+
+function dateStr(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const dd = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${dd}`;
+}
+
+function fmt(d, opts) {
+  return d.toLocaleDateString('en-US', opts || { month:'short', day:'numeric' });
+}
+
+function getWeekends() {
+  const out = [];
+  // Start June 5 (Friday), end July 31
+  const d = new Date('2026-06-05T12:00:00');
+  const endDate = new Date('2026-07-31T12:00:00');
+  while (d <= endDate) {
+    if (d.getDay() === 5) { // Friday
+      const fri = new Date(d);
+      const sat = new Date(d); sat.setDate(sat.getDate()+1);
+      const sun = new Date(d); sun.setDate(sun.getDate()+2);
+      const actualSun = sun > endDate ? endDate : sun;
+      const dates = [];
+      let cd = new Date(fri);
+      while(cd <= actualSun && cd <= endDate) {
+        dates.push(dateStr(cd));
+        cd.setDate(cd.getDate()+1);
+      }
+      out.push({ fri, sat, sun: actualSun, dates, key: dateStr(fri) });
+    }
+    d.setDate(d.getDate()+1);
+  }
+  // Dedupe: July 31 is a Friday, so it'll be included naturally
+  return out;
+}
+
+function personAvail(person, dates) {
+  const unav = UNAVAILABLE[person] || [];
+  if (person === 'Tiffany') {
+    // Tiffany only available Mon, Fri, Sat, Sun
+    const workDays = dates.filter(dt => {
+      const day = new Date(dt + 'T12:00:00').getDay();
+      return day !== 1 && day !== 5 && day !== 6 && day !== 0; // not Mon/Fri/Sat/Sun
+    });
+    const unavDates = dates.filter(dt => unav.includes(dt));
+    const tentDates = dates.filter(dt => UNAVAILABLE.TIFFANY_TENT.includes(dt));
+    if (unavDates.length === dates.length) return 'no';
+    if (unavDates.length > 0 || tentDates.length > 0) return 'partial';
+    return 'yes';
+  }
+  if (person === 'Evie') {
+    // Evie available Fri/Sat/Sun
+    const unavDates = dates.filter(dt => unav.includes(dt));
+    const wkndDates = dates.filter(dt => {
+      const day = new Date(dt + 'T12:00:00').getDay();
+      return day === 5 || day === 6 || day === 0;
+    });
+    if (unavDates.length >= wkndDates.length) return 'no';
+    if (unavDates.length > 0) return 'partial';
+    return 'yes';
+  }
+  // Garrett
+  const unavDates = dates.filter(dt => unav.includes(dt));
+  if (unavDates.length === dates.length) return 'no';
+  if (unavDates.length > 0) return 'partial';
+  return 'yes';
+}
+
+function getProgress(key) {
+  const tasks = state.tasks[key];
+  if (!tasks || !tasks.length) return null;
+  const done = tasks.filter(t => t.done).length;
+  return { done, total: tasks.length, pct: Math.round(done/tasks.length*100) };
+}
+
+function isCurrentWeekend(dates) {
+  const today = new Date();
+  today.setHours(12,0,0,0);
+  const todayStr = dateStr(today);
+  return dates.includes(todayStr) || (dates[0] <= todayStr && dates[dates.length-1] >= todayStr);
+}
+
+// ─── Toast ───────────────────────────────────────────────────────────────────
+
+let toastTimer;
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg || 'Saved ✓';
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+// ─── Checkmark SVG ───────────────────────────────────────────────────────────
+
+const CHECK_SVG = `<svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+// ─── Render helpers ──────────────────────────────────────────────────────────
+
+function renderAvailCell(person, dates) {
+  const s = personAvail(person, dates);
+  const cls = s === 'yes' ? 'av-yes' : s === 'no' ? 'av-no' : 'av-partial';
+  const label = s === 'yes' ? '✓ Available' : s === 'no' ? '✗ Away' : '~ Partial';
+  return `<div class="avail-cell ${cls}"><div class="person-name">${person}</div><div class="person-status">${label}</div></div>`;
+}
+
+function renderTaskRow(weekKey, t) {
+  return `<div class="task-row" id="taskrow-${weekKey}-${t.id}">
+    <div class="task-cb ${t.done ? 'checked' : ''}" onclick="toggleTask('${weekKey}','${t.id}')">${t.done ? CHECK_SVG : ''}</div>
+    <div class="task-txt ${t.done ? 'done' : ''}">${escHtml(t.text)} <span class="task-who">(${escHtml(t.who)})</span></div>
+  </div>`;
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─── Schedule Tab ────────────────────────────────────────────────────────────
+
+function renderSchedule() {
+  const weekends = getWeekends();
+  let html = '';
+  let lastMonth = '';
+
+  weekends.forEach(wknd => {
+    const month = wknd.fri.toLocaleDateString('en-US',{month:'long'});
+    if (month !== lastMonth) {
+      html += `<div class="month-divider">${month}</div>`;
+      lastMonth = month;
+    }
+
+    const key = wknd.key;
+    const isFinal = key === '2026-07-31';
+    const isCurrent = isCurrentWeekend(wknd.dates);
+    const tasks = state.tasks[key] || [];
+    const prog = getProgress(key);
+    const note = state.notes[key] || '';
+    const collapsed = state.collapsed[key];
+
+    const dateLabel = isFinal
+      ? 'July 31 — Move-out Day'
+      : (wknd.fri.getMonth() === wknd.sun.getMonth()
+          ? `${fmt(wknd.fri)} – ${fmt(wknd.sun)}`
+          : `${fmt(wknd.fri)} – ${fmt(wknd.sun)}`);
+
+    let badges = '';
+    if (isCurrent) badges += `<span class="badge badge-current">This weekend</span>`;
+    if (isFinal) badges += `<span class="badge badge-moveout">Move-out</span>`;
+    if (prog && prog.pct === 100) badges += `<span class="badge badge-done">Done ✓</span>`;
+    else if (prog && prog.done > 0) badges += `<span class="badge badge-progress">${prog.pct}%</span>`;
+
+    html += `<div class="wknd-card ${isCurrent ? 'is-current' : ''} ${isFinal ? 'is-final' : ''}">
+      <div class="wknd-head" onclick="toggleCollapse('${key}')">
+        <div>
+          <div class="wknd-dates">${dateLabel}</div>
+          ${isFinal ? '<div class="wknd-note-label">Loomis Ave — final clean &amp; key return</div>' : ''}
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          ${badges}
+          <span class="collapse-icon ${collapsed ? '' : 'open'}">▾</span>
+        </div>
+      </div>
+      <div class="wknd-body ${collapsed ? 'collapsed' : ''}">
+        <div class="avail-section">
+          <div class="avail-label-row">Who's available</div>
+          <div class="avail-grid">
+            ${['Garrett','Evie','Tiffany'].map(p => renderAvailCell(p, wknd.dates)).join('')}
+          </div>
+        </div>`;
+
+    if (tasks.length) {
+      html += `<div class="tasks-section">
+        <div class="tasks-section-label">
+          <span>Tasks</span>
+          <span style="font-weight:400">${prog ? prog.done + '/' + prog.total : ''}</span>
+        </div>
+        ${tasks.map(t => renderTaskRow(key, t)).join('')}
+        ${prog ? `<div class="prog-bar"><div class="prog-fill" style="width:${prog.pct}%"></div></div>` : ''}
+      </div>`;
+    }
+
+    html += `<div class="add-task-row">
+        <input type="text" placeholder="Add a task…" id="newinput-${key}"
+          onkeydown="if(event.key==='Enter')addTask('${key}')">
+        <button class="btn-add" onclick="addTask('${key}')">+ Add</button>
+      </div>
+      <textarea class="notes-field" placeholder="Notes for this weekend…"
+        onchange="saveNote('${key}',this.value)">${escHtml(note)}</textarea>
+    </div>
+    </div>`;
+  });
+
+  document.getElementById('tab-schedule').innerHTML = html;
+}
+
+// ─── Overview Tab ────────────────────────────────────────────────────────────
+
+function renderOverview() {
+  const weekends = getWeekends();
+  let html = `<div class="legend">
+    <div class="legend-item"><div class="ldot" style="background:var(--green-bg);border:1px solid var(--green)"></div> Available</div>
+    <div class="legend-item"><div class="ldot" style="background:var(--red-bg);border:1px solid var(--red)"></div> Unavailable</div>
+    <div class="legend-item"><div class="ldot" style="background:var(--amber-bg);border:1px solid var(--amber)"></div> Partial / tentative</div>
+  </div>
+  <div class="overview-wrap">
+  <table class="overview-table">
+    <thead><tr>
+      <th>Weekend</th>
+      <th style="text-align:center">Garrett</th>
+      <th style="text-align:center">Evie</th>
+      <th style="text-align:center">Tiffany</th>
+      <th style="text-align:center">Tasks</th>
+    </tr></thead>
+    <tbody>`;
+
+  weekends.forEach(wknd => {
+    const key = wknd.key;
+    const prog = getProgress(key);
+    const dateLabel = wknd.key === '2026-07-31'
+      ? 'Jul 31'
+      : (wknd.fri.getMonth() === wknd.sun.getMonth()
+          ? `${fmt(wknd.fri)} – ${fmt(wknd.sun)}`
+          : `${fmt(wknd.fri, {month:'short',day:'numeric'})} – ${fmt(wknd.sun, {month:'short',day:'numeric'})}`);
+    html += `<tr>
+      <td class="ov-date">${dateLabel}</td>`;
+    ['Garrett','Evie','Tiffany'].forEach(p => {
+      const s = personAvail(p, wknd.dates);
+      const sym = s === 'yes' ? '✓' : s === 'no' ? '✗' : '~';
+      html += `<td class="ov-${s === 'yes' ? 'yes' : s === 'no' ? 'no' : 'partial'}">${sym}</td>`;
+    });
+    html += `<td style="text-align:center;font-size:12px;color:var(--muted)">${prog ? `${prog.done}/${prog.total}` : '—'}</td>`;
+    html += `</tr>`;
+  });
+
+  html += `</tbody></table></div>`;
+  document.getElementById('tab-overview').innerHTML = html;
+}
+
+// ─── Cleaning Tab ────────────────────────────────────────────────────────────
+
+const CLEAN_AREAS = [
+  { name: 'Kitchen', items: [
+    'Refrigerator — shelves, drawers, door seals, drip pan',
+    'Freezer — defrost and wipe out',
+    'Oven interior and racks',
+    'Stovetop and burners',
+    'Microwave inside and out',
+    'Hood/range vent filter',
+    'All cabinets — inside and outside surfaces',
+    'Countertops and backsplash',
+    'Sink and faucet',
+    'Dishwasher — wipe interior, clean filter'
+  ]},
+  { name: 'Bathrooms', items: [
+    'Toilet — bowl, seat, base, and behind',
+    'Sink and faucet',
+    'Tub or shower — tiles, grout, glass door or curtain',
+    'Medicine cabinet or vanity inside and out',
+    'Mirror',
+    'Exhaust fan (dust and wipe)',
+    'Floor — sweep and mop'
+  ]},
+  { name: 'Floors', items: [
+    'Vacuum all carpets',
+    'Sweep all hard floors',
+    'Mop all hard floors',
+    'Vacuum and clean under appliances and behind furniture'
+  ]},
+  { name: 'Walls & Windows', items: [
+    'Wipe all walls — remove scuffs and marks',
+    'Clean all windows inside',
+    'Wipe all window sills and tracks',
+    'Clean blinds or shades',
+    'Wipe baseboards throughout',
+    'Wipe all door frames and doors',
+    'Remove nails and wall anchors — patch and touch up holes'
+  ]},
+  { name: 'Rooms & Closets', items: [
+    'Sweep or vacuum all closets',
+    'Wipe closet shelves',
+    'Check all light fixtures — replace any burned-out bulbs',
+    'Check smoke and CO detector batteries',
+    'Wipe light switches and outlet plates'
+  ]},
+  { name: 'Exterior & Final Steps', items: [
+    'Patio or yard — remove all personal items',
+    'Sweep patio or deck',
+    'Remove all trash and recycling from premises',
+    'Garage or storage areas fully cleared',
+    'Return all keys, fobs, and mailbox keys to landlord',
+    'Take photos of every room after cleaning — document condition'
+  ]}
+];
+
+const CLEAN_STORE_KEY = 'evie-clean-v1'; // kept for migration only
+
+function getCleanState() {
+  if (!state.clean) {
+    // Build default clean state
+    const obj = {};
+    CLEAN_AREAS.forEach(a => {
+      a.items.forEach((item, i) => { obj[`${a.name}-${i}`] = false; });
+    });
+    state.clean = obj;
+  }
+  return state.clean;
+}
+
+
+
+function saveClean() {
+  saveState();
+}
+
+function toggleClean(key) {
+  state.clean[key] = !state.clean[key];
+  saveClean();
+  renderCleaning();
+}
+
+function renderCleaning() {
+  const cleanState = getCleanState();
+  const total = Object.keys(cleanState).length;
+  const done = Object.values(cleanState).filter(Boolean).length;
+  const pct = total ? Math.round(done/total*100) : 0;
+
+  let html = `<div class="clean-header">
+    <div>
+      <div class="clean-header-title">Move-out Cleaning Checklist</div>
+      <div class="clean-header-sub">July 30–31 · Loomis Ave · "Broom swept" standard</div>
+    </div>
+    <div class="clean-progress-big">${done}/${total} <span style="font-size:14px;color:var(--amber)">done</span></div>
+  </div>
+  <div class="prog-bar" style="margin-bottom:1.25rem">
+    <div class="prog-fill" style="width:${pct}%;background:var(--amber)"></div>
+  </div>`;
+
+  CLEAN_AREAS.forEach(a => {
+    const areaDone = a.items.filter((item,i) => cleanState[`${a.name}-${i}`]).length;
+    html += `<div class="clean-area-card">
+      <div class="clean-area-head">
+        <div class="clean-area-name">${a.name}</div>
+        <div class="clean-area-count">${areaDone}/${a.items.length}</div>
+      </div>
+      <div class="clean-area-body">`;
+    a.items.forEach((item, i) => {
+      const k = `${a.name}-${i}`;
+      const done = cleanState[k];
+      html += `<div class="task-row">
+        <div class="task-cb ${done ? 'checked' : ''}" onclick="toggleClean('${k}')">${done ? CHECK_SVG : ''}</div>
+        <div class="task-txt ${done ? 'done' : ''}">${escHtml(item)}</div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+
+  document.getElementById('tab-cleaning').innerHTML = html;
+}
+
+// ─── Interactions ────────────────────────────────────────────────────────────
+
+function toggleTask(weekKey, taskId) {
+  const tasks = state.tasks[weekKey];
+  if (!tasks) return;
+  const t = tasks.find(t => String(t.id) === String(taskId));
+  if (t) t.done = !t.done;
+  saveState();
+  renderSchedule();
+  if (document.getElementById('tab-overview').style.display !== 'none') renderOverview();
+}
+
+function addTask(weekKey) {
+  const input = document.getElementById('newinput-' + weekKey);
+  const text = (input ? input.value : '').trim();
+  if (!text) return;
+  if (!state.tasks[weekKey]) state.tasks[weekKey] = [];
+  state.tasks[weekKey].push({ id: 'u' + Date.now(), text, who: '—', done: false });
+  saveState();
+  renderSchedule();
+}
+
+function saveNote(weekKey, val) {
+  state.notes[weekKey] = val;
+  saveState();
+}
+
+function toggleCollapse(key) {
+  state.collapsed[key] = !state.collapsed[key];
+  saveState();
+  renderSchedule();
+}
+
+// ─── Tab switching ────────────────────────────────────────────────────────────
+
+function showTab(name, btn) {
+  ['schedule','overview','cleaning'].forEach(t => {
+    document.getElementById('tab-' + t).style.display = t === name ? '' : 'none';
+  });
+  document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (name === 'overview') renderOverview();
+  if (name === 'cleaning') renderCleaning();
+}
+
+// ─── Days left pill ──────────────────────────────────────────────────────────
+
+function updateDaysLeft() {
+  const moveout = new Date('2026-07-31T12:00:00');
+  const today = new Date();
+  today.setHours(12,0,0,0);
+  const diff = Math.ceil((moveout - today) / (1000*60*60*24));
+  const pill = document.getElementById('days-left-pill');
+  if (pill) pill.textContent = diff > 0 ? `${diff} days to move-out` : diff === 0 ? 'Move-out today!' : 'Moved!';
+}
+
+// ─── Init ────────────────────────────────────────────────────────────────────
+
+updateDaysLeft();
+
+async function init() {
+  await loadStateFromGist();
+  renderSchedule();
+  // Auto-refresh from Gist every 30 seconds so changes by others appear
+  if (!IS_LOCAL) {
+    setInterval(async () => {
+      await loadStateFromGist();
+      const activeTab = document.querySelector('.nav-tab.active')?.textContent?.trim();
+      if (activeTab === 'Weekend Schedule') renderSchedule();
+      else if (activeTab === 'Availability') renderOverview();
+      else if (activeTab === 'Move-out Checklist') renderCleaning();
+    }, 30000);
+  }
+}
+
+init();
+</script>
+</body>
+</html>
