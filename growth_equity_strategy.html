@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Structural Growth Equity Strategy</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f1117;
+    --paper: #f7f6f2;
+    --muted: #6b6b72;
+    --rule: #d8d6ce;
+    --accent: #1a3a5c;
+    --accent-warm: #c4531a;
+    --highlight: #e8f0f8;
+    --mono: 'DM Mono', monospace;
+    --serif: 'DM Serif Display', serif;
+    --sans: 'Inter', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  /* ── MASTHEAD ── */
+  header {
+    border-bottom: 2px solid var(--ink);
+    padding: 48px 60px 32px;
+  }
+
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 6px;
+  }
+
+  .eyebrow-block {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .confidential-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--paper);
+    background: var(--accent-warm);
+    padding: 3px 8px;
+    border-radius: 2px;
+    display: inline-block;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+    margin-top: 12px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent-warm);
+  }
+
+  /* ── LAYOUT ── */
+  main {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 0;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .col-main {
+    padding: 48px 48px 64px 60px;
+    border-right: 1px solid var(--rule);
+  }
+
+  .col-side {
+    padding: 48px 36px 64px 36px;
+  }
+
+  /* ── SECTIONS ── */
+  section { margin-bottom: 44px; }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-warm);
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .lead {
+    font-size: 14.5px;
+    line-height: 1.75;
+    color: #2a2a30;
+    margin-bottom: 12px;
+  }
+
+  /* ── CRITERIA LIST ── */
+  .criteria {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 4px;
+  }
+
+  .criteria li {
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    gap: 10px;
+    align-items: start;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .criteria li::before {
+    content: '→';
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent-warm);
+    padding-top: 3px;
+  }
+
+  .criteria strong {
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  /* ── SECTORS ── */
+  .sector-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .sector-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .sector-name {
+    font-weight: 500;
+    font-size: 13.5px;
+  }
+
+  .sector-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .sector-bar-wrap {
+    width: 120px;
+    height: 5px;
+    background: var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .sector-bar {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 3px;
+  }
+
+  .sector-pct {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    min-width: 32px;
+    text-align: right;
+  }
+
+  /* ── PORTFOLIO SLEEVES ── */
+  .sleeve-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .sleeve {
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 13px 15px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sleeve::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+
+  .sleeve.core::before    { background: var(--accent); }
+  .sleeve.starter::before { background: #4a7fa5; }
+  .sleeve.spec::before    { background: var(--accent-warm); }
+  .sleeve.cash::before    { background: #8a9a6a; }
+
+  .sleeve-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 3px;
+  }
+
+  .sleeve-name {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--accent);
+  }
+
+  .sleeve-weight {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--muted);
+  }
+
+  .sleeve-meta {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ── HOLDINGS ── */
+  .holding-row {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .holding {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px;
+    align-items: start;
+  }
+
+  .ticker {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--paper);
+    background: var(--accent);
+    padding: 2px 7px;
+    border-radius: 3px;
+    white-space: nowrap;
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+  }
+
+  .holding-theme {
+    font-size: 13.5px;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+
+  /* ── PIVOTS ── */
+  .pivot-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .pivot {
+    padding: 13px 15px;
+    background: var(--highlight);
+    border-radius: 4px;
+    border-left: 3px solid var(--accent);
+  }
+
+  .pivot .ticker { background: var(--accent-warm); }
+
+  .pivot-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+  }
+
+  .pivot-company {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--accent);
+  }
+
+  .pivot-desc {
+    font-size: 13px;
+    color: #3a3a44;
+    line-height: 1.55;
+  }
+
+  .pivot-desc em {
+    color: var(--accent-warm);
+    font-style: italic;
+  }
+
+  /* ── STOP LOSS ── */
+  .stoploss-box {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 4px;
+    padding: 20px 20px;
+  }
+
+  .stoploss-box .section-label {
+    color: #a0a8b0;
+    border-bottom-color: #2a2e38;
+  }
+
+  .stoploss-box p {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #c8ccd4;
+  }
+
+  .stoploss-trigger {
+    font-family: var(--mono);
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--accent-warm);
+    display: block;
+    margin: 10px 0 6px;
+  }
+
+  /* ── ABOUT ── */
+  .bio-timeline {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+  }
+
+  .bio-timeline li {
+    display: grid;
+    grid-template-columns: 78px 1fr;
+    gap: 10px;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .bio-year {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--muted);
+    padding-top: 2px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 2px solid var(--ink);
+    padding: 18px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .footer-confidential {
+    color: var(--accent-warm);
+    font-weight: 500;
+  }
+
+  @media (max-width: 860px) {
+    header { padding: 32px 24px 24px; }
+    .header-top { flex-direction: column; gap: 8px; }
+    main { grid-template-columns: 1fr; }
+    .col-main { padding: 32px 24px; border-right: none; border-bottom: 1px solid var(--rule); }
+    .col-side { padding: 32px 24px; }
+    footer { padding: 16px 24px; flex-direction: column; gap: 6px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="eyebrow-block">
+      <span class="eyebrow">Investment Strategy Document</span>
+      <span class="confidential-badge">Confidential — Not for Distribution</span>
+    </div>
+  </div>
+  <h1>Structural <em>Growth</em><br>Equity Strategy</h1>
+</header>
+
+<main>
+  <!-- LEFT COLUMN -->
+  <div class="col-main">
+
+    <section>
+      <p class="section-label">Strategy Overview</p>
+      <p class="lead">The strategy is a variation of the thematic approach that attempts to capture several durable investment themes by investing in select companies that exhibit thematic purity and a proven track record of using their knowledge base and competitive advantages to adapt to new technologies and changing customer needs.</p>
+      <p class="lead">While this suggests a focus on quality-growth exposure, we want to remain open-minded. The portfolio will always include at least 5 Starter and Tryout positions that will explore narrower and less established areas of technological advancement.</p>
+      <p class="lead">Defining themes is an important starting point. We do not like to define themes too broadly, like AI, aging populations, renewable energy, water shortage or sustainability. This would defeat thematic purity and draw in too much noise. Similarly, we do not want to chase headlines with one-trick ponies or engage in short-term stock picking.</p>
+      <p class="lead">Rapid technological change means that the future of firms can look very different from their past. Fundamentally, this approach is neither about extrapolation nor mean reversion, both of which will likely prove less effective than in previous regimes, it is about evolution and revenue growth that results in increasing intrinsic value. This inevitably involves making a judgement about how successful the management team will be in executing its strategy.</p>
+    </section>
+
+    <section>
+      <p class="section-label">What We Are Looking For</p>
+      <ul class="criteria">
+        <li><span><strong>Technological leadership</strong> in a particular sector or category</span></li>
+        <li><span><strong>Value-enhancing revenue growth.</strong> Strong gross profit margins, recurring and loyal customers, high moats. Free cash flow is an important, but secondary consideration. This helps avoid "cost-cutters" while being open to early-stage companies that may be currently burning cash.</span></li>
+        <li><span><strong>AI resilient does not equal AI immune.</strong> High switching costs buy time, not permanence. AI doesn't need to replace these products outright, it will just gradually hollow out incremental growth by collapsing seats, workflows, or interfaces.</span></li>
+        <li><span><strong>Annual EPS growth, solid balance sheet</strong> – core positions should show meaningful growth for the last 3 years.</span></li>
+        <li><span><strong>New things</strong> — companies with new products, new management, or significant new changes in industry conditions.</span></li>
+      </ul>
+    </section>
+
+    <section>
+      <p class="section-label">Current Lineup Examples — Structural Trends</p>
+      <div class="holding-row">
+        <div class="holding">
+          <span class="ticker">KLA · ASML</span>
+          <span class="holding-theme">Yield-management in chip design</span>
+        </div>
+        <div class="holding">
+          <span class="ticker">Broadcom</span>
+          <span class="holding-theme">Custom silicon</span>
+        </div>
+        <div class="holding">
+          <span class="ticker">Lattice Semi</span>
+          <span class="holding-theme">Power-efficient Edge AI</span>
+        </div>
+        <div class="holding">
+          <span class="ticker">Ciena</span>
+          <span class="holding-theme">Photons are the new electrons for distributed data centers</span>
+        </div>
+        <div class="holding">
+          <span class="ticker">Eaton · Siemens Energy</span>
+          <span class="holding-theme">Grid expansion &amp; monitoring, advanced gas turbines</span>
+        </div>
+        <div class="holding">
+          <span class="ticker">Enersys</span>
+          <span class="holding-theme">Energy storage</span>
+        </div>
+        <div class="holding">
+          <span class="ticker">BWXT</span>
+          <span class="holding-theme">Diversified nuclear expertise</span>
+        </div>
+        <div class="holding">
+          <span class="ticker">Linde · Entegris</span>
+          <span class="holding-theme">High-purity specialty gases: Linde (industrial duopoly, clean hydrogen), Entegris</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-label">Current Lineup Examples — Individual Company Strategic Pivots</p>
+      <div class="pivot-list">
+        <div class="pivot">
+          <div class="pivot-head">
+            <span class="ticker">Arm Holding</span>
+          </div>
+          <p class="pivot-desc">Pivoting from IP licensing to selling its own physical chips <em>(a bit overdone)</em></p>
+        </div>
+        <div class="pivot">
+          <div class="pivot-head">
+            <span class="ticker">Fastly</span>
+          </div>
+          <p class="pivot-desc">Pivoting from low margin CDN to agentic traffic</p>
+        </div>
+        <div class="pivot">
+          <div class="pivot-head">
+            <span class="ticker">Nokia</span>
+          </div>
+          <p class="pivot-desc">Pivoting from patent-backed mobile infrastructure to AI-Radio Access Network technologies, directly integrating AI inside cell tower hardware to optimize bandwidth, reduce power usage, and lay the groundwork for 6G network <em>(getting a bit overdone)</em></p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- RIGHT COLUMN -->
+  <div class="col-side">
+
+    <section>
+      <p class="section-label">Sector Focus</p>
+      <div class="sector-grid">
+        <div class="sector-item">
+          <span class="sector-name">Technology</span>
+          <div class="sector-right">
+            <div class="sector-bar-wrap"><div class="sector-bar" style="width:60%"></div></div>
+            <span class="sector-pct">60% limit</span>
+          </div>
+        </div>
+        <div class="sector-item">
+          <span class="sector-name">Industrials</span>
+          <div class="sector-right">
+            <div class="sector-bar-wrap"><div class="sector-bar" style="width:40%"></div></div>
+            <span class="sector-pct">40% limit</span>
+          </div>
+        </div>
+        <div class="sector-item">
+          <span class="sector-name">Utilities / Power Grid</span>
+          <div class="sector-right">
+            <div class="sector-bar-wrap"><div class="sector-bar" style="width:30%"></div></div>
+            <span class="sector-pct">30% limit</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-label">Portfolio Structure</p>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.5;">Concentrated, around 20 positions in 4 sleeves:</p>
+      <div class="sleeve-grid">
+        <div class="sleeve core">
+          <div class="sleeve-head">
+            <span class="sleeve-name">Core High Conviction Positions</span>
+          </div>
+          <div class="sleeve-weight" style="margin-bottom:4px;">weight: 5–10% each</div>
+          <span class="sleeve-meta">Up to 12 positions · holding period 6 months to several years</span>
+        </div>
+        <div class="sleeve starter">
+          <div class="sleeve-head">
+            <span class="sleeve-name">Starter Positions</span>
+          </div>
+          <div class="sleeve-weight" style="margin-bottom:4px;">weight: 2–3% each</div>
+          <span class="sleeve-meta">Up to 3 positions · holding period up to a year<br>Initial entries to potentially graduate to Core</span>
+        </div>
+        <div class="sleeve spec">
+          <div class="sleeve-head">
+            <span class="sleeve-name">Speculative Positions</span>
+          </div>
+          <div class="sleeve-weight" style="margin-bottom:4px;">weight: ~1% each</div>
+          <span class="sleeve-meta">1–4 positions · holding period up to a year<br>Attractive risk-reward based on specific opportunities</span>
+        </div>
+        <div class="sleeve cash">
+          <div class="sleeve-head">
+            <span class="sleeve-name">Cash Sleeve</span>
+          </div>
+          <div class="sleeve-weight" style="margin-bottom:4px;">~10%</div>
+          <span class="sleeve-meta">Around 10% as a cushion to capitalize on market volatility and opportunities</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="stoploss-box">
+        <p class="section-label">Stop-Loss</p>
+        <span class="stoploss-trigger">15–20% drop</span>
+        <p>Structural trends often experience sharp, temporary momentum swings; our stop-loss strategy will focus on the specific behavior of the theme or a given stock. While it will not always trigger a sale, a 15–20% drop in any stock will trigger an evaluation of company specific events or missteps that may have caused it.</p>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-label">About Me</p>
+      <ul class="bio-timeline">
+        <li>
+          <span class="bio-year">1993–1994</span>
+          <span>First introduction to equity research as a financial analyst in the investment banking department of Donaldson, Lufkin &amp; Jenrette</span>
+        </li>
+        <li>
+          <span class="bio-year">1994–1997</span>
+          <span>Equity research for global EM and European equities at Croesus Capital, a NYC-based hedge fund, and Rothschild Asset Management</span>
+        </li>
+        <li>
+          <span class="bio-year">1997–2002</span>
+          <span>Equity PM and partner at Marathon Capital Management</span>
+        </li>
+        <li>
+          <span class="bio-year">2003–2015</span>
+          <span>Launched domestic and global equity products for Russia's first corporate pension plans</span>
+        </li>
+      </ul>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <span>Structural Growth Equity Strategy</span>
+  <span class="footer-confidential">Confidential — Not for Distribution</span>
+  <span>Thematic · Concentrated · Evolution-Driven</span>
+</footer>
+
+</body>
+</html>
